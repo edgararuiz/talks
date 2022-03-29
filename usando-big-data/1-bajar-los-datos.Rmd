@@ -1,0 +1,100 @@
+---
+title: "Usando Big Data con R"
+output: html_notebook
+---
+
+```{r setup,  include = FALSE}
+
+## Librerías principales
+library(tidyverse)
+library(data.table) 
+library(dtplyr)
+library(sparklyr)
+library(arrow)
+
+## Librerías secundarias
+library(tictoc) ## Para ver cuanto tiempo toma una sección del código
+library(here) ## Para saber la dirección exacta de nustro folder de trabajo
+library(fs) ## Librería que ayuda con directorios y archivos
+
+```
+
+## `fs` y `here` para manipular directorios y archivos
+
+Definimos explicitamente donde se localiza el document y sus archivos
+```{r}
+library(fs)
+library(here)
+```
+
+
+```{r}
+direccion_del_documento <- here::here("usando-big-data")
+```
+
+Creamos el folder llamado 'datos', donde vamos a guardar nuestros archivos de 
+datos
+
+```{r}
+folder_datos <- path(direccion_del_documento, "datos")
+
+if(!dir_exists(folder_datos)) {
+  dir_create(folder_datos)
+}
+```
+
+Definimos los archivos que vamos a bajar de Internet
+
+```{r}
+archivos <- c(
+  "yellow_tripdata_2019-01.csv",
+  "yellow_tripdata_2019-02.csv",
+  "yellow_tripdata_2019-03.csv",
+  "yellow_tripdata_2019-04.csv",
+  "yellow_tripdata_2019-05.csv",
+  "yellow_tripdata_2019-06.csv"
+)
+```
+
+Usamos `lapply()` para bajar los archivos, usando `download.file()`
+
+```{r, echo = FALSE}
+lapply(
+  archivos, 
+  function(x) {
+    
+    archivo <- path(folder_datos, x)
+    
+    if(!file_exists(archivo)) {
+      download.file(
+        url = path("https://s3.amazonaws.com/nyc-tlc/trip+data/", x),
+        destfile = archivo,
+        mode = "wb"
+      )      
+    }
+    
+  } 
+)
+```
+
+Vemos que en total, todos los archivos suman 4 mil millones de Bytes
+
+```{r}
+folder_datos %>% 
+  dir_ls() %>% 
+  file.size() %>% 
+  sum() %>% 
+  prettyNum(",")
+```
+
+Aproximada mente 4 Gig
+
+```{r}
+folder_datos %>% 
+  dir_ls() %>% 
+  file.size() %>% 
+  sum() %>% 
+  {. / 1000000000}
+```
+
+

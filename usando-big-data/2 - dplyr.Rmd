@@ -1,0 +1,23 @@
+---
+title: "Usando Big Data con R"
+output: html_notebook
+---
+
+```{r setup,  include = FALSE}
+
+## Librería principal
+library(arrow)
+library(dplyr)
+
+## Librerías secundarias
+library(tictoc) ## Para ver cuanto tiempo toma una sección del código
+library(here) ## Para saber la dirección exacta de nustro folder de trabajo
+library(fs) ## Librería que ayuda con directorios y archivos
+
+```
+
+## `arrow`
+
+```{r}
+library(arrow)
+```
