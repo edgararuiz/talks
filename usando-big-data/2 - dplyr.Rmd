@@ -6,8 +6,8 @@ output: html_notebook
 ```{r setup,  include = FALSE}
 
 ## Librería principal
-library(arrow)
-library(dplyr)
+library(tidyverse)
+library(lubridate)
 
 ## Librerías secundarias
 library(tictoc) ## Para ver cuanto tiempo toma una sección del código
@@ -16,8 +16,74 @@ library(fs) ## Librería que ayuda con directorios y archivos
 
 ```
 
-## `arrow`
+```{r}
+direccion_del_documento <- here::here("usando-big-data")
+folder_datos <- path(direccion_del_documento, "datos")
+```
+
+## `tidyverse`
 
 ```{r}
-library(arrow)
+library(tidyverse)
+library(lubridate)
 ```
+
+Utilize `readr.read_lazy` para hacer que `readr` lea los datos de manera "aragana".
+Eso significa que en lugar de importar los datos a memoria RAM, `readr` va a 
+mapear el contenido, pero no lo va a leér hasta que se hagan 
+converciones o consultas 
+
+```{r}
+options(readr.read_lazy = TRUE)
+```
+
+Toma como 8 segundos en "leér" los datos. Como mencionado, es un mapeado de las
+variables
+
+```{r}
+tic()
+datos_readr <- read_csv(dir_ls(folder_datos))
+toc()
+```
+
+El tamaño de la variable is 11MB, no 4GB
+```{r}
+lobstr::obj_size(datos_readr)
+```
+
+Podemos interactuar con los datos como siempre
+
+```{r}
+glimpse(datos_readr)
+```
+Las consultas más "pesadas", como summarizar, va  a tomar mas tiempo, ya que los
+datos son leídos en el momento que se ejecuta la consulta de los datos
+
+```{r}
+datos_readr %>% 
+  mutate(mes_empieza_viaje = month(tpep_pickup_datetime)) %>% 
+  group_by(mes_empieza_viaje) %>% 
+  summarise(
+    cantidad = n()
+  )
+```
+Consultas similares tomam menos tiempo ya que los datos han sido importados a 
+la memoria RAM parcialmente
+
+```{r}
+datos_readr %>% 
+  mutate(mes_empieza_viaje = month(tpep_pickup_datetime)) %>% 
+  group_by(mes_empieza_viaje) %>% 
+  summarise(
+    cantidad = n(),
+    promedio_de_pasajeros = mean(passenger_count)
+  )
+```
+Podemos notar que el tamaño de `datos_readr` ahora es más grande, ya que parte 
+de los datos han sido importados en la mamoria RAM
+
+```{r}
+lobstr::obj_size(datos_readr)
+```
+
+

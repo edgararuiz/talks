@@ -94,7 +94,45 @@ folder_datos %>%
   dir_ls() %>% 
   file.size() %>% 
   sum() %>% 
-  {. / 1000000000}
+  {. / 1000000000} %>% 
+  round(2)
 ```
 
+
+## Conversión a Parquet
+
+```{r}
+folder_arrow <- path(direccion_del_documento, "datos_arrow")
+
+if(!dir_exists(folder_arrow)) {
+  dir_create(folder_arrow)
+}
+```
+
+```{r}
+lapply(
+  archivos, 
+  function(x) {
+    
+    archivo <- path(folder_datos, x)
+    archivo_arrow <- path(folder_arrow, x, ext = "parquet")
+    
+    if(!file_exists(archivo_arrow)) {
+      x <- read_csv_arrow(archivo)
+      write_parquet(x, archivo_arrow)
+    }
+    
+  } 
+)
+```
+
+
+```{r}
+folder_arrow %>% 
+  dir_ls() %>% 
+  file.size() %>% 
+  sum() %>% 
+  {. / 1000000000} %>% 
+  round(2)
+```
 

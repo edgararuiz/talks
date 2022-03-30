@@ -7,6 +7,7 @@ output: html_notebook
 
 ## Librerías principales
 library(data.table)
+library(dplyr)
 library(dtplyr)
 
 ## Librerías secundarias
@@ -14,6 +15,11 @@ library(tictoc) ## Para ver cuanto tiempo toma una sección del código
 library(here) ## Para saber la dirección exacta de nustro folder de trabajo
 library(fs) ## Librería que ayuda con directorios y archivos
 
+```
+
+```{r}
+direccion_del_documento <- here::here("usando-big-data")
+folder_datos <- path(direccion_del_documento, "datos")
 ```
 
 ## `data.table` (con `dtplyr`)
@@ -37,23 +43,34 @@ datos_dt <- rbindlist(
 toc()
 ```
 
-`data.table` lee 
+`data.table` importa **todos** los datos a la memoria. Admeas, agrega índices para
+mejorar la busqueda, pero agrega mas volumen en la memoria. El resultado es que
+los datos son mas grandes dentro de la memoria que en el disco
 ```{r}
 lobstr::obj_size(datos_dt)
 ```
 
+Si quiere utilizar `dplyr` para manipular los datos. Utilize el paquete `dtplyr`.
+Este paquete traduce las acciones tomadas dentro de `dplyr` en código que `data.table`
+entiende
 ```{r}
 library(dtplyr)
+library(dplyr)
 ```
 
+La función `lazy_dt()` es la única función que aprender del paquete. Crea un
+objecto dentro de R que es accesible para ser manipulado por `dplyr`
 ```{r}
 datos_dtp <- lazy_dt(datos_dt)
 ```
 
+Podemos notar que las dos variables en R ocupan exactamente la misma memoria en 
+nuestra computadora
 ```{r}
 lobstr::obj_size(datos_dtp, datos_dt)
 ```
 
+`dtplyr` solo convierte los comandos `dplyr` a comandos `data.table`
 ```{r}
 datos_dtp %>% 
   mutate(mes_empieza_viaje = month(tpep_pickup_datetime)) %>% 
@@ -64,6 +81,8 @@ datos_dtp %>%
   )
 ```
 
+Para ver los resultados, usamos `as_tibble()` para que accionemos los cambios que 
+queremos hacer
 ```{r}
 datos_dtp %>% 
   mutate(mes_empieza_viaje = month(tpep_pickup_datetime)) %>% 
@@ -75,6 +94,7 @@ datos_dtp %>%
   as_tibble()
 ```
 
+La función `show_query()` nos deja ver que comandos fueron pasados a `data.table`
 ```{r}
 datos_dtp %>% 
   mutate(mes_empieza_viaje = month(tpep_pickup_datetime)) %>% 
