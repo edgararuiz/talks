@@ -1,9 +1,7 @@
 ---
-title: "Untitled"
+title: "Usando Big Data con R"
 output: html_document
 date: '2022-03-29'
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+El código y la presentación utilizada durante el evento.
