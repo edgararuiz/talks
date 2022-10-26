@@ -1,0 +1,141 @@
+---
+format: revealjs
+---
+
+```{r}
+#| include: false
+library(dplyr)
+```
+
+
+## Spark en R con `sparklyr`
+
+<br><br>
+
+### Edgar Ruiz
+
+RStudio PBC (Posit)
+
+<br><br>
+
+::: columns
+::: column
+:::
+
+::: column
+**twitter.com/theotheredgar** <br> **linkedin.com/in/edgararuiz** <br>
+:::
+:::
+
+## Apache Spark
+
+::: columns
+
+::: column
+::: {.incremental}
+-   Análysis de datos a escala
+-   Librería extensiva de algoritmos de ML
+-   Interactúa con SQL
+-   Cálculos se pueden distribuir en multiples computadoras
+-   Grátis, y "open source"
+:::
+:::
+
+::: column
+![](imagenes/spark.svg)
+:::
+:::
+
+## `sparklyr`
+
+::: columns
+
+::: column
+::: {.incremental}
+-   Provée acceso a Spark por medio de R
+-   Permite el uso de las interfazes de `DBI`, `dplyr`, `broom`
+-   Facilita la creación de "ML Pipelines"
+-   Posible correr código R dentro de Spark
+:::
+:::
+
+
+::: column
+![](imagenes/sparklyr.png)
+:::
+:::
+
+## Filosofía de `sparklyr`
+
+
+:::{.incremental}
+- Con la excepción de `spark_apply()`, las funciones de `sparklyr` fueron creadas
+para activar la ejecución de operaciónes de Spark. 
+
+- Por ejemplo, para crear un modelo de regresión linear, `sparklyr` no corre la 
+función `lm()` dentro de Spark. 
+
+- `sparklyr` utiliza la función `ml_linear_regression()`,
+que utiliza el algoritmo de modelo linear que estan dentro de las librerias
+de Spark.
+:::
+## `dplyr` para manipulación de datos
+
+Podemos utilizar las mismas operaciones de `dplyr` que utilizamos en nuestro
+trabajo diario para manipular datos dentro de Spark.
+
+:::: {.columns}
+::: {.column}
+```{r}
+#| echo: true
+mtcars %>% 
+  filter(mpg > 20) %>% 
+  select(mpg, am) %>% 
+  head(5)
+```
+:::
+
+::: {.column}
+```{r}
+#| echo: true
+mtcars %>% 
+  filter(mpg > 20) %>% 
+  select(mpg, am) %>% 
+  head(5)
+```
+:::
+::::
+
+## `dplyr` traduce para nosotros
+
+`dplyr` puede "traducir" los pasos de conversión de datos a SQL que Spark entiende.
+
+:::{.incremental}
+:::: {.columns}
+::: {.column width="40%"}
+```{r}
+#| echo: true
+mtcars %>% 
+  filter(mpg > 20) %>% 
+  select(mpg, am) %>% 
+  head(5)
+```
+:::
+
+::: {.column}
+- **Tip!** -- Aprender `dplyr` ahora tiene la gran ventaja de que proveé interfaces a otras technologías, como bases de datos (`dbplyr`), Arrow (`arrow`), y (`data.table`)
+:::
+::::
+:::
+
+## Sitio oficial
+
+spark.rstudio.com
+
+![](imagenes/sitio.png)
+
+
+
+
+
+
