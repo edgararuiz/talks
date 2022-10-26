@@ -1,0 +1,112 @@
+```{r}
+library(sparklyr)
+library(arrow)
+library(dplyr)
+```
+
+```{r}
+sc <- spark_connect("local")
+```
+
+```{r}
+tbl_taxi <- spark_read_parquet(sc, "taxi", "datos", memory = FALSE)
+```
+
+```{r}
+glimpse(tbl_taxi)
+```
+
+```{r}
+count(tbl_taxi)
+```
+
+```{r}
+tbl_taxi %>% 
+  mutate(pickup_year = year(tpep_pickup_datetime), pickup_month = month(tpep_pickup_datetime)) %>% 
+  count(pickup_year, pickup_month)
+```
+
+```{r}
+mensuales <- tbl_taxi %>% 
+  mutate(pickup_year = year(tpep_pickup_datetime), pickup_month = month(tpep_pickup_datetime)) %>% 
+  count(pickup_year, pickup_month) %>% 
+  ungroup() %>% 
+  filter(n > 10000) %>% 
+  arrange(pickup_year, pickup_month) %>% 
+  collect()
+
+mensuales
+```
+
+```{r}
+mensuales %>% 
+  mutate(pickup = as.Date(paste0(pickup_year, "/", pickup_month, "/01"))) %>% 
+  ggplot() +
+  geom_col(aes(x = pickup, y = n))
+```
+
+https://cwiki.apache.org/confluence/display/hive/languagemanual+udf#LanguageManualUDF-DateFunctions
+
+https://www1.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf
+
+
+```{r}
+tbl_taxi %>% 
+  head() %>% 
+  mutate(day_of_week = date_format(tpep_pickup_datetime, "E")) %>% 
+  select(day_of_week) 
+```
+
+```{r}
+tbl_taxi %>% 
+  head() %>% 
+  mutate(day_of_week = date_format(tpep_pickup_datetime, "E")) %>% 
+  select(day_of_week) %>% 
+  show_query()
+```
+
+```{r}
+tbl_taxi %>% 
+  filter(is.null(trip_distance)) %>% 
+  count()
+```
+
+
+```{r}
+split_taxi <- tbl_taxi %>% 
+  mutate(
+    payment_type = case_when(
+      payment_type == 1 ~ "cc",
+      payment_type == 2 ~ "cash", 
+      TRUE ~ "other"
+    ),
+    rate_code = case_when(
+      RatecodeID == 1 ~ "standard", 
+      RatecodeID == 2 ~ "jfk",
+      RatecodeID == 3 ~ "newardk", 
+      TRUE ~ "other"
+    )
+  ) %>%     
+  sdf_random_split(training = 0.2, test = 0.2)
+```
+
+```{r}
+model <- split_taxi$training %>% 
+  ml_linear_regression(tip_amount ~ payment_type + rate_code)
+```
+
+```{r}
+summary(model)
+```
+
+```{r}
+model %>% 
+  ml_predict(split_taxi$test) %>% 
+  ml_metrics_regression(tip_amount)
+```
+
+
+```{r}
+spark_disconnect(sc)
+```
+
