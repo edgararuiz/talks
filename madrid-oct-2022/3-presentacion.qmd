@@ -23,7 +23,11 @@ RStudio PBC (Posit)
 :::
 
 ::: column
-**twitter.com/theotheredgar** <br> **linkedin.com/in/edgararuiz** <br>
+
+{{< fa brands github >}} edgararuiz <br>
+{{< fa brands linkedin >}} /in/edgararuiz <br>
+{{< fa brands twitter >}} @theotheredgar <br> 
+
 :::
 :::
 
@@ -31,7 +35,7 @@ RStudio PBC (Posit)
 
 ::: columns
 
-::: column
+::: column 
 ::: {.incremental}
 -   Análysis de datos a escala
 -   Librería extensiva de algoritmos de ML
@@ -128,14 +132,27 @@ mtcars %>%
 ::::
 :::
 
-## Sitio oficial
+## Recursos - Sitio oficial
 
 spark.rstudio.com
 
 ![](imagenes/sitio.png)
 
 
+## Recursos 
 
+::::{.columns}
+:::{.column width="30%"}
+Libro
 
+![](imagenes/book.png)
+:::
 
+:::{.column}
 
+Cheatsheet
+![](imagenes/cheatsheet.png)
+:::
+::::
+
+## Las últimas noticias... `r emo::ji("newspaper")`
