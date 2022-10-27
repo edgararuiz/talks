@@ -199,14 +199,16 @@ sc <- spark_connect("local")
 
 ![](imagenes/jobs.png)
 
-## Recursos - Sitio oficial
+##  Recursos {background-color="#333"}
+
+## Sitio oficial
 
 spark.rstudio.com
 
 ![](imagenes/sitio.png)
 
 
-## Recursos 
+## Otros 
 
 ::::{.columns}
 :::{.column width="30%"}
@@ -222,7 +224,36 @@ Cheatsheet
 :::
 ::::
 
-## Las últimas noticias... `r emo::ji("newspaper")`
+##  Recomendaciones {background-color="#333"}
+
+## Arrow con Spark
+
+Recientemente, archivos tipo *Parquet* han tomado popularidad. La nueva tecnología
+llamada Arrow, acelera la lectura de estos archivos. El paquete `arrow` 
+permite agregar esta tecnología en nuestra sesión de Spark.
+
+<br>
+
+::::{.columns}
+
+:::{.column}
+```r
+library(arrow)
+library(sparklyr)
+
+sc <- spark_connect("...")
+x <- spark_read_parquet("folder")
+```
+:::
+
+:::{.column}
+![](imagenes/arrow.png)
+:::
+
+::::
+
+
+## Las últimas noticias... `r emo::ji("newspaper")` {background-color="#333"}
 
 <br><br>
 
@@ -258,7 +289,7 @@ tbl_predictions %>%
   ml_metrics_regression(Sepal_Length)
 ```
 
-## Articulos
+## Artículos
 
 ::::{.columns}
 :::{.column}
