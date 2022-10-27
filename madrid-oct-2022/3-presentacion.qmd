@@ -2,7 +2,7 @@
 format: revealjs
 execute: 
   freeze: true
-  eval: false
+  eval: true
 ---
 
 ```{r}
@@ -38,6 +38,13 @@ RStudio PBC (Posit)
 {{< fa brands twitter >}} @theotheredgar <br> 
 
 :::
+:::
+
+##  Introducción {background-color="#333"}
+
+:::{.incremental}
+- Spark
+- `sparklyr`
 :::
 
 ## Apache Spark
@@ -224,7 +231,7 @@ Cheatsheet
 :::
 ::::
 
-##  Recomendaciones {background-color="#333"}
+##  Puntos aleatorios... {background-color="#333"}
 
 ## Arrow con Spark
 
@@ -252,6 +259,100 @@ x <- spark_read_parquet("folder")
 
 ::::
 
+## Utilize "ML Pipelines"
+
+Spark introduce el concepto de entrenar, y ejecutar conversiones por medio de
+"tuberías". La ídea es que cada sección de el "tubo" ejecuta conversiones de 
+datos, incluyendo modelaje. 
+
+![](imagenes/ml-Pipeline.png) 
+
+## Pipelines en `sparklyr`
+
+::::{.columns}
+:::{.column width="40%"}
+```r
+ml_pipeline(sc) %>% 
+  ft_tokenizer(
+    input_col = "review",
+    output_col = "word_list"
+  ) %>% 
+  ft_stop_words_remover(
+    input_col = "word_list", 
+    output_col = "wo_stop_words"
+    ) %>% 
+  ft_hashing_tf(
+    input_col = "wo_stop_words", 
+    output_col = "hashed_features", 
+    binary = TRUE, 
+    num_features = 1024
+    ) %>%
+  ft_normalizer(
+    input_col = "hashed_features", 
+    output_col = "normal_features"
+    ) %>% 
+  ft_r_formula(score ~ normal_features) %>% 
+  ml_logistic_regression() 
+```
+:::
+
+:::{.column width="60%"}
+```r
+#> Pipeline (Estimator) with 6 stages
+#> <pipeline__87caaa39_2fa9_4708_a1e1_20ab570c8917> 
+#>   Stages 
+#>   |--1 Tokenizer (Transformer)
+#>   |    <tokenizer__e3cf3ba6_f7e9_4a05_a41d_11963d70fd6c> 
+#>   |     (Parameters -- Column Names)
+#>   |      input_col: review
+#>   |      output_col: word_list
+#>   |--2 StopWordsRemover (Transformer)
+#>   |    <stop_words_remover__3fc0bf48_9fa0_441a_9bb3_5a19ec72be0f> 
+#>   |     (Parameters -- Column Names)
+#>   |      input_col: word_list
+#>   |      output_col: wo_stop_words
+#>   |--3 HashingTF (Transformer)
+#>   |    <hashing_tf__3fa3d087_39e8_4668_9921_28150a53412c> 
+#>   |     (Parameters -- Column Names)
+#>   |      input_col: wo_stop_words
+#>   |      output_col: hashed_features
+#>   |--4 Normalizer (Transformer)
+#>   |    <normalizer__6d4d9c1c_7488_4a4d_8d42_d9830de4ee2f> 
+#>   |     (Parameters -- Column Names)
+#>   |      input_col: hashed_features
+#>   |      output_col: normal_features
+#>   |--5 RFormula (Estimator)
+#>   |    <r_formula__4ae7b190_ce59_4d5f_b75b_cbd623e1a790> 
+#>   |     (Parameters -- Column Names)
+#>   |      features_col: features
+#>   |      label_col: label
+#>   |     (Parameters)
+#>   |      force_index_label: FALSE
+#>   |      formula: score ~ normal_features
+#>   |      handle_invalid: error
+#>   |      stringIndexerOrderType: frequencyDesc
+#>   |--6 LogisticRegression (Estimator)
+#>   |    <logistic_regression__46c6e5fb_7c70_44f2_a366_f0a7f94801e1> 
+#>   |     (Parameters -- Column Names)
+#>   |      features_col: features
+#>   |      label_col: label
+#>   |      prediction_col: prediction
+#>   |      probability_col: probability
+#>   |      raw_prediction_col: rawPrediction
+#>   |     (Parameters)
+#>   |      aggregation_depth: 2
+#>   |      elastic_net_param: 0
+#>   |      family: auto
+#>   |      fit_intercept: TRUE
+#>   |      max_iter: 100
+#>   |      maxBlockSizeInMB: 0
+#>   |      reg_param: 0
+#>   |      standardization: TRUE
+#>   |      threshold: 0.5
+#>   |      tol: 1e-06
+```
+:::
+::::
 
 ## Las últimas noticias... `r emo::ji("newspaper")` {background-color="#333"}
 
