@@ -59,6 +59,37 @@ RStudio PBC (Posit)
 :::
 :::
 
+## ¿Que quiere decir?
+
+Podemos analyzar datos a **gran** escala. Los datos y el procesamiento se distribuyen
+a múltiples computadoras.
+
+```{mermaid}
+
+classDiagram
+  class Servidor1 {
+    Maneja el Proceso
+  }
+  class Servidor2{
+    Datos\n\nProceso
+  }
+  class Servidor3{
+    Datos\n\nProceso     
+  }
+  class Servidor4{
+    Datos\n\nProceso  
+  }  
+  class Servidor5{
+    Datos\n\nProceso  
+  }    
+  Servidor1 --> Servidor2
+  Servidor1 --> Servidor3
+  Servidor1 --> Servidor4
+  Servidor1 --> Servidor5
+
+```
+
+
 ## `sparklyr`
 
 ::: columns
@@ -92,6 +123,19 @@ función `lm()` dentro de Spark.
 que utiliza el algoritmo de modelo linear que estan dentro de las librerias
 de Spark.
 :::
+
+## Enfoque de `sparklyr`
+
+`sparklyr` nos permite concentrarnos en explorar los datos, utilizando los mismos
+pasos que utilizamos para anlyzar datos "locales" en nuestra computadora.
+
+
+![](imagenes/data-science-explore.svg) 
+
+
+
+Libro ["R para Ciencia de Datos" - Wickham & Grolemund](https://es.r4ds.hadley.nz/)
+
 ## `dplyr` para manipulación de datos
 
 Podemos utilizar las mismas operaciones de `dplyr` que utilizamos en nuestro
@@ -137,10 +181,23 @@ tbl(sc, "mtcars") %>%
 :::
 
 ::: {.column}
-- **Tip!** -- Aprender `dplyr`, ahora tiene la gran ventaja de que proveé interfaces a otras technologías, como bases de datos (`dbplyr`), Arrow (`arrow`), y (`data.table`)
+- **Tip!** -- Aprender `dplyr`, ahora tiene la gran ventaja de que proveé interfaces a otras technologías, como bases de datos (`dbplyr`), Arrow (`arrow`), y `data.table` (`dtplyr`)
 :::
 ::::
 :::
+
+## ¿Necesito un "cluster" para aprender?
+
+
+**¡No!** Por medio de `sparklyr`, podemos instalar y correr Spark en nuestra
+computadora
+
+```r
+spark_install()
+sc <- spark_connect("local")
+```
+
+![](imagenes/jobs.png)
 
 ## Recursos - Sitio oficial
 
@@ -212,7 +269,7 @@ tbl_predictions %>%
   
 - [Afinando modelos](https://spark.rstudio.com/guides/model_tuning.html)
 
-- [Afinando modelos usando combinaciones de parametros](https://spark.rstudio.com/guides/model_tuning_text.html)
+- [Afinando modelos usando combinaciones de parámetros](https://spark.rstudio.com/guides/model_tuning_text.html)
 :::
 :::
 
