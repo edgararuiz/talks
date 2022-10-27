@@ -1,10 +1,19 @@
 ---
 format: revealjs
+execute: 
+  freeze: true
+  eval: false
 ---
 
 ```{r}
 #| include: false
+library(sparklyr)
 library(dplyr)
+
+sc <- spark_connect("local")
+
+spark_mtcars <- copy_to(sc, mtcars)
+spark_iris <- copy_to(sc, iris)
 ```
 
 
@@ -102,7 +111,7 @@ mtcars %>%
 ::: {.column}
 ```{r}
 #| echo: true
-mtcars %>% 
+tbl(sc, "mtcars") %>% 
   filter(mpg > 20) %>% 
   select(mpg, am) %>% 
   head(5)
@@ -119,15 +128,16 @@ mtcars %>%
 ::: {.column width="40%"}
 ```{r}
 #| echo: true
-mtcars %>% 
+tbl(sc, "mtcars") %>% 
   filter(mpg > 20) %>% 
   select(mpg, am) %>% 
-  head(5)
+  head(5) %>% 
+  show_query()
 ```
 :::
 
 ::: {.column}
-- **Tip!** -- Aprender `dplyr` ahora tiene la gran ventaja de que proveé interfaces a otras technologías, como bases de datos (`dbplyr`), Arrow (`arrow`), y (`data.table`)
+- **Tip!** -- Aprender `dplyr`, ahora tiene la gran ventaja de que proveé interfaces a otras technologías, como bases de datos (`dbplyr`), Arrow (`arrow`), y (`data.table`)
 :::
 ::::
 :::
@@ -156,3 +166,61 @@ Cheatsheet
 ::::
 
 ## Las últimas noticias... `r emo::ji("newspaper")`
+
+<br><br>
+
+::: {.incremental}
+
+- Funciones nuevas <br><br>
+- Artículos nuevos
+
+:::
+
+## Medidas a-la `yardstick`
+
+```{r}
+#| include: false
+iris_split <- sdf_random_split(spark_iris, training = 0.5, test = 0.5)
+reg_formula <- "Sepal_Length ~ Sepal_Width + Petal_Length + Petal_Width"
+model <- ml_generalized_linear_regression(iris_split$training, reg_formula)
+tbl_predictions <- ml_predict(model, iris_split$test)
+```
+
+Nuevas funciones devuelve los resultados en un `tibble` al estilo `metrics()`
+del paquete `yardstick`
+  
+- `ml_metrics_binary()`
+
+- `ml_metrics_multiclass()`
+
+- `ml_metrics_regression()`
+  
+```{r}
+#| echo: true
+tbl_predictions %>%
+  ml_metrics_regression(Sepal_Length)
+```
+
+## Articulos
+
+::::{.columns}
+:::{.column}
+:::{.incremental}
+- [Modelando datos de texto](https://spark.rstudio.com/guides/textmodeling.html)
+
+  - [Palabras en español para remover](https://github.com/apache/spark/blob/0494dc90af48ce7da0625485a4dc6917a244d580/mllib/src/main/resources/org/apache/spark/ml/feature/stopwords/spanish.txt)
+  
+- [Afinando modelos](https://spark.rstudio.com/guides/model_tuning.html)
+
+- [Afinando modelos usando combinaciones de parametros](https://spark.rstudio.com/guides/model_tuning_text.html)
+:::
+:::
+
+:::{.column}
+:::
+::::
+```{r}
+#| include: false
+spark_disconnect(sc)
+```
+
