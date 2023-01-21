@@ -16,6 +16,8 @@ editor: visual
 
 ## Typical Testing for R packages
 
+We usually test on the current and the development version of R 
+
 
 ```{mermaid}
 %%| fig-width: 3
@@ -30,8 +32,10 @@ flowchart LR
 
 ## Typical Testing for R packages
 
+We also have to test against multiple OS'
+
 ```{mermaid}
-%%| fig-width: 5
+%%| fig-width: 4
 %%| fig-responsive: false
 flowchart LR
   sp[sparklyr] --> r[R]
@@ -50,8 +54,10 @@ flowchart LR
 
 ## And now...`sparklyr` 
 
+We have to test on multiple versions of Spark
+
 ```{mermaid}
-%%| fig-width: 7
+%%| fig-width: 5
 %%| fig-responsive: false
 flowchart LR
   sp[sparklyr] --> r[R]
@@ -77,10 +83,12 @@ flowchart LR
   style sk4 fill:#ffcc33,stroke:#666
 ```
 
-## And now...`sparklyr` 
+## Multiple Spark implementations
+
+We also test on Spark locally, and via the REST API service named Livy
 
 ```{mermaid}
-%%| fig-width: 7
+%%| fig-width: 6
 %%| fig-responsive: false
 flowchart LR
   sp[sparklyr] --> r[R]
@@ -115,7 +123,9 @@ flowchart LR
   style lv2 fill:#ffcc,stroke:#666  
 ```
 
-## And now...`sparklyr` 
+## `arrow` is also in the mix
+
+We test on the current and dev version
 
 ```{mermaid}
 %%| fig-width: 7
