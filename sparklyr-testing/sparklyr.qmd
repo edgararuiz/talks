@@ -1,25 +1,159 @@
 ---
 title: "Improving `sparklyr` testing"
 author: "Edgar Ruiz"
-format: revealjs
+format: 
+  revealjs:
+    theme: default
+    smaller: true
 editor: visual
 ---
 
-## Quarto
+## `sparklyr` 
 
-Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
+- Released on CRAN September 2016
 
-## Bullets
+- 14K lines of R code
 
-When you click the **Render** button a document will be generated that includes:
+## Typical Testing for R packages
 
--   Content authored with markdown
--   Output from executable code
 
-## Code
+```{mermaid}
+%%| fig-width: 3
+%%| fig-responsive: false
+flowchart LR
+  sp[sparklyr] --> r[R]
+  sp[sparklyr] --> rd[R dev]
 
-When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+  style sp fill:#ffcc99,stroke:#666
+  
+```
 
-```{r}
-1 + 1
+## Typical Testing for R packages
+
+```{mermaid}
+%%| fig-width: 5
+%%| fig-responsive: false
+flowchart LR
+  sp[sparklyr] --> r[R]
+  sp[sparklyr] --> rd[R dev]
+  r --> wn[Windows]
+  r --> mc[MacOS]
+  r --> ln[Linux]
+  rd --> ln
+  
+  style sp fill:#ffcc99,stroke:#666  
+  
+  style wn fill:#ccff99,stroke:#666
+  style mc fill:#ccff99,stroke:#666
+  style ln fill:#ccff99,stroke:#666
+```
+
+## And now...`sparklyr` 
+
+```{mermaid}
+%%| fig-width: 7
+%%| fig-responsive: false
+flowchart LR
+  sp[sparklyr] --> r[R]
+  sp[sparklyr] --> rd[R dev]
+  r --> wn[Windows]
+  r --> mc[MacOS]
+  r --> ln[Linux]
+  rd --> ln
+  ln --> sk1[Spark 3.2]
+  ln --> sk2[Spark 2.4]
+  ln --> sk3[Spark 2.0]
+  ln --> sk4[Spark 1.6]
+  
+  style sp fill:#ffcc99,stroke:#666   
+  
+  style wn fill:#ccff99,stroke:#666
+  style mc fill:#ccff99,stroke:#666
+  style ln fill:#ccff99,stroke:#666
+  
+  style sk1 fill:#ffcc33,stroke:#666
+  style sk2 fill:#ffcc33,stroke:#666
+  style sk3 fill:#ffcc33,stroke:#666
+  style sk4 fill:#ffcc33,stroke:#666
+```
+
+## And now...`sparklyr` 
+
+```{mermaid}
+%%| fig-width: 7
+%%| fig-responsive: false
+flowchart LR
+  sp[sparklyr] --> r[R]
+  sp[sparklyr] --> rd[R dev]
+  r --> wn[Windows]
+  r --> mc[MacOS]
+  r --> ln[Linux]
+  rd --> ln
+  ln --> sk1[Spark 3.2]
+  ln --> sk2[Spark 2.4]
+  ln --> sk3[Spark 2.0]
+  ln --> sk4[Spark 1.6]
+  sk2 --> lc1[Local]
+  sk2 --> lv1[Livy]
+  sk4 --> lc2[Local]
+  sk4 --> lv2[Livy]
+  
+  style sp fill:#ffcc99,stroke:#666   
+  
+  style wn fill:#ccff99,stroke:#666
+  style mc fill:#ccff99,stroke:#666
+  style ln fill:#ccff99,stroke:#666
+  
+  style sk1 fill:#ffcc33,stroke:#666
+  style sk2 fill:#ffcc33,stroke:#666
+  style sk3 fill:#ffcc33,stroke:#666
+  style sk4 fill:#ffcc33,stroke:#666
+  
+  style lc1 fill:#ffcc,stroke:#666
+  style lv1 fill:#ffcc,stroke:#666
+  style lc2 fill:#ffcc,stroke:#666
+  style lv2 fill:#ffcc,stroke:#666  
+```
+
+## And now...`sparklyr` 
+
+```{mermaid}
+%%| fig-width: 7
+%%| fig-responsive: false
+flowchart LR
+  sp[sparklyr] --> r[R]
+  sp[sparklyr] --> rd[R dev]
+  r --> wn[Windows]
+  r --> mc[MacOS]
+  r --> ln[Linux]
+  rd --> ln
+  ln --> sk1[Spark 3.2]
+  ln --> sk2[Spark 2.4]
+  ln --> sk3[Spark 2.0]
+  ln --> sk4[Spark 1.6]
+  sk2 --> lc1[Local]
+  sk2 --> lv1[Livy]
+  sk4 --> lc2[Local]
+  sk4 --> lv2[Livy]
+  sk1 --> ar1[Arrow]
+  sk1 --> ar2[Arrow Dev]
+  
+  style sp fill:#ffcc99,stroke:#666   
+  
+  style wn fill:#ccff99,stroke:#666
+  style mc fill:#ccff99,stroke:#666
+  style ln fill:#ccff99,stroke:#666
+  
+  style sk1 fill:#ffcc33,stroke:#666
+  style sk2 fill:#ffcc33,stroke:#666
+  style sk3 fill:#ffcc33,stroke:#666
+  style sk4 fill:#ffcc33,stroke:#666
+  
+  style lc1 fill:#ffcc,stroke:#666
+  style lv1 fill:#ffcc,stroke:#666
+  style lc2 fill:#ffcc,stroke:#666
+  style lv2 fill:#ffcc,stroke:#666  
+
+  style ar1 fill:#eee,stroke:#666
+  style ar2 fill:#eee,stroke:#666    
 ```
