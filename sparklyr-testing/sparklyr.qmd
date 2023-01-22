@@ -3,16 +3,46 @@ title: "Improving `sparklyr` testing"
 author: "Edgar Ruiz"
 format: 
   revealjs:
-    theme: default
+    theme: beige
     smaller: true
+    transition: fade
+    background-transition: fade
 editor: visual
 ---
 
+## Background {background-color="#666"}
+
+:::{.incremental}
+- A quick one... I promise 
+:::
+
+## Apache Spark
+
+:::{.incremental}
+
+- It allow us to distribute computing across multiple computers (cluster)
+
+- It can process large amounts of data
+
+- It has a comprehensive Machine Learning library
+
+- It's open source
+
+:::
+
 ## `sparklyr` 
+
+:::{.incremental}
+
+- Integrates R with Apache Spark
 
 - Released on CRAN September 2016
 
-- 14K lines of R code
+- 14K lines of R code 
+:::
+
+## And now...testing {background-color="#666"}
+
 
 ## Typical Testing for R packages
 
@@ -123,9 +153,9 @@ flowchart LR
   style lv2 fill:#ffcc,stroke:#666  
 ```
 
-## `arrow` is also in the mix
+## And oh yeah!  `arrow` is also in the mix
 
-We test on the current and dev version
+We test on the current version, and dev version
 
 ```{mermaid}
 %%| fig-width: 7
