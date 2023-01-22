@@ -3,13 +3,15 @@ title: "Improving `sparklyr` testing"
 author: "Edgar Ruiz"
 format: 
   revealjs:
-    theme: default
+    theme: beige
     smaller: true
     transition: fade
     background-transition: fade
 editor: visual
 ---
 
+
+## Background {background-color="#666"}
 
 ## The Goal
 
@@ -40,12 +42,9 @@ editor: visual
 - A quick one... I promise 
 :::
 
-## 
+## Apache Spark
 
-::: {.r-stack}
-![](images/Apache_Spark_logo.svg.png){ width="300"}
-:::
-
+:::{.incremental}
 
 - It allow us to distribute computing across multiple computers (cluster)
 
@@ -55,28 +54,47 @@ editor: visual
 
 - It's open source
 
+:::
+
 ## 
 
 ::: {.r-stack}
 
-![](images/sparklyr.png){width="300"}
+![](images/sparklyr.png){.fragment width="200"}
   
 :::
+
+:::{.incremental}
 
 - Integrates R with Apache Spark
 
 - Released on CRAN September 2016
 
 - 14K lines of R code 
-
+:::
 
 ## And now...testing {background-color="#666"}
 
 
 ## Typical Testing for R packages
 
-We also have to test against multiple OS', and against R current verion, and R
-development version.
+We usually test on the current and the development version of R 
+
+
+```{mermaid}
+%%| fig-width: 3
+%%| fig-responsive: false
+flowchart LR
+  sp[sparklyr] --> r[R]
+  sp[sparklyr] --> rd[R dev]
+
+  style sp fill:#ffcc99,stroke:#666
+  
+```
+
+## Typical Testing for R packages
+
+We also have to test against multiple OS'
 
 ```{mermaid}
 %%| fig-width: 4
@@ -98,8 +116,78 @@ flowchart LR
 
 ## And now...`sparklyr` 
 
-We **also** have to test against multiple versions of Spark, multiple deployment 
-types of Spark, and against dev & current version of Apache Arrow.
+We have to test on multiple versions of Spark
+
+```{mermaid}
+%%| fig-width: 5
+%%| fig-responsive: false
+flowchart LR
+  sp[sparklyr] --> r[R]
+  sp[sparklyr] --> rd[R dev]
+  r --> wn[Windows]
+  r --> mc[MacOS]
+  r --> ln[Linux]
+  rd --> ln
+  ln --> sk1[Spark 3.2]
+  ln --> sk2[Spark 2.4]
+  ln --> sk3[Spark 2.0]
+  ln --> sk4[Spark 1.6]
+  
+  style sp fill:#ffcc99,stroke:#666   
+  
+  style wn fill:#ccff99,stroke:#666
+  style mc fill:#ccff99,stroke:#666
+  style ln fill:#ccff99,stroke:#666
+  
+  style sk1 fill:#ffcc33,stroke:#666
+  style sk2 fill:#ffcc33,stroke:#666
+  style sk3 fill:#ffcc33,stroke:#666
+  style sk4 fill:#ffcc33,stroke:#666
+```
+
+## Multiple Spark implementations
+
+We also test on Spark locally, and via the REST API service named Livy
+
+```{mermaid}
+%%| fig-width: 6
+%%| fig-responsive: false
+flowchart LR
+  sp[sparklyr] --> r[R]
+  sp[sparklyr] --> rd[R dev]
+  r --> wn[Windows]
+  r --> mc[MacOS]
+  r --> ln[Linux]
+  rd --> ln
+  ln --> sk1[Spark 3.2]
+  ln --> sk2[Spark 2.4]
+  ln --> sk3[Spark 2.0]
+  ln --> sk4[Spark 1.6]
+  sk2 --> lc1[Local]
+  sk2 --> lv1[Livy]
+  sk4 --> lc2[Local]
+  sk4 --> lv2[Livy]
+  
+  style sp fill:#ffcc99,stroke:#666   
+  
+  style wn fill:#ccff99,stroke:#666
+  style mc fill:#ccff99,stroke:#666
+  style ln fill:#ccff99,stroke:#666
+  
+  style sk1 fill:#ffcc33,stroke:#666
+  style sk2 fill:#ffcc33,stroke:#666
+  style sk3 fill:#ffcc33,stroke:#666
+  style sk4 fill:#ffcc33,stroke:#666
+  
+  style lc1 fill:#ffcc,stroke:#666
+  style lv1 fill:#ffcc,stroke:#666
+  style lc2 fill:#ffcc,stroke:#666
+  style lv2 fill:#ffcc,stroke:#666  
+```
+
+## And oh yeah!  `arrow` is also in the mix
+
+We test on the current version, and dev version
 
 ```{mermaid}
 %%| fig-width: 7
