@@ -726,3 +726,157 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
 :::
 
 ::::
+
+## The fix {background-color="#666"}
+
+## `setup.R`
+
+```{.r}
+# Initializing
+ul <- ifelse(using_livy(), using_livy_version(), "No")
+ua <- ifelse(using_arrow(), using_arrow_version(), "No")
+
+cat("\n----- sparklyr test setup ----")
+cat("\nSpark:", testthat_spark_env_version())
+cat("\nLivy:", ul)
+cat("\nArrow:", ua)
+if(using_arrow()) cat("\n  |---", as.character(packageVersion("arrow")))
+cat("\n------------------------------\n")
+
+cat("\n--- Creating Spark session ---\n")
+sc <- testthat_spark_connection()
+cat("------------------------------\n\n")
+
+## Disconnects all at the end
+withr::defer(spark_disconnect_all(), teardown_env())
+
+```
+
+## `setup.R`
+
+
+
+:::: {.columns}
+
+::: {.column width="30%"}
+- Ensures that the Spark connection closes after completing tests
+:::
+
+::: {.column width="70%"}
+```{.r code-line-numbers="17"}
+# Initializing
+ul <- ifelse(using_livy(), using_livy_version(), "No")
+ua <- ifelse(using_arrow(), using_arrow_version(), "No")
+
+cat("\n----- sparklyr test setup ----")
+cat("\nSpark:", testthat_spark_env_version())
+cat("\nLivy:", ul)
+cat("\nArrow:", ua)
+if(using_arrow()) cat("\n  |---", as.character(packageVersion("arrow")))
+cat("\n------------------------------\n")
+
+cat("\n--- Creating Spark session ---\n")
+sc <- testthat_spark_connection()
+cat("------------------------------\n\n")
+
+## Disconnects all at the end
+withr::defer(spark_disconnect_all(), teardown_env())
+
+```
+:::
+
+::::
+
+## `setup.R`
+
+:::: {.columns}
+
+::: {.column width="30%"}
+- Ensures that the Spark connection closes after completing tests
+- Outputs the versions of Spark, Livy and Arrow to the console, so we're 100%
+sure of what we are testing
+:::
+
+::: {.column width="70%"}
+```{.r code-line-numbers="5-10"}
+# Initializing
+ul <- ifelse(using_livy(), using_livy_version(), "No")
+ua <- ifelse(using_arrow(), using_arrow_version(), "No")
+
+cat("\n----- sparklyr test setup ----")
+cat("\nSpark:", testthat_spark_env_version())
+cat("\nLivy:", ul)
+cat("\nArrow:", ua)
+if(using_arrow()) cat("\n  |---", as.character(packageVersion("arrow")))
+cat("\n------------------------------\n")
+
+cat("\n--- Creating Spark session ---\n")
+sc <- testthat_spark_connection()
+cat("------------------------------\n\n")
+
+## Disconnects all at the end
+withr::defer(spark_disconnect_all(), teardown_env())
+
+```
+:::
+
+::::
+
+## `setup.R`
+
+:::: {.columns}
+
+::: {.column width="30%"}
+- Ensures that the Spark connection closes after completing tests
+- Outputs the versions of Spark, Livy and Arrow to the console, so we're 100%
+sure of what we are testing
+- Initializes the Spark session
+:::
+
+::: {.column width="70%"}
+```{.r code-line-numbers="12-14"}
+# Initializing
+ul <- ifelse(using_livy(), using_livy_version(), "No")
+ua <- ifelse(using_arrow(), using_arrow_version(), "No")
+
+cat("\n----- sparklyr test setup ----")
+cat("\nSpark:", testthat_spark_env_version())
+cat("\nLivy:", ul)
+cat("\nArrow:", ua)
+if(using_arrow()) cat("\n  |---", as.character(packageVersion("arrow")))
+cat("\n------------------------------\n")
+
+cat("\n--- Creating Spark session ---\n")
+sc <- testthat_spark_connection()
+cat("------------------------------\n\n")
+
+## Disconnects all at the end
+withr::defer(spark_disconnect_all(), teardown_env())
+
+```
+:::
+
+::::
+
+
+## `testthat.R`
+
+`setup.R` runs before the reporter, so even the RStudio integrated screen respects
+the initialization
+
+::: r-stack
+![](images/sparklyr-test.png){ width="600"}
+:::
+
+## `testthat.R`
+
+Even running sub-sets of tests will initialize and terminate in the same, 
+consistent way.
+
+::: r-stack
+![](images/sparklyr-test2.png){ width="600"}
+:::
+
+
+
+
