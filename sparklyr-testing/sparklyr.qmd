@@ -10,995 +10,125 @@ format:
 editor: visual
 execute: 
   eval: true
+  echo: false
 ---
-
-## Quick background {background-color="#666"}
 
 ## R Package testing 📦
 
-Part of the package development discipline is to ensure it contains tests. As themselves
+```{r}
+ver_testthat <- "Robust infastructure to test R packages"
+ver_gh <- "GitHub can run the **exact same** tests when we submit changes to the package"
+ver_covr <- "Lets us know how many lines of code are being tested (coverage)"
+ver_main <- "Part of package development discipline. It ensures quality of the package"
+```
 
--   Ensure that changes to existing code do not break current functionality
 
--   New functionality require new tests
+`r ver_main`
 
-## ![](images/testthat.png){width="70"} `testthat`
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-- The `testthat` package provides a robust testing infrastructure
-- It runs the tests inside the `test/testthat/` folder
-- `devtools::test_check()` calls `testthat` to perform testing 
+::: columns
+::: {.column width="70%"}
 
 :::
-
-::: {.column width="50%"}
-
+::: {.column width="30%"}
 📦
 
-    ├── .github
-    ├── R
-      └── my-script.R
-    ├── man
-    ├── inst
-    └── tests
-      ├── testthat.R
-      └── testthat
-        ├── test-my-script.R
-        ├── helper-init.R
-        └── setup.R
-    
-:::
-
-::::
-
-## ![](images/github-mark.png){width="70"} GitHub Actions 
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-- GitHub can also run package testing for us (in case we "forget")
-- This ensures that the package is tested before publication to CRAN
-
-:::
-
-::: {.column width="50%"}
-
-📦
-
-    ├── .github
-        └── workflows
+      ├── .github/
+        └── workflows/
           └── tests.yml
-    ├── R
-    ├── man
-    ├── inst
-    └── tests
+      ├── codecov.yml
+      ├── R
+        └── my-script.R
+      ├── man/
+      └── tests/
+        ├── testthat.R.        
+        └── testthat/          
+          ├── test-my-script.R 
+          ├── helper-init.R    
+          └── setup.R          
+:::
 :::
 
-::::
+## R Package testing 📦
 
-## ![](images/covr.png){width="70"} Test Coverage
+`r ver_main`
 
-:::: {.columns}
-
-::: {.column width="50%"}
-
-- How much of my package is being tested?
-
-- Captures and reports the lines of code that were tested
-
-- The `covr` package does that for us locally
-
-- Codecov provides an online service to do the same, via GitHub
-
+::: columns
+::: {.column width="70%"}
+-   ![](images/testthat.png){width="50"} `r ver_testthat`
 :::
-
-::: {.column width="50%"}
-
+::: {.column width="30%"}
 📦
 
-    ├── codecov.yml
-    ├── .github
-    ├── R
-    ├── man
-    ├── inst
-    └── tests
+
+      ├── .github/
+        └── workflows/
+          └── tests.yml
+      ├── codecov.yml
+      ├── R
+        └── my-script.R
+      ├── man/
+      └── tests/
+        ├── testthat.R.         *
+        └── testthat/           *
+          ├── test-my-script.R  *
+          ├── helper-init.R     *
+          └── setup.R           *
+:::
 :::
 
-::::
+## R Package testing 📦
 
-## Consistency is key!
-
-In order for all these to work, testing **HAS** to work off the same `testthat` and `devtools` functions. 
-
-![](images/testthat.png){width="90"} ![](images/github-mark.png){width="90"} ![](images/covr.png){width="90"}
-
-
-
-## The problem {background-color="#666"}
-
-## The problem
-
-<br/>
-
-::: incremental
--   **The `sparklyr` testing a very "custom" process, that made it impossible to use the usual functions, such as `test_check()`, to get a reliable and consistent test runs.**
-
-    -   `test_check()` was not able to setup the proper flags and environments (such as Spark and/or Livy) needed for testing. The only way to do this, was to run `testthat.R` script. **(Not at all good)**
-
-    -   Cannot run a subset of tests. There are over 2,000 tests, so it was not ideal to always run every test, just to confirm that small changes do not break something**(This is even worse)**
-:::
-
-## The before  {background-color="#666"}
-
-## `testthat.R`
+`r ver_main`
 
 ::: columns
-::: {.column width="40%"}
-#### `dplyr`
-
-``` r
-library(testthat)
-library(dplyr)
-
-test_check("dplyr")
-```
+::: {.column width="70%"}
+-   ![](images/testthat.png){width="50"} `r ver_testthat`
+-   ![](images/github-mark.png){width="50"} `r ver_gh`
 :::
-
-::: {.column width="60%"}
-#### `sparklyr`
-
-::: {.fragment}
-
-``` r
-Sys.setenv("R_TESTS" = "")
-
-if (identical(Sys.getenv("DBPLYR_API_EDITION"), "1")) {
-  options(sparklyr.dbplyr.edition = 1L)
-}
-
-# timeout for downloading Spark/Livy releases
-options(timeout = 3600)
-
-options(sparklyr.connect.timeout = 300)
-options(livy.session.start.timeout = 300)
-
-library(testthat)
-library(sparklyr)
-
-PerformanceReporter <- R6::R6Class("PerformanceReporter",
-  inherit = Reporter,
-  public = list(
-    results = list(
-      context = character(0),
-      time = numeric(0)
-    ),
-    last_context = NA_character_,
-    last_test = NA_character_,
-    last_time = Sys.time(),
-    last_test_time = 0,
-    n_ok = 0,
-    n_skip = 0,
-    n_warn = 0,
-    n_fail = 0,
-    failures = c(),
-
-    start_context = function(context) {
-      private$print_last_test()
-
-      self$last_context <- context
-      self$last_time <- Sys.time()
-    },
-
-    add_result = function(context, test, result) {
-      elapsed_time <- as.numeric(Sys.time()) - as.numeric(self$last_time)
-
-      print_message <- TRUE
-      is_error <- inherits(result, "expectation_failure") ||
-        inherits(result, "expectation_error")
-
-      if (is_error) {
-        self$n_fail <- self$n_fail + 1
-        self$failures <- c(self$failures, paste0(test, " (Context: ", context, ")"))
-      } else if (inherits(result, "expectation_skip")) {
-        self$n_skip <- self$n_skip + 1
-      } else if (inherits(result, "expectation_warning")) {
-        self$n_warn <- self$n_warn + 1
-      } else {
-        print_message <- FALSE
-        self$n_ok <- self$n_ok + 1
-      }
-
-      if (print_message) {
-        try({
-          cat(
-            paste0(test, ": ", private$expectation_type(result), ": ", result$message),
-            "\n"
-          )
-        })
-      }
-
-      if (identical(self$last_test, test)) {
-        elapsed_time <- self$last_test_time + elapsed_time
-        self$results$time[length(self$results$time)] <- elapsed_time
-        self$last_test_time <- elapsed_time
-      }
-      else {
-        private$print_last_test()
-
-        self$results$context[length(self$results$context) + 1] <- self$last_context
-        self$results$time[length(self$results$time) + 1] <- elapsed_time
-        self$last_test_time <- elapsed_time
-      }
-
-      self$last_test <- test
-      self$last_time <- Sys.time()
-    },
-
-    end_reporter = function() {
-      private$print_last_test()
-
-      cat("\n")
-      data <- data.frame(
-        context = self$results$context,
-        time = self$results$time
-      )
-
-      summary <- data %>%
-        dplyr::group_by(context) %>%
-        dplyr::summarise(time = sum(time)) %>%
-        dplyr::mutate(time = format(time, width = "9", digits = "3", scientific = F))
-
-      total <- data %>%
-        dplyr::summarise(time = sum(time)) %>%
-        dplyr::mutate(time = format(time, digits = "3", scientific = F)) %>%
-        dplyr::pull()
-
-      cat("\n")
-      cat("--- Performance Summary  ----\n\n")
-      print(as.data.frame(summary), row.names = FALSE)
-
-      cat(paste0("\nTotal: ", total, "s\n"))
-
-      cat("\n")
-      cat("------- Tests Summary -------\n\n")
-      self$cat_line("OK:       ", format(self$n_ok, width = 5))
-      self$cat_line("Failed:   ", format(self$n_fail, width = 5))
-      self$cat_line("Warnings: ", format(self$n_warn, width = 5))
-      self$cat_line("Skipped:  ", format(self$n_skip, width = 5))
-      if (length(self$failures) > 0) {
-        self$cat_line(
-          "Failures:  ",
-          do.call(paste, as.list(c(self$failures, sep = "\n")))
-        )
-      }
-      cat("\n")
-    }
-  ),
-  private = list(
-    print_last_test = function() {
-      try({
-        if (!is.na(self$last_test) &&
-          length(self$last_test) > 0 &&
-          length(self$last_test_time) > 0) {
-          cat(paste0(self$last_test, ": ", self$last_test_time, "\n"))
-        }
-      })
-      self$last_test <- NA_character_
-    },
-    expectation_type = function(exp) {
-      stopifnot(is.expectation(exp))
-      gsub("^expectation_", "", class(exp)[[1]])
-    }
-  )
-)
-
-if (identical(Sys.getenv("NOT_CRAN"), "true")) {
-  # enforce all configuration settings are described
-  options(sparklyr.test.enforce.config = TRUE)
-
-  livy_version <- Sys.getenv("LIVY_VERSION")
-  is_arrow_devel <- identical(Sys.getenv("ARROW_VERSION"), "devel")
-
-  if (nchar(livy_version) > 0 && !identical(livy_version, "NONE")) {
-    test_cases <- list(
-      "^spark-apply$",
-      "^spark-apply-bundle$",
-      "^spark-apply-ext$",
-      "^dbi$",
-      "^ml-clustering-kmeans$",
-      "^livy-config$",
-      "^livy-proxy$",
-      "^dplyr$",
-      "^dplyr-join$",
-      "^dplyr-stats$",
-      "^dplyr-sample.*$",
-      "^dplyr-weighted-mean$"
-    )
-    test_filters <- lapply(test_cases, function(x) paste(x, collapse = "|"))
-  } else if (is_arrow_devel) {
-    test_filters <- list(
-      paste(
-        c(
-          "^binds$",
-          "^connect-shell$",
-          "^dplyr.*",
-          "^dbi$",
-          "^copy-to$",
-          "^read-write$",
-          "^sdf-collect$",
-          "^serialization$",
-          "^spark-apply.*",
-          "^ml-clustering.*kmeans$"
-        ),
-        collapse = "|"
-      )
-    )
-  } else {
-    test_filters <- list(
-      "^(?!spark-dynamic-config|tidyr-pivot-).*",
-      "^spark-dynamic-config$",
-      "^tidyr-pivot-.*"
-    )
-  }
-
-  run_tests <- function(test_filter) {
-    on.exit({
-      spark_disconnect_all(terminate = TRUE)
-      tryCatch(livy_service_stop(), error = function(e) {})
-      Sys.sleep(30)
-
-      remove(".testthat_spark_connection", envir = .GlobalEnv)
-      remove(".testthat_livy_connection", envir = .GlobalEnv)
-    })
-
-    reporter <- MultiReporter$new(
-      reporters = list(
-        SummaryReporter$new(
-          max_reports = 100L,
-          show_praise = FALSE,
-          omit_dots = TRUE
-        ),
-        PerformanceReporter$new()
-      )
-    )
-
-    test_check("sparklyr", filter = test_filter, reporter = reporter, perl = TRUE)
-  }
-
-  for (test_filter in test_filters) {
-    run_tests(test_filter = test_filter)
-  }
-}
-```
-
-:::
-
-:::
-:::
-
-## Breakdown
-
-::: columns
-::: {.column width="40%"}
--   Setup environment and options
-:::
-
-::: {.column width="60%"}
-#### `sparklyr`
-
-``` {.r code-line-numbers="1-12"}
-Sys.setenv("R_TESTS" = "")
-
-if (identical(Sys.getenv("DBPLYR_API_EDITION"), "1")) {
-  options(sparklyr.dbplyr.edition = 1L)
-}
-
-# timeout for downloading Spark/Livy releases
-options(timeout = 3600)
-
-options(sparklyr.connect.timeout = 300)
-options(livy.session.start.timeout = 300)
-
-library(testthat)
-library(sparklyr)
-
-PerformanceReporter <- R6::R6Class("PerformanceReporter",
-  inherit = Reporter,
-  public = list(
-    results = list(
-      context = character(0),
-      time = numeric(0)
-    ),
-    last_context = NA_character_,
-    last_test = NA_character_,
-    last_time = Sys.time(),
-    last_test_time = 0,
-    n_ok = 0,
-    n_skip = 0,
-    n_warn = 0,
-    n_fail = 0,
-    failures = c(),
-```
-:::
-:::
-
-## Breakdown
-
-::: columns
-::: {.column width="40%"}
--   Setup environment and options
--   Custom Reporter
-:::
-
-::: {.column width="60%"}
-#### `sparklyr`
-
-``` {.r code-line-numbers="1-43"}
-PerformanceReporter <- R6::R6Class("PerformanceReporter",
-  inherit = Reporter,
-  public = list(
-    results = list(
-      context = character(0),
-      time = numeric(0)
-    ),
-    last_context = NA_character_,
-    last_test = NA_character_,
-    last_time = Sys.time(),
-    last_test_time = 0,
-    n_ok = 0,
-    n_skip = 0,
-    n_warn = 0,
-    n_fail = 0,
-    failures = c(),
-
-    start_context = function(context) {
-      private$print_last_test()
-
-      self$last_context <- context
-      self$last_time <- Sys.time()
-    },
-
-    add_result = function(context, test, result) {
-      elapsed_time <- as.numeric(Sys.time()) - as.numeric(self$last_time)
-
-       print_message <- TRUE
-      is_error <- inherits(result, "expectation_failure") ||
-        inherits(result, "expectation_error")
-
-      if (is_error) {
-        self$n_fail <- self$n_fail + 1
-        self$failures <- c(self$failures, paste0(test, " (Context: ", context, ")"))
-      } else if (inherits(result, "expectation_skip")) {
-        self$n_skip <- self$n_skip + 1
-      } else if (inherits(result, "expectation_warning")) {
-        self$n_warn <- self$n_warn + 1
-      } else {
-        print_message <- FALSE
-        self$n_ok <- self$n_ok + 1
-      }
-    
-```
-:::
-:::
-
-## Breakdown
-
-::: columns
-::: {.column width="40%"}
--   Setup environment and options
--   Custom Reporter
--   Filters for which tests to run depending on environment
-:::
-
-::: {.column width="60%"}
-#### `sparklyr`
-
-``` {.r code-line-numbers="15-53"}
-    expectation_type = function(exp) {
-      stopifnot(is.expectation(exp))
-      gsub("^expectation_", "", class(exp)[[1]])
-    }
-  )
-)
-
-if (identical(Sys.getenv("NOT_CRAN"), "true")) {
-  # enforce all configuration settings are described
-  options(sparklyr.test.enforce.config = TRUE)
-
-  livy_version <- Sys.getenv("LIVY_VERSION")
-  is_arrow_devel <- identical(Sys.getenv("ARROW_VERSION"), "devel")
-
-  if (nchar(livy_version) > 0 && !identical(livy_version, "NONE")) {
-    test_cases <- list(
-      "^spark-apply$",
-      "^spark-apply-bundle$",
-      "^spark-apply-ext$",
-      "^dbi$",
-      "^ml-clustering-kmeans$",
-      "^livy-config$",
-      "^livy-proxy$",
-      "^dplyr$",
-      "^dplyr-join$",
-      "^dplyr-stats$",
-      "^dplyr-sample.*$",
-      "^dplyr-weighted-mean$"
-    )
-    test_filters <- lapply(test_cases, function(x) paste(x, collapse = "|"))
-  } else if (is_arrow_devel) {
-    test_filters <- list(
-      paste(
-        c(
-          "^binds$",
-          "^connect-shell$",
-          "^dplyr.*",
-          "^dbi$",
-          "^copy-to$",
-          "^read-write$",
-          "^sdf-collect$",
-          "^serialization$",
-          "^spark-apply.*",
-          "^ml-clustering.*kmeans$"
-        ),
-        collapse = "|"
-      )
-    )
-  } else {
-    test_filters <- list(
-      "^(?!spark-dynamic-config|tidyr-pivot-).*",
-      "^spark-dynamic-config$",
-      "^tidyr-pivot-.*"
-    )
-  }
-
-  run_tests <- function(test_filter) {
-    on.exit({
-      spark_disconnect_all(terminate = TRUE)
-      tryCatch(livy_service_stop(), error = function(e) {})
-      Sys.sleep(30)
-
-      remove(".testthat_spark_connection", envir = .GlobalEnv)
-      remove(".testthat_livy_connection", envir = .GlobalEnv)
-    })
-
-    reporter <- MultiReporter$new(
-      reporters = list(
-        SummaryReporter$new(
-          max_reports = 100L,
-          show_praise = FALSE,
-          omit_dots = TRUE
-        ),
-        PerformanceReporter$new()
-      )
-    )
-
-    test_check("sparklyr", filter = test_filter, reporter = reporter, perl = TRUE)
-  }
-
-  for (test_filter in test_filters) {
-    run_tests(test_filter = test_filter)
-  }
-}
-```
-:::
-:::
-
-## Breakdown
-
-::: columns
-::: {.column width="40%"}
--   Setup environment and options
--   Custom Reporter
--   Filters for which tests to run depending on environment
--   Custom function that tears down the Spark session after completion
-:::
-
-::: {.column width="60%"}
-#### `sparklyr`
-
-``` {.r code-line-numbers="9-16"}
-    test_filters <- list(
-      "^(?!spark-dynamic-config|tidyr-pivot-).*",
-      "^spark-dynamic-config$",
-      "^tidyr-pivot-.*"
-    )
-  }
-
-  run_tests <- function(test_filter) {
-    on.exit({
-      spark_disconnect_all(terminate = TRUE)
-      tryCatch(livy_service_stop(), error = function(e) {})
-      Sys.sleep(30)
-
-      remove(".testthat_spark_connection", envir = .GlobalEnv)
-      remove(".testthat_livy_connection", envir = .GlobalEnv)
-    })
-
-    reporter <- MultiReporter$new(
-      reporters = list(
-        SummaryReporter$new(
-          max_reports = 100L,
-          show_praise = FALSE,
-          omit_dots = TRUE
-        ),
-        PerformanceReporter$new()
-      )
-    )
-
-    test_check("sparklyr", filter = test_filter, reporter = reporter, perl = TRUE)
-  }
-
-  for (test_filter in test_filters) {
-    run_tests(test_filter = test_filter)
-  }
-}
-```
-:::
-:::
-
-## Breakdown
-
-::: columns
-::: {.column width="40%"}
--   Setup environment and options
--   Custom Reporter
--   Filters for which tests to run depending on environment
--   Custom function that tears down the Spark session after completion
--   Iterates through the filters to run the tests
-:::
-
-::: {.column width="60%"}
-#### `sparklyr`
-
-``` {.r code-line-numbers="18-35"}
-    test_filters <- list(
-      "^(?!spark-dynamic-config|tidyr-pivot-).*",
-      "^spark-dynamic-config$",
-      "^tidyr-pivot-.*"
-    )
-  }
-
-  run_tests <- function(test_filter) {
-    on.exit({
-      spark_disconnect_all(terminate = TRUE)
-      tryCatch(livy_service_stop(), error = function(e) {})
-      Sys.sleep(30)
-
-      remove(".testthat_spark_connection", envir = .GlobalEnv)
-      remove(".testthat_livy_connection", envir = .GlobalEnv)
-    })
-
-    reporter <- MultiReporter$new(
-      reporters = list(
-        SummaryReporter$new(
-          max_reports = 100L,
-          show_praise = FALSE,
-          omit_dots = TRUE
-        ),
-        PerformanceReporter$new()
-      )
-    )
-
-    test_check("sparklyr", filter = test_filter, reporter = reporter, perl = TRUE)
-  }
-
-  for (test_filter in test_filters) {
-    run_tests(test_filter = test_filter)
-  }
-}
-```
-:::
-:::
-
-## But wait! That's not all...
-
-::: fragment
-::: columns
-::: {.column width="40%"}
-The GitHub Action (CI) actually interacted with an entirely different R script called `.ci.R`
-:::
-
-::: {.fragment .column width="60%"}
-`ci/.ci.R`
-
-``` r
-args <- commandArgs(trailingOnly = TRUE)
-
-ensure_pkgs <- function(pkgs) {
-  for (pkg in pkgs) {
-    if (!require(pkg, character.only = TRUE)) {
-      install.packages(pkg)
-    }
-  }
-}
-
-if (length(args) == 0) {
-  stop("Missing arguments")
-} else if (args[[1]] == "--install_pkgs") {
-  if (package_version(paste(R.Version()$major, R.Version()$minor, sep = ".")) >= "3.3") {
-    ensure_pkgs("sparklyr.nested")
-  }
-  parent_dir <- dir(".", full.names = TRUE)
-  sparklyr_package <- parent_dir[grepl("sparklyr_", parent_dir)]
-  install.packages(sparklyr_package, repos = NULL, type = "source")
-} else if (args[[1]] == "--testthat") {
-  on.exit(setwd(normalizePath("..")))
-  setwd("tests")
-  source("testthat.R")
-} else if (args[[1]] == "--coverage") {
-  ensure_pkgs("devtools")
-
-  devtools::install_github("javierluraschi/covr", ref = "feature/no-batch")
-  covr::codecov(type = "none", code = "setwd('tests'); source('testthat.R')", batch = FALSE)
-} else if (args[[1]] == "--verify-embedded-srcs") {
-  ensure_pkgs(c("diffobj", "stringr"))
-
-  sparklyr:::spark_verify_embedded_sources()
-} else {
-  stop("Unsupported arguments")
-}
-```
-:::
-:::
-:::
-
-## But wait! That's not all...
-
-::: columns
-::: {.column width="40%"}
-The GitHub Action (CI) actually interacted with an entirely different R script called `.ci.R`
-
-It contains additional customizations that are accessed based on flags beings passed to it
-:::
-
-::: {.column width="60%"}
-`ci/.ci.R`
-
-``` {.r code-line-numbers="20,24,29"}
-args <- commandArgs(trailingOnly = TRUE)
-
-ensure_pkgs <- function(pkgs) {
-  for (pkg in pkgs) {
-    if (!require(pkg, character.only = TRUE)) {
-      install.packages(pkg)
-    }
-  }
-}
-
-if (length(args) == 0) {
-  stop("Missing arguments")
-} else if (args[[1]] == "--install_pkgs") {
-  if (package_version(paste(R.Version()$major, R.Version()$minor, sep = ".")) >= "3.3") {
-    ensure_pkgs("sparklyr.nested")
-  }
-  parent_dir <- dir(".", full.names = TRUE)
-  sparklyr_package <- parent_dir[grepl("sparklyr_", parent_dir)]
-  install.packages(sparklyr_package, repos = NULL, type = "source")
-} else if (args[[1]] == "--testthat") {
-  on.exit(setwd(normalizePath("..")))
-  setwd("tests")
-  source("testthat.R")
-} else if (args[[1]] == "--coverage") {
-  ensure_pkgs("devtools")
-
-  devtools::install_github("javierluraschi/covr", ref = "feature/no-batch")
-  covr::codecov(type = "none", code = "setwd('tests'); source('testthat.R')", batch = FALSE)
-} else if (args[[1]] == "--verify-embedded-srcs") {
-  ensure_pkgs(c("diffobj", "stringr"))
-
-  sparklyr:::spark_verify_embedded_sources()
-} else {
-  stop("Unsupported arguments")
-}
-```
-:::
-:::
-
-## How did we get here? {background-color="#666"}
-
-## How did we get here?
-
-- Goals and coding of the package are large and complex 
-
-- We had to come up with ways to test things before those features were available in the testing packages and CI
-
-## The fix {background-color="#666"}
-
-## The fix
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-- Move the custom reporter, and environment initialization to **"helper"** `testthat` files
-
-- Move the test filters, used to run the proper tests based on the environment, to custom `skip` functions, and save those functions in **"helper"** scripts
-
-- Ensure that all flags are set by R environment variables (no more `options` or R script args)
-
-
-:::
-
-::: {.column width="50%"}
-
+::: {.column width="30%"}
 📦
 
-    ├── .github
-    ├── R
-    ├── man
-    ├── inst
-    └── tests
-      ├── testthat.R
-      └── testthat
-        ├── test-my-script.R
-        ├── helper-init.R      <<-- here
-        └── setup.R            <<-- and here
-    
+      ├── .github/              *
+        └── workflows/          *
+          └── tests.yml         *
+      ├── codecov.yml
+      ├── R
+        └── my-script.R
+      ├── man/
+      └── tests/
+        ├── testthat.R.        
+        └── testthat/          
+          ├── test-my-script.R 
+          ├── helper-init.R    
+          └── setup.R        
+:::
 :::
 
-::::
+## R Package testing 📦
 
-
-## COMING SOON!
-
-- Add helper file breakdown
-
-- Add skip function breakdown
-
-## `setup.R`
+`r ver_main`
 
 ::: columns
-::: {.column width="30%"}
-:::
-
 ::: {.column width="70%"}
-``` r
-# Initializing
-ul <- ifelse(using_livy(), using_livy_version(), "No")
-ua <- ifelse(using_arrow(), using_arrow_version(), "No")
-
-cat("\n----- sparklyr test setup ----")
-cat("\nSpark:", testthat_spark_env_version())
-cat("\nLivy:", ul)
-cat("\nArrow:", ua)
-if(using_arrow()) cat("\n  |---", as.character(packageVersion("arrow")))
-cat("\n------------------------------\n")
-
-cat("\n--- Creating Spark session ---\n")
-sc <- testthat_spark_connection()
-cat("------------------------------\n\n")
-
-## Disconnects all at the end
-withr::defer(spark_disconnect_all(), teardown_env())
-```
+-   ![](images/testthat.png){width="50"} `r ver_testthat`
+-   ![](images/github-mark.png){width="50"} `r ver_gh`
+-   ![](images/covr.png){width="50"} `r ver_covr`
 :::
-:::
-
-## `setup.R`
-
-::: columns
 ::: {.column width="30%"}
--   Ensures that the Spark connection closes after completing tests
-:::
+📦
 
-::: {.column width="70%"}
-``` {.r code-line-numbers="17"}
-# Initializing
-ul <- ifelse(using_livy(), using_livy_version(), "No")
-ua <- ifelse(using_arrow(), using_arrow_version(), "No")
-
-cat("\n----- sparklyr test setup ----")
-cat("\nSpark:", testthat_spark_env_version())
-cat("\nLivy:", ul)
-cat("\nArrow:", ua)
-if(using_arrow()) cat("\n  |---", as.character(packageVersion("arrow")))
-cat("\n------------------------------\n")
-
-cat("\n--- Creating Spark session ---\n")
-sc <- testthat_spark_connection()
-cat("------------------------------\n\n")
-
-## Disconnects all at the end
-withr::defer(spark_disconnect_all(), teardown_env())
-```
+      ├── .github/             
+        └── workflows/         
+          └── tests.yml        
+      ├── codecov.yml           *
+      ├── R
+        └── my-script.R
+      ├── man/
+      └── tests/
+        ├── testthat.R.        
+        └── testthat/          
+          ├── test-my-script.R 
+          ├── helper-init.R    
+          └── setup.R        
 :::
 :::
-
-## `setup.R`
-
-::: columns
-::: {.column width="30%"}
--   Ensures that the Spark connection closes after completing tests
--   Outputs the versions of Spark, Livy and Arrow to the console, so we're 100% sure of what we are testing
-:::
-
-::: {.column width="70%"}
-``` {.r code-line-numbers="5-10"}
-# Initializing
-ul <- ifelse(using_livy(), using_livy_version(), "No")
-ua <- ifelse(using_arrow(), using_arrow_version(), "No")
-
-cat("\n----- sparklyr test setup ----")
-cat("\nSpark:", testthat_spark_env_version())
-cat("\nLivy:", ul)
-cat("\nArrow:", ua)
-if(using_arrow()) cat("\n  |---", as.character(packageVersion("arrow")))
-cat("\n------------------------------\n")
-
-cat("\n--- Creating Spark session ---\n")
-sc <- testthat_spark_connection()
-cat("------------------------------\n\n")
-
-## Disconnects all at the end
-withr::defer(spark_disconnect_all(), teardown_env())
-```
-:::
-:::
-
-## `setup.R`
-
-::: columns
-::: {.column width="30%"}
--   Ensures that the Spark connection closes after completing tests
--   Outputs the versions of Spark, Livy and Arrow to the console, so we're 100% sure of what we are testing
--   Initializes the Spark session
-:::
-
-::: {.column width="70%"}
-``` {.r code-line-numbers="12-14"}
-# Initializing
-ul <- ifelse(using_livy(), using_livy_version(), "No")
-ua <- ifelse(using_arrow(), using_arrow_version(), "No")
-
-cat("\n----- sparklyr test setup ----")
-cat("\nSpark:", testthat_spark_env_version())
-cat("\nLivy:", ul)
-cat("\nArrow:", ua)
-if(using_arrow()) cat("\n  |---", as.character(packageVersion("arrow")))
-cat("\n------------------------------\n")
-
-cat("\n--- Creating Spark session ---\n")
-sc <- testthat_spark_connection()
-cat("------------------------------\n\n")
-
-## Disconnects all at the end
-withr::defer(spark_disconnect_all(), teardown_env())
-```
-:::
-:::
-
-## `testthat.R`
-
-Running sub-sets of tests will initialize and terminate in the same, consistent way.
-
-::: r-stack
-![](images/sparklyr-test2.png){width="600"}
-:::
-
-## `testthat.R`
-
-Because `setup.R` runs before the reporter, even the RStudio integrated screen respects the initialization
-
-::: r-stack
-![](images/sparklyr-test.png){width="600"}
-:::
-
-## Outline
-
--   Package testing (how and why it is important)
-    -   Make sure changes do not break pkg
-    -   New features require new tests
--   It also works on GH, it will test even if you dont
--   This is why consistency is vital
--   Problem
--   Not blaming
-    -   Goals and coding of the package are large and complex 
-    -NOTE: maybe compare number of lines of code and number of tests with a familiar package (dplyr, ggplot2)
-    -   We had to come up with ways to test things before those features were available in the testing packages and CI
--   Fix
-    -   Move everything from the scripts into helpers and setup.R
-    -   NOTE: Maybe check off all of the things .ci and testthat.R do as we show how things were moved
--   NOTE: code coverage?

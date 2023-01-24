@@ -10,76 +10,63 @@ format:
 editor: visual
 ---
 
-
 ## Background {background-color="#666"}
 
 ## The Goal
 
-:::{.incremental}
-- What we had...
+::: incremental
+-   What we had...
 :::
 
-::: {.r-stack}
-
+::: r-stack
 ![](images/before.png){.fragment width="800"}
-  
 :::
 
-:::{.incremental}
-- What we want...
+::: incremental
+-   What we want...
 :::
 
-::: {.r-stack}
-
+::: r-stack
 ![](images/after.png){.fragment width="800"}
-  
 :::
-
 
 ## Background {background-color="#666"}
 
-:::{.incremental}
-- A quick one... I promise 
+::: incremental
+-   A quick one... I promise
 :::
 
 ## Apache Spark
 
-:::{.incremental}
+::: incremental
+-   It allow us to distribute computing across multiple computers (cluster)
 
-- It allow us to distribute computing across multiple computers (cluster)
+-   It can process large amounts of data
 
-- It can process large amounts of data
+-   It has a comprehensive Machine Learning library
 
-- It has a comprehensive Machine Learning library
-
-- It's open source
-
+-   It's open source
 :::
 
 ## 
 
-::: {.r-stack}
-
+::: r-stack
 ![](images/sparklyr.png){.fragment width="200"}
-  
 :::
 
-:::{.incremental}
+::: incremental
+-   Integrates R with Apache Spark
 
-- Integrates R with Apache Spark
+-   Released on CRAN September 2016
 
-- Released on CRAN September 2016
-
-- 14K lines of R code 
+-   14K lines of R code
 :::
 
 ## And now...testing {background-color="#666"}
 
-
 ## Typical Testing for R packages
 
-We usually test on the current and the development version of R 
-
+We usually test on the current and the development version of R
 
 ```{mermaid}
 %%| fig-width: 3
@@ -114,7 +101,7 @@ flowchart LR
   style ln fill:#ccff99,stroke:#666
 ```
 
-## And now...`sparklyr` 
+## And now...`sparklyr`
 
 We have to test on multiple versions of Spark
 
@@ -185,7 +172,7 @@ flowchart LR
   style lv2 fill:#ffcc,stroke:#666  
 ```
 
-## And oh yeah!  `arrow` is also in the mix
+## And oh yeah! `arrow` is also in the mix
 
 We test on the current version, and dev version
 
