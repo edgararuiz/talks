@@ -18,13 +18,12 @@ execute:
 
 ::: {.incremental}
 
-- **The `sparklyr` testing was some "custom", that it was impossible to use 
-the usual functions, such as `test_check()`, to get a reliable and consistent
+- **The `sparklyr` testing a very "custom" process, that made it impossible to use the usual functions, such as `test_check()`, to get a reliable and consistent
 test runs. **
+  
+  - `test_check()` was not able to setup the proper flags and environments (such as Spark and/or Livy) needed for testing. The only way to do this, was to run `testthat.R` script. **(Not at all good)**
 
-  - In GitHub Actions, we would have to run (read source) the `testthat.R` script in order to properly setup the flags and environments needed to for testing. Meaning that `devtools::test_check()` will not run be able to do that. **(Not at all good)**
-
-  - It also prevented us from being able to easily run partial tests of the package. Very problematic because we didn't want to run all of the 2,400 tests every time we wanted to confirm a small change. **(This is even worse)**
+  - Cannot run a subset of tests. There are over 2,000 tests, so  it was not ideal to always run every test, just to confirm that small changes do not break something**(This is even worse)**
 
 :::
 
@@ -624,6 +623,123 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
 
 ::::
 
+## But wait! That's not all...
+
+::: {.fragment}
+
+:::: {.columns}
+
+::: {.column width="40%"}
+The GitHub Action (CI) actually interacted with an entirely different R script called `.ci.R`
+:::
+
+::: {.fragment .column width="60%"}
+
+`ci/.ci.R`
+
+```{.r}
+args <- commandArgs(trailingOnly = TRUE)
+
+ensure_pkgs <- function(pkgs) {
+  for (pkg in pkgs) {
+    if (!require(pkg, character.only = TRUE)) {
+      install.packages(pkg)
+    }
+  }
+}
+
+if (length(args) == 0) {
+  stop("Missing arguments")
+} else if (args[[1]] == "--install_pkgs") {
+  if (package_version(paste(R.Version()$major, R.Version()$minor, sep = ".")) >= "3.3") {
+    ensure_pkgs("sparklyr.nested")
+  }
+  parent_dir <- dir(".", full.names = TRUE)
+  sparklyr_package <- parent_dir[grepl("sparklyr_", parent_dir)]
+  install.packages(sparklyr_package, repos = NULL, type = "source")
+} else if (args[[1]] == "--testthat") {
+  on.exit(setwd(normalizePath("..")))
+  setwd("tests")
+  source("testthat.R")
+} else if (args[[1]] == "--coverage") {
+  ensure_pkgs("devtools")
+
+  devtools::install_github("javierluraschi/covr", ref = "feature/no-batch")
+  covr::codecov(type = "none", code = "setwd('tests'); source('testthat.R')", batch = FALSE)
+} else if (args[[1]] == "--verify-embedded-srcs") {
+  ensure_pkgs(c("diffobj", "stringr"))
+
+  sparklyr:::spark_verify_embedded_sources()
+} else {
+  stop("Unsupported arguments")
+}
+```
+
+:::
+
+::::
+
+:::
+
+## But wait! That's not all...
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+The GitHub Action (CI) actually interacted with an entirely different R script called `.ci.R`
+
+It contains additional customizations that are accessed based on flags beings passed to it 
+
+:::
+
+::: {.column width="60%"}
+
+`ci/.ci.R`
+
+```{.r code-line-numbers="20,24,29"}
+args <- commandArgs(trailingOnly = TRUE)
+
+ensure_pkgs <- function(pkgs) {
+  for (pkg in pkgs) {
+    if (!require(pkg, character.only = TRUE)) {
+      install.packages(pkg)
+    }
+  }
+}
+
+if (length(args) == 0) {
+  stop("Missing arguments")
+} else if (args[[1]] == "--install_pkgs") {
+  if (package_version(paste(R.Version()$major, R.Version()$minor, sep = ".")) >= "3.3") {
+    ensure_pkgs("sparklyr.nested")
+  }
+  parent_dir <- dir(".", full.names = TRUE)
+  sparklyr_package <- parent_dir[grepl("sparklyr_", parent_dir)]
+  install.packages(sparklyr_package, repos = NULL, type = "source")
+} else if (args[[1]] == "--testthat") {
+  on.exit(setwd(normalizePath("..")))
+  setwd("tests")
+  source("testthat.R")
+} else if (args[[1]] == "--coverage") {
+  ensure_pkgs("devtools")
+
+  devtools::install_github("javierluraschi/covr", ref = "feature/no-batch")
+  covr::codecov(type = "none", code = "setwd('tests'); source('testthat.R')", batch = FALSE)
+} else if (args[[1]] == "--verify-embedded-srcs") {
+  ensure_pkgs(c("diffobj", "stringr"))
+
+  sparklyr:::spark_verify_embedded_sources()
+} else {
+  stop("Unsupported arguments")
+}
+```
+
+:::
+
+::::
+
+
 ## The fix {background-color="#666"}
 
 ## `setup.R`
@@ -786,6 +902,5 @@ the initialization
 ::: r-stack
 ![](images/sparklyr-test.png){ width="600"}
 :::
-
 
 
