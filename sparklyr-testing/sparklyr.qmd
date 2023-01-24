@@ -12,124 +12,21 @@ execute:
   eval: true
 ---
 
-## The Goal
+## The problem
 
-::: incremental
--   What we had...
+<br/>
+
+::: {.incremental}
+
+- **The `sparklyr` testing was some "custom", that it was impossible to use 
+the usual functions, such as `test_check()`, to get a reliable and consistent
+test runs. **
+
+  - In GitHub Actions, we would have to run (read source) the `testthat.R` script in order to properly setup the flags and environments needed to for testing. Meaning that `devtools::test_check()` will not run be able to do that. **(Not at all good)**
+
+  - It also prevented us from being able to easily run partial tests of the package. Very problematic because we didn't want to run all of the 2,400 tests every time we wanted to confirm a small change. **(This is even worse)**
+
 :::
-
-::: r-stack
-![](images/before.png){.fragment width="800"}
-:::
-
-::: incremental
--   What we want...
-:::
-
-::: r-stack
-![](images/after.png){.fragment width="800"}
-:::
-
-## Background {background-color="#666"}
-
-::: incremental
--   A quick one... I promise
-:::
-
-## 
-
-::: r-stack
-![](images/Apache_Spark_logo.svg.png){width="300"}
-:::
-
--   It allow us to distribute computing across multiple computers (cluster)
-
--   It can process large amounts of data
-
--   It has a comprehensive Machine Learning library
-
--   It's open source
-
-## 
-
-::: r-stack
-![](images/sparklyr.png){width="200"}
-:::
-
--   Integrates R with Apache Spark
-
--   Released on CRAN September 2016
-
--   14K lines of R code
-
-## Challenge #1 - Complexity {background-color="#666"}
-
-## Typical Testing for R packages
-
-We also have to test against multiple OS', and against R current verion, and R development version.
-
-```{mermaid}
-%%| fig-width: 4
-%%| fig-responsive: false
-flowchart LR
-  sp[sparklyr] --> r[R]
-  sp[sparklyr] --> rd[R dev]
-  r --> wn[Windows]
-  r --> mc[MacOS]
-  r --> ln[Linux]
-  rd --> ln
-  
-  style sp fill:#ffcc99,stroke:#666  
-  
-  style wn fill:#ccff99,stroke:#666
-  style mc fill:#ccff99,stroke:#666
-  style ln fill:#ccff99,stroke:#666
-```
-
-## And now...`sparklyr`
-
-We **also** have to test against multiple versions of Spark, multiple deployment types of Spark, and against dev & current version of Apache Arrow.
-
-```{mermaid}
-%%| fig-width: 7
-%%| fig-responsive: false
-flowchart LR
-  sp[sparklyr] --> r[R]
-  sp[sparklyr] --> rd[R dev]
-  r --> wn[Windows]
-  r --> mc[MacOS]
-  r --> ln[Linux]
-  rd --> ln
-  ln --> sk1[Spark 3.2]
-  ln --> sk2[Spark 2.4]
-  ln --> sk3[Spark 2.0]
-  ln --> sk4[Spark 1.6]
-  sk2 --> lc1[Local]
-  sk2 --> lv1[Livy]
-  sk4 --> lc2[Local]
-  sk4 --> lv2[Livy]
-  sk1 --> ar1[Arrow]
-  sk1 --> ar2[Arrow Dev]
-  
-  style sp fill:#ffcc99,stroke:#666   
-  
-  style wn fill:#ccff99,stroke:#666
-  style mc fill:#ccff99,stroke:#666
-  style ln fill:#ccff99,stroke:#666
-  
-  style sk1 fill:#ffcc33,stroke:#666
-  style sk2 fill:#ffcc33,stroke:#666
-  style sk3 fill:#ffcc33,stroke:#666
-  style sk4 fill:#ffcc33,stroke:#666
-  
-  style lc1 fill:#ffcc,stroke:#666
-  style lv1 fill:#ffcc,stroke:#666
-  style lc2 fill:#ffcc,stroke:#666
-  style lv2 fill:#ffcc,stroke:#666  
-
-  style ar1 fill:#eee,stroke:#666
-  style ar2 fill:#eee,stroke:#666    
-```
 
 ## `testthat.R`
 
@@ -731,6 +628,14 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
 
 ## `setup.R`
 
+:::: {.columns}
+
+::: {.column width="30%"}
+
+:::
+
+::: {.column width="70%"}
+
 ```{.r}
 # Initializing
 ul <- ifelse(using_livy(), using_livy_version(), "No")
@@ -751,6 +656,10 @@ cat("------------------------------\n\n")
 withr::defer(spark_disconnect_all(), teardown_env())
 
 ```
+
+:::
+
+::::
 
 ## `setup.R`
 
@@ -859,24 +768,24 @@ withr::defer(spark_disconnect_all(), teardown_env())
 ::::
 
 
-## `testthat.R`
-
-`setup.R` runs before the reporter, so even the RStudio integrated screen respects
-the initialization
-
-::: r-stack
-![](images/sparklyr-test.png){ width="600"}
-:::
 
 ## `testthat.R`
 
-Even running sub-sets of tests will initialize and terminate in the same, 
+Running sub-sets of tests will initialize and terminate in the same, 
 consistent way.
 
 ::: r-stack
 ![](images/sparklyr-test2.png){ width="600"}
 :::
 
+## `testthat.R`
+
+Because `setup.R` runs before the reporter, even the RStudio integrated screen respects
+the initialization
+
+::: r-stack
+![](images/sparklyr-test.png){ width="600"}
+:::
 
 
 
