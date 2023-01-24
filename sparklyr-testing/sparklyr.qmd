@@ -12,6 +12,8 @@ execute:
   eval: true
 ---
 
+## Quick background {background-color="#666"}
+
 ## R Package testing 📦
 
 Part of the package development discipline is to ensure it contains tests. As themselves
@@ -108,6 +110,15 @@ Part of the package development discipline is to ensure it contains tests. As th
 
 ::::
 
+## Consistency is key!
+
+In order for all these to work, testing **HAS** to work off the same `testthat` and `devtools` functions. 
+
+![](images/testthat.png){width="90"} ![](images/github-mark.png){width="90"} ![](images/covr.png){width="90"}
+
+
+
+## The problem {background-color="#666"}
 
 ## The problem
 
@@ -120,6 +131,8 @@ Part of the package development discipline is to ensure it contains tests. As th
 
     -   Cannot run a subset of tests. There are over 2,000 tests, so it was not ideal to always run every test, just to confirm that small changes do not break something**(This is even worse)**
 :::
+
+## The before  {background-color="#666"}
 
 ## `testthat.R`
 
@@ -137,6 +150,8 @@ test_check("dplyr")
 
 ::: {.column width="60%"}
 #### `sparklyr`
+
+::: {.fragment}
 
 ``` r
 Sys.setenv("R_TESTS" = "")
@@ -359,6 +374,9 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   }
 }
 ```
+
+:::
+
 :::
 :::
 
@@ -779,7 +797,56 @@ if (length(args) == 0) {
 :::
 :::
 
+## How did we get here? {background-color="#666"}
+
+## How did we get here?
+
+- Goals and coding of the package are large and complex 
+
+- We had to come up with ways to test things before those features were available in the testing packages and CI
+
 ## The fix {background-color="#666"}
+
+## The fix
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- Move the custom reporter, and environment initialization to **"helper"** `testthat` files
+
+- Move the test filters, used to run the proper tests based on the environment, to custom `skip` functions, and save those functions in **"helper"** scripts
+
+- Ensure that all flags are set by R environment variables (no more `options` or R script args)
+
+
+:::
+
+::: {.column width="50%"}
+
+📦
+
+    ├── .github
+    ├── R
+    ├── man
+    ├── inst
+    └── tests
+      ├── testthat.R
+      └── testthat
+        ├── test-my-script.R
+        ├── helper-init.R      <<-- here
+        └── setup.R            <<-- and here
+    
+:::
+
+::::
+
+
+## COMING SOON!
+
+- Add helper file breakdown
+
+- Add skip function breakdown
 
 ## `setup.R`
 
@@ -928,7 +995,8 @@ Because `setup.R` runs before the reporter, even the RStudio integrated screen r
 -   This is why consistency is vital
 -   Problem
 -   Not blaming
-    -   Goals and coding of the package are large and complex -NOTE: maybe compare number of lines of code and number of tests with a familiar package (dplyr, ggplot2)
+    -   Goals and coding of the package are large and complex 
+    -NOTE: maybe compare number of lines of code and number of tests with a familiar package (dplyr, ggplot2)
     -   We had to come up with ways to test things before those features were available in the testing packages and CI
 -   Fix
     -   Move everything from the scripts into helpers and setup.R
