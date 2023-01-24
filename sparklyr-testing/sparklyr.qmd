@@ -16,9 +16,9 @@ execute:
 ## R Package testing 📦
 
 ```{r}
-ver_testthat <- "Robust infastructure to test R packages"
+ver_testthat <- "Robust infastructure to test R packages in your machine"
 ver_gh <- "GitHub can run the **exact same** tests when we submit changes to the package"
-ver_covr <- "Lets us know how many lines of code are being tested (coverage)"
+ver_covr <- "Calculates how many lines of our code was actually tested (coverage)"
 ver_main <- "Part of package development discipline. It ensures quality of the package"
 ```
 
@@ -132,3 +132,39 @@ ver_main <- "Part of package development discipline. It ensures quality of the p
           └── setup.R        
 :::
 :::
+
+
+## R Package testing 📦
+
+`r ver_main`
+
+::: columns
+::: {.column width="70%"}
+-   ![](images/testthat.png){width="50"} `r ver_testthat`
+-   ![](images/github-mark.png){width="50"} `r ver_gh`
+-   ![](images/covr.png){width="50"} `r ver_covr`
+:::
+::: {.column width="30%"}
+📦
+
+      ├── .github/             
+        └── workflows/         
+          └── tests.yml        
+      ├── codecov.yml           
+      ├── R
+        └── my-script.R
+      ├── man/
+      └── tests/
+        ├── testthat.R.        
+        └── testthat/          
+          ├── test-my-script.R 
+          ├── helper-init.R    
+          └── setup.R        
+:::
+:::
+
+<br/>
+
+#### >>>>> Thousands of R packages in CRAN use a combination of these three!! <<<<<
+
+
