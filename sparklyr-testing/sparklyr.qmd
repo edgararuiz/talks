@@ -12,43 +12,133 @@ execute:
   eval: true
 ---
 
+## R Package testing 📦
+
+Part of the package development discipline is to ensure it contains tests. As themselves
+
+-   Ensure that changes to existing code do not break current functionality
+
+-   New functionality require new tests
+
+## ![](images/testthat.png){width="70"} `testthat`
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- The `testthat` package provides a robust testing infrastructure
+- It runs the tests inside the `test/testthat/` folder
+- `devtools::test_check()` calls `testthat` to perform testing 
+
+:::
+
+::: {.column width="50%"}
+
+📦
+
+    ├── .github
+    ├── R
+      └── my-script.R
+    ├── man
+    ├── inst
+    └── tests
+      ├── testthat.R
+      └── testthat
+        ├── test-my-script.R
+        ├── helper-init.R
+        └── setup.R
+    
+:::
+
+::::
+
+## ![](images/github-mark.png){width="70"} GitHub Actions 
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- GitHub can also run package testing for us (in case we "forget")
+- This ensures that the package is tested before publication to CRAN
+
+:::
+
+::: {.column width="50%"}
+
+📦
+
+    ├── .github
+        └── workflows
+          └── tests.yml
+    ├── R
+    ├── man
+    ├── inst
+    └── tests
+:::
+
+::::
+
+## ![](images/covr.png){width="70"} Test Coverage
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- How much of my package is being tested?
+
+- Captures and reports the lines of code that were tested
+
+- The `covr` package does that for us locally
+
+- Codecov provides an online service to do the same, via GitHub
+
+:::
+
+::: {.column width="50%"}
+
+📦
+
+    ├── codecov.yml
+    ├── .github
+    ├── R
+    ├── man
+    ├── inst
+    └── tests
+:::
+
+::::
+
+
 ## The problem
 
 <br/>
 
-::: {.incremental}
+::: incremental
+-   **The `sparklyr` testing a very "custom" process, that made it impossible to use the usual functions, such as `test_check()`, to get a reliable and consistent test runs.**
 
-- **The `sparklyr` testing a very "custom" process, that made it impossible to use the usual functions, such as `test_check()`, to get a reliable and consistent
-test runs. **
-  
-  - `test_check()` was not able to setup the proper flags and environments (such as Spark and/or Livy) needed for testing. The only way to do this, was to run `testthat.R` script. **(Not at all good)**
+    -   `test_check()` was not able to setup the proper flags and environments (such as Spark and/or Livy) needed for testing. The only way to do this, was to run `testthat.R` script. **(Not at all good)**
 
-  - Cannot run a subset of tests. There are over 2,000 tests, so  it was not ideal to always run every test, just to confirm that small changes do not break something**(This is even worse)**
-
+    -   Cannot run a subset of tests. There are over 2,000 tests, so it was not ideal to always run every test, just to confirm that small changes do not break something**(This is even worse)**
 :::
 
 ## `testthat.R`
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-
 #### `dplyr`
 
-```{.r}
+``` r
 library(testthat)
 library(dplyr)
 
 test_check("dplyr")
 ```
-
 :::
 
 ::: {.column width="60%"}
-
 #### `sparklyr`
 
-```{.r}
+``` r
 Sys.setenv("R_TESTS" = "")
 
 if (identical(Sys.getenv("DBPLYR_API_EDITION"), "1")) {
@@ -269,28 +359,20 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   }
 }
 ```
-
 :::
-
-::::
-
+:::
 
 ## Breakdown
 
-
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-
-- Setup environment and options 
-
+-   Setup environment and options
 :::
 
 ::: {.column width="60%"}
-
 #### `sparklyr`
 
-```{.r code-line-numbers="1-12"}
+``` {.r code-line-numbers="1-12"}
 Sys.setenv("R_TESTS" = "")
 
 if (identical(Sys.getenv("DBPLYR_API_EDITION"), "1")) {
@@ -322,30 +404,22 @@ PerformanceReporter <- R6::R6Class("PerformanceReporter",
     n_warn = 0,
     n_fail = 0,
     failures = c(),
-
 ```
-
 :::
-
-::::
+:::
 
 ## Breakdown
 
-
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-
-- Setup environment and options 
-- Custom Reporter
-
+-   Setup environment and options
+-   Custom Reporter
 :::
 
 ::: {.column width="60%"}
-
 #### `sparklyr`
 
-```{.r code-line-numbers="1-43"}
+``` {.r code-line-numbers="1-43"}
 PerformanceReporter <- R6::R6Class("PerformanceReporter",
   inherit = Reporter,
   public = list(
@@ -390,30 +464,22 @@ PerformanceReporter <- R6::R6Class("PerformanceReporter",
       }
     
 ```
-
 :::
-
-::::
-
+:::
 
 ## Breakdown
 
-
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-
-- Setup environment and options 
-- Custom Reporter
-- Filters for which tests to run depending on environment 
-
+-   Setup environment and options
+-   Custom Reporter
+-   Filters for which tests to run depending on environment
 :::
 
 ::: {.column width="60%"}
-
 #### `sparklyr`
 
-```{.r code-line-numbers="15-53"}
+``` {.r code-line-numbers="15-53"}
     expectation_type = function(exp) {
       stopifnot(is.expectation(exp))
       gsub("^expectation_", "", class(exp)[[1]])
@@ -499,30 +565,23 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   }
 }
 ```
-
 :::
-
-::::
+:::
 
 ## Breakdown
 
-
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-
-- Setup environment and options 
-- Custom Reporter
-- Filters for which tests to run depending on environment 
-- Custom function that tears down the Spark session after completion
-
+-   Setup environment and options
+-   Custom Reporter
+-   Filters for which tests to run depending on environment
+-   Custom function that tears down the Spark session after completion
 :::
 
 ::: {.column width="60%"}
-
 #### `sparklyr`
 
-```{.r code-line-numbers="9-16"}
+``` {.r code-line-numbers="9-16"}
     test_filters <- list(
       "^(?!spark-dynamic-config|tidyr-pivot-).*",
       "^spark-dynamic-config$",
@@ -559,29 +618,24 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   }
 }
 ```
-
 :::
-
-::::
+:::
 
 ## Breakdown
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-
-- Setup environment and options 
-- Custom Reporter
-- Filters for which tests to run depending on environment 
-- Custom function that tears down the Spark session after completion
-- Iterates through the filters to run the tests
+-   Setup environment and options
+-   Custom Reporter
+-   Filters for which tests to run depending on environment
+-   Custom function that tears down the Spark session after completion
+-   Iterates through the filters to run the tests
 :::
 
 ::: {.column width="60%"}
-
 #### `sparklyr`
 
-```{.r code-line-numbers="18-35"}
+``` {.r code-line-numbers="18-35"}
     test_filters <- list(
       "^(?!spark-dynamic-config|tidyr-pivot-).*",
       "^spark-dynamic-config$",
@@ -618,26 +672,21 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   }
 }
 ```
-
 :::
-
-::::
+:::
 
 ## But wait! That's not all...
 
-::: {.fragment}
-
-:::: {.columns}
-
+::: fragment
+::: columns
 ::: {.column width="40%"}
 The GitHub Action (CI) actually interacted with an entirely different R script called `.ci.R`
 :::
 
 ::: {.fragment .column width="60%"}
-
 `ci/.ci.R`
 
-```{.r}
+``` r
 args <- commandArgs(trailingOnly = TRUE)
 
 ensure_pkgs <- function(pkgs) {
@@ -674,30 +723,23 @@ if (length(args) == 0) {
   stop("Unsupported arguments")
 }
 ```
-
 :::
-
-::::
-
+:::
 :::
 
 ## But wait! That's not all...
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-
 The GitHub Action (CI) actually interacted with an entirely different R script called `.ci.R`
 
-It contains additional customizations that are accessed based on flags beings passed to it 
-
+It contains additional customizations that are accessed based on flags beings passed to it
 :::
 
 ::: {.column width="60%"}
-
 `ci/.ci.R`
 
-```{.r code-line-numbers="20,24,29"}
+``` {.r code-line-numbers="20,24,29"}
 args <- commandArgs(trailingOnly = TRUE)
 
 ensure_pkgs <- function(pkgs) {
@@ -734,25 +776,19 @@ if (length(args) == 0) {
   stop("Unsupported arguments")
 }
 ```
-
 :::
-
-::::
-
+:::
 
 ## The fix {background-color="#666"}
 
 ## `setup.R`
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="30%"}
-
 :::
 
 ::: {.column width="70%"}
-
-```{.r}
+``` r
 # Initializing
 ul <- ifelse(using_livy(), using_livy_version(), "No")
 ua <- ifelse(using_arrow(), using_arrow_version(), "No")
@@ -770,25 +806,19 @@ cat("------------------------------\n\n")
 
 ## Disconnects all at the end
 withr::defer(spark_disconnect_all(), teardown_env())
-
 ```
-
 :::
-
-::::
+:::
 
 ## `setup.R`
 
-
-
-:::: {.columns}
-
+::: columns
 ::: {.column width="30%"}
-- Ensures that the Spark connection closes after completing tests
+-   Ensures that the Spark connection closes after completing tests
 :::
 
 ::: {.column width="70%"}
-```{.r code-line-numbers="17"}
+``` {.r code-line-numbers="17"}
 # Initializing
 ul <- ifelse(using_livy(), using_livy_version(), "No")
 ua <- ifelse(using_arrow(), using_arrow_version(), "No")
@@ -806,24 +836,20 @@ cat("------------------------------\n\n")
 
 ## Disconnects all at the end
 withr::defer(spark_disconnect_all(), teardown_env())
-
 ```
 :::
-
-::::
+:::
 
 ## `setup.R`
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="30%"}
-- Ensures that the Spark connection closes after completing tests
-- Outputs the versions of Spark, Livy and Arrow to the console, so we're 100%
-sure of what we are testing
+-   Ensures that the Spark connection closes after completing tests
+-   Outputs the versions of Spark, Livy and Arrow to the console, so we're 100% sure of what we are testing
 :::
 
 ::: {.column width="70%"}
-```{.r code-line-numbers="5-10"}
+``` {.r code-line-numbers="5-10"}
 # Initializing
 ul <- ifelse(using_livy(), using_livy_version(), "No")
 ua <- ifelse(using_arrow(), using_arrow_version(), "No")
@@ -841,25 +867,21 @@ cat("------------------------------\n\n")
 
 ## Disconnects all at the end
 withr::defer(spark_disconnect_all(), teardown_env())
-
 ```
 :::
-
-::::
+:::
 
 ## `setup.R`
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="30%"}
-- Ensures that the Spark connection closes after completing tests
-- Outputs the versions of Spark, Livy and Arrow to the console, so we're 100%
-sure of what we are testing
-- Initializes the Spark session
+-   Ensures that the Spark connection closes after completing tests
+-   Outputs the versions of Spark, Livy and Arrow to the console, so we're 100% sure of what we are testing
+-   Initializes the Spark session
 :::
 
 ::: {.column width="70%"}
-```{.r code-line-numbers="12-14"}
+``` {.r code-line-numbers="12-14"}
 # Initializing
 ul <- ifelse(using_livy(), using_livy_version(), "No")
 ua <- ifelse(using_arrow(), using_arrow_version(), "No")
@@ -877,30 +899,38 @@ cat("------------------------------\n\n")
 
 ## Disconnects all at the end
 withr::defer(spark_disconnect_all(), teardown_env())
-
 ```
 :::
-
-::::
-
-
-
-## `testthat.R`
-
-Running sub-sets of tests will initialize and terminate in the same, 
-consistent way.
-
-::: r-stack
-![](images/sparklyr-test2.png){ width="600"}
 :::
 
 ## `testthat.R`
 
-Because `setup.R` runs before the reporter, even the RStudio integrated screen respects
-the initialization
+Running sub-sets of tests will initialize and terminate in the same, consistent way.
 
 ::: r-stack
-![](images/sparklyr-test.png){ width="600"}
+![](images/sparklyr-test2.png){width="600"}
 :::
 
+## `testthat.R`
 
+Because `setup.R` runs before the reporter, even the RStudio integrated screen respects the initialization
+
+::: r-stack
+![](images/sparklyr-test.png){width="600"}
+:::
+
+## Outline
+
+-   Package testing (how and why it is important)
+    -   Make sure changes do not break pkg
+    -   New features require new tests
+-   It also works on GH, it will test even if you dont
+-   This is why consistency is vital
+-   Problem
+-   Not blaming
+    -   Goals and coding of the package are large and complex -NOTE: maybe compare number of lines of code and number of tests with a familiar package (dplyr, ggplot2)
+    -   We had to come up with ways to test things before those features were available in the testing packages and CI
+-   Fix
+    -   Move everything from the scripts into helpers and setup.R
+    -   NOTE: Maybe check off all of the things .ci and testthat.R do as we show how things were moved
+-   NOTE: code coverage?
