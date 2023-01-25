@@ -36,120 +36,6 @@ problem2_spiel <- ""
 
 ::: columns
 ::: {.column width="70%"}
-:::
-
-::: {.column width="30%"}
-📦
-
-      ├── .github/
-        └── workflows/
-          └── tests.yml
-      ├── codecov.yml
-      ├── R
-        └── my-script.R
-      ├── man/
-      └── tests/
-        ├── testthat.R.        
-        └── testthat/          
-          ├── test-my-script.R 
-          ├── helper-init.R    
-          └── setup.R          
-:::
-:::
-
-## R Package testing 📦
-
-`r ver_main`
-
-::: columns
-::: {.column width="70%"}
--   ![](images/testthat.png){width="50"} `r ver_testthat`
-:::
-
-::: {.column width="30%"}
-📦
-
-      ├── .github/
-        └── workflows/
-          └── tests.yml
-      ├── codecov.yml
-      ├── R
-        └── my-script.R
-      ├── man/
-      └── tests/
-        ├── testthat.R.         *
-        └── testthat/           *
-          ├── test-my-script.R  *
-          ├── helper-init.R     *
-          └── setup.R           *
-:::
-:::
-
-## `r title1`
-
-`r ver_main`
-
-::: columns
-::: {.column width="70%"}
--   ![](images/testthat.png){width="50"} `r ver_testthat`
--   ![](images/github-mark.png){width="50"} `r ver_gh`
-:::
-
-::: {.column width="30%"}
-📦
-
-      ├── .github/              *
-        └── workflows/          *
-          └── tests.yml         *
-      ├── codecov.yml
-      ├── R
-        └── my-script.R
-      ├── man/
-      └── tests/
-        ├── testthat.R.        
-        └── testthat/          
-          ├── test-my-script.R 
-          ├── helper-init.R    
-          └── setup.R        
-:::
-:::
-
-## `r title1`
-
-`r ver_main`
-
-::: columns
-::: {.column width="70%"}
--   ![](images/testthat.png){width="50"} `r ver_testthat`
--   ![](images/github-mark.png){width="50"} `r ver_gh`
--   ![](images/covr.png){width="50"} `r ver_covr`
-:::
-
-::: {.column width="30%"}
-📦
-
-      ├── .github/             
-        └── workflows/         
-          └── tests.yml        
-      ├── codecov.yml           *
-      ├── R
-        └── my-script.R
-      ├── man/
-      └── tests/
-        ├── testthat.R.        
-        └── testthat/          
-          ├── test-my-script.R 
-          ├── helper-init.R    
-          └── setup.R        
-:::
-:::
-
-## `r title1`
-
-`r ver_main`
-
-::: columns
-::: {.column width="70%"}
 -   ![](images/testthat.png){width="50"} `r ver_testthat`
 -   ![](images/github-mark.png){width="50"} `r ver_gh`
 -   ![](images/covr.png){width="50"} `r ver_covr`
@@ -176,25 +62,26 @@ problem2_spiel <- ""
 
 <br/>
 
+:::{.fragment}
 ---- **Thousands of R packages in CRAN use a combination of these three!!** ----
+:::
 
 ## ![](images/testthat.png){width="70"} ![](images/covr.png){width="70"} ![](images/devtools.svg){width="70"}
 
-- These commands depend on `testthat` being properly setup:
-
-    - `covr::code_coverage()`
-    - `devtools::test_check()`
-    - `devtools::test(filter = "dplyr")` *Runs scripts containing the word "dplyr" only*
-
-- `testthat` adds the following:
+- `testthat` needs the following:
 
         └── tests/
           ├── testthat.R.         # Activates tests for full package checking    
           └── testthat/           # Folder with test scripts
             ├── test-my-script.R  
             ├── helper-init.R    
-            └── setup.R     
+            └── setup.R   
 
+- These commands depend on `testthat` being properly setup:
+
+    - `covr::code_coverage()`
+    - `test_check()`
+    - `devtools::test(filter = "dplyr")` *Runs scripts containing the word "dplyr" only*
 
 ## `r problem1`
 
