@@ -20,6 +20,16 @@ ver_testthat <- "Provides functions to create, track and report test results"
 ver_gh <- "GitHub can run the **exact same** tests when we submit changes to the package"
 ver_covr <- "Calculates how many lines of our code was actually tested (coverage)"
 ver_main <- "Part of package development discipline. It ensures quality of the package"
+
+ci1 <- "The GitHub Action (CI) actually interacted with an entirely different R script called `.ci.R`"
+
+ci2 <- "It contains additional customizations accessed via script arguments"
+
+title1 <- " R Package testing 📦"
+problem1 <- "Problem #1 - *testthat.R*"
+problem1_spiel <- "The *testthat.R* file is overly complex"
+problem2 <- "Problem #2 - *ci/.ci.R*"
+problem2_spiel <- ""
 ```
 
 
@@ -76,7 +86,7 @@ ver_main <- "Part of package development discipline. It ensures quality of the p
 :::
 :::
 
-## R Package testing 📦
+## `r title1`
 
 `r ver_main`
 
@@ -104,7 +114,7 @@ ver_main <- "Part of package development discipline. It ensures quality of the p
 :::
 :::
 
-## R Package testing 📦
+## `r title1`
 
 `r ver_main`
 
@@ -134,7 +144,7 @@ ver_main <- "Part of package development discipline. It ensures quality of the p
 :::
 
 
-## R Package testing 📦
+## `r title1`
 
 `r ver_main`
 
@@ -169,18 +179,22 @@ ver_main <- "Part of package development discipline. It ensures quality of the p
 
 ## ![](images/testthat.png){width="70"} ![](images/covr.png){width="70"} ![](images/devtools.svg){width="70"}  
 
-All of these commands depend on `testthat` being properly setup:
+`testthat` adds the following:
+
+- Folder `tests/testthat/` - Contains the test scripts
+- File `tests/testthat.R` - Activates test, when checking the entire package
+
+:::{.fragment}
+These commands depend on `testthat` being properly setup:
 
 - `testthat::test()`
 - `devtools::test_check()`
-- `devtools::test(filter = "dplyr")` *(Runs only `testthat` scripts containing the word "dplyr")*
+- `devtools::test(filter = "dplyr")` *Runs scripts containing the word "dplyr" only*
 - `covr::code_coverage()`
-
-:::{.fragment}
-Adds **testthat** sub folder to the **test/** folder. Also a **testthat.R** file that activates the tests.
 :::
 
-## Problem # 1 - `testthat.R`
+## `r problem1` 
+`r problem1_spiel`
 
 ::: columns
 ::: {.column width="40%"}
@@ -205,11 +219,13 @@ test_check("dplyr")
 :::
 :::
 
-## Problem # 1 - `testthat.R`
+## `r problem1` 
+`r problem1_spiel`
+
 
 ::: columns
 ::: {.column width="40%"}
-#### What it does (extra)
+**What the heck does it do?**
 
 -   Setup some environment options
 -   Custom Reporter
@@ -226,3 +242,135 @@ test_check("dplyr")
 :::
 :::
 
+## `r problem2`
+`r problem2_spiel`
+
+
+::: columns
+::: {.column width="40%"}
+`r ci1`
+:::
+
+::: {.column width="60%"}
+
+📦
+
+      ├── .github/
+      ├── ci/          * NOT PART OF NORMAL PATTERN
+        └── .ci.R.     * 
+      ├── R
+      ├── man/
+      └── tests/
+        └── testthat/          
+
+:::
+
+:::
+
+## `r problem2`
+`r problem2_spiel`
+
+::: columns
+::: {.column width="40%"}
+
+`r ci1`
+
+:::
+
+::: {.column width="60%"}
+`ci/.ci.R`
+
+``` {.r}
+args <- commandArgs(trailingOnly = TRUE)
+
+ensure_pkgs <- function(pkgs) {
+  for (pkg in pkgs) {
+    if (!require(pkg, character.only = TRUE)) {
+      install.packages(pkg)
+    }
+  }
+}
+
+if (length(args) == 0) {
+  stop("Missing arguments")
+} else if (args[[1]] == "--install_pkgs") {
+  if (package_version(paste(R.Version()$major, R.Version()$minor, sep = ".")) >= "3.3") {
+    ensure_pkgs("sparklyr.nested")
+  }
+  parent_dir <- dir(".", full.names = TRUE)
+  sparklyr_package <- parent_dir[grepl("sparklyr_", parent_dir)]
+  install.packages(sparklyr_package, repos = NULL, type = "source")
+} else if (args[[1]] == "--testthat") {
+  on.exit(setwd(normalizePath("..")))
+  setwd("tests")
+  source("testthat.R")
+} else if (args[[1]] == "--coverage") {
+  ensure_pkgs("devtools")
+
+  devtools::install_github("javierluraschi/covr", ref = "feature/no-batch")
+  covr::codecov(type = "none", code = "setwd('tests'); source('testthat.R')", batch = FALSE)
+} else if (args[[1]] == "--verify-embedded-srcs") {
+  ensure_pkgs(c("diffobj", "stringr"))
+
+  sparklyr:::spark_verify_embedded_sources()
+} else {
+  stop("Unsupported arguments")
+}
+```
+:::
+:::
+
+## `r problem2`
+`r problem2_spiel`
+
+::: columns
+::: {.column width="40%"}
+
+`r ci1`
+
+`r ci2`
+
+:::
+
+::: {.column width="60%"}
+`ci/.ci.R`
+
+``` {.r code-line-numbers="20,24,29"}
+args <- commandArgs(trailingOnly = TRUE)
+
+ensure_pkgs <- function(pkgs) {
+  for (pkg in pkgs) {
+    if (!require(pkg, character.only = TRUE)) {
+      install.packages(pkg)
+    }
+  }
+}
+
+if (length(args) == 0) {
+  stop("Missing arguments")
+} else if (args[[1]] == "--install_pkgs") {
+  if (package_version(paste(R.Version()$major, R.Version()$minor, sep = ".")) >= "3.3") {
+    ensure_pkgs("sparklyr.nested")
+  }
+  parent_dir <- dir(".", full.names = TRUE)
+  sparklyr_package <- parent_dir[grepl("sparklyr_", parent_dir)]
+  install.packages(sparklyr_package, repos = NULL, type = "source")
+} else if (args[[1]] == "--testthat") {
+  on.exit(setwd(normalizePath("..")))
+  setwd("tests")
+  source("testthat.R")
+} else if (args[[1]] == "--coverage") {
+  ensure_pkgs("devtools")
+
+  devtools::install_github("javierluraschi/covr", ref = "feature/no-batch")
+  covr::codecov(type = "none", code = "setwd('tests'); source('testthat.R')", batch = FALSE)
+} else if (args[[1]] == "--verify-embedded-srcs") {
+  ensure_pkgs(c("diffobj", "stringr"))
+
+  sparklyr:::spark_verify_embedded_sources()
+} else {
+  stop("Unsupported arguments")
+}
+```
+:::
+:::
