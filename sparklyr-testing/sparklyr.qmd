@@ -16,7 +16,7 @@ execute:
 ## R Package testing 📦
 
 ```{r}
-ver_testthat <- "Robust infastructure to test R packages in your machine"
+ver_testthat <- "Provides functions to create, track and report test results"
 ver_gh <- "GitHub can run the **exact same** tests when we submit changes to the package"
 ver_covr <- "Calculates how many lines of our code was actually tested (coverage)"
 ver_main <- "Part of package development discipline. It ensures quality of the package"
@@ -167,4 +167,62 @@ ver_main <- "Part of package development discipline. It ensures quality of the p
 
 #### >>>>> Thousands of R packages in CRAN use a combination of these three!! <<<<<
 
+## ![](images/testthat.png){width="70"} ![](images/covr.png){width="70"} ![](images/devtools.svg){width="70"}  
+
+All of these commands depend on `testthat` being properly setup:
+
+- `testthat::test()`
+- `devtools::test_check()`
+- `devtools::test(filter = "dplyr")` *(Runs only `testthat` scripts containing the word "dplyr")*
+- `covr::code_coverage()`
+
+:::{.fragment}
+Adds **testthat** sub folder to the **test/** folder. Also a **testthat.R** file that activates the tests.
+:::
+
+## Problem # 1 - `testthat.R`
+
+::: columns
+::: {.column width="40%"}
+#### `dplyr`
+
+``` r
+library(testthat)
+library(dplyr)
+
+test_check("dplyr")
+```
+:::
+
+::: {.column width="60%"}
+#### `sparklyr`
+
+::: fragment
+
+{{< include testthat.qmd >}}
+
+:::
+:::
+:::
+
+## Problem # 1 - `testthat.R`
+
+::: columns
+::: {.column width="40%"}
+#### What it does (extra)
+
+-   Setup some environment options
+-   Custom Reporter
+-   Filters for which tests 
+-   Tears down the Spark session after completion
+-   Iterates through the tests
+:::
+
+::: {.column width="60%"}
+#### `sparklyr`
+
+{{< include testthat.qmd >}}
+
+:::
+:::
 
