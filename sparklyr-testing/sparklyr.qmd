@@ -20,32 +20,19 @@ execute:
 </div>
 
 ```{r}
-ver_testthat <- "Provides functions to create, track and report test results"
-ver_gh <- "GitHub can run the **exact same** tests when we submit changes to the package"
-ver_covr <- "Calculates how many lines of our code was actually tested (coverage)"
-ver_main <- "Part of package development discipline. It ensures quality of the package"
-
-ci1 <- "The GitHub Action (CI) actually interacted with an entirely different R script called `.ci.R`"
-
-ci2 <- "It contains additional customizations accessed via script arguments"
-
-title1 <- " R Package testing 📦"
-problem1 <- "Problem #1 - Overly complex [***testthat.R***]{.underline}"
+problem1 <- "Problem - Overly complex [***testthat.R***]{.underline}"
 problem1_spiel <- ""
-problem2 <- "Problem #2 - *ci/.ci.R*"
-problem2_spiel <- ""
 ```
 
 ::: columns
 ::: {.column width="65%"}
--   Provides functions to create, track and report test results
+-   Create, track and report test results
 -   Used by over 7,000 packages in CRAN
--   The test scripts reside inside the [***test/testthat/***]{.underline} folder
--   The [***testthat.R***]{.underline} file is used by R to perform a full package check
+-   Test scripts inside the [***test/testthat/***]{.underline} folder
+-   [***testthat.R***]{.underline} file used by R to perform a full package check
 :::
 
 ::: {.column width="35%"}
-
 ### 📦
 
        ├── .github/             
@@ -97,11 +84,11 @@ test_check("dplyr")
 ::: {.column width="40%"}
 **What the heck does it do?**
 
--   Setup some environment options
--   Custom Reporter
--   Filters for which tests
+-   Setup Spark environment using options and arguments
+-   Custom `testthat` Reporter
+-   Filters for which tests to run based on environment
 -   Tears down the Spark session after completion
--   Iterates through the tests
+-   Custom test iteration
 :::
 
 ::: {.column width="60%"}
@@ -111,136 +98,103 @@ test_check("dplyr")
 :::
 :::
 
-## `r problem2`
+## Why is this an problem?
 
-`r problem2_spiel`
+We have to test against multiple versions of Spark, and Spark deployments (Livy). 
+`sparklyr` has over 14K lines of code, and over 2K tests.  <br/><br/>
 
-::: columns
-::: {.column width="40%"}
-`r ci1`
-:::
+-   Not possible to run tests using `test_check()` , we had to source [***testthat.R***]{.underline} <br/><br/>
 
-::: {.column width="60%"}
-📦
+-   Not possible to run partial tests, e.g.: `test(filter = "dplyr")` <br/><br/>
 
-      ├── .github/
-      ├── ci/         * NOT PART OF NORMAL PATTERN
-        └── .ci.R.    * ??!!
-      ├── R
-      ├── man/
-      └── tests/
-        └── testthat/          
-:::
-:::
+-   Very difficult to know the test environment setup (Spark, Livy and Arrow versions)<br/><br/>
 
-## `r problem2`
 
-`r problem2_spiel`
-
-::: columns
-::: {.column width="40%"}
-`r ci1`
-
-`r ci2`
-:::
-
-::: {.column width="60%"}
-`ci/.ci.R`
-
-``` r
-args <- commandArgs(trailingOnly = TRUE)
-
-ensure_pkgs <- function(pkgs) {
-  for (pkg in pkgs) {
-    if (!require(pkg, character.only = TRUE)) {
-      install.packages(pkg)
-    }
-  }
-}
-
-if (length(args) == 0) {
-  stop("Missing arguments")
-} else if (args[[1]] == "--install_pkgs") {
-  if (package_version(paste(R.Version()$major, R.Version()$minor, sep = ".")) >= "3.3") {
-    ensure_pkgs("sparklyr.nested")
-  }
-  parent_dir <- dir(".", full.names = TRUE)
-  sparklyr_package <- parent_dir[grepl("sparklyr_", parent_dir)]
-  install.packages(sparklyr_package, repos = NULL, type = "source")
-} else if (args[[1]] == "--testthat") {
-  on.exit(setwd(normalizePath("..")))
-  setwd("tests")
-  source("testthat.R")
-} else if (args[[1]] == "--coverage") {
-  ensure_pkgs("devtools")
-
-  devtools::install_github("javierluraschi/covr", ref = "feature/no-batch")
-  covr::codecov(type = "none", code = "setwd('tests'); source('testthat.R')", batch = FALSE)
-} else if (args[[1]] == "--verify-embedded-srcs") {
-  ensure_pkgs(c("diffobj", "stringr"))
-
-  sparklyr:::spark_verify_embedded_sources()
-} else {
-  stop("Unsupported arguments")
-}
-```
-:::
-:::
-
-## `r problem2`
-
-`r problem2_spiel`
-
-::: columns
-::: {.column width="40%"}
-`r ci1`
-
-`r ci2`
-:::
-
-::: {.column width="60%"}
-`ci/.ci.R`
-
-``` {.r code-line-numbers="20,24,29"}
-args <- commandArgs(trailingOnly = TRUE)
-
-ensure_pkgs <- function(pkgs) {
-  for (pkg in pkgs) {
-    if (!require(pkg, character.only = TRUE)) {
-      install.packages(pkg)
-    }
-  }
-}
-
-if (length(args) == 0) {
-  stop("Missing arguments")
-} else if (args[[1]] == "--install_pkgs") {
-  if (package_version(paste(R.Version()$major, R.Version()$minor, sep = ".")) >= "3.3") {
-    ensure_pkgs("sparklyr.nested")
-  }
-  parent_dir <- dir(".", full.names = TRUE)
-  sparklyr_package <- parent_dir[grepl("sparklyr_", parent_dir)]
-  install.packages(sparklyr_package, repos = NULL, type = "source")
-} else if (args[[1]] == "--testthat") {
-  on.exit(setwd(normalizePath("..")))
-  setwd("tests")
-  source("testthat.R")
-} else if (args[[1]] == "--coverage") {
-  ensure_pkgs("devtools")
-
-  devtools::install_github("javierluraschi/covr", ref = "feature/no-batch")
-  covr::codecov(type = "none", code = "setwd('tests'); source('testthat.R')", batch = FALSE)
-} else if (args[[1]] == "--verify-embedded-srcs") {
-  ensure_pkgs(c("diffobj", "stringr"))
-
-  sparklyr:::spark_verify_embedded_sources()
-} else {
-  stop("Unsupported arguments")
-}
-```
-:::
-:::
-
-## Why is this an issue?
 
 ## What did we do?
+
+Moved all of the logic to the current `testthat` 
+
+::: columns
+::: {.column width="40%"}
+
+:::{.fragment}
+-   Setup Spark environment using options and arguments<br/><br/>
+-   Custom `testthat` Reporter<br/><br/>
+-   Filters for which tests to run based on environment<br/><br/>
+-   Tears down the Spark session after completion<br/><br/>
+-   Custom test iteration<br/><br/>
+:::
+
+:::
+::: {.column width="60%"}
+
+:::{.incremental}
+- All flags now controlled by Environment Variables only <br/><br/>
+- Moved to [***helper-reporter.R***]{.underline} <br/><br/>
+- Flagged tests to skip inside the test scripts themselves<br/><br/>
+- Moved to [***helper-initialize.R***]{.underline} , and [***setup.R***]{.underline}  <br/><br/><br/>
+- **No longer needed! -** Running `test_check()` and `test()` will now work without any customizations.      
+:::
+
+:::
+:::
+
+## Results
+
+The test environment is properly setup (Spark, Livy, Arrow), and test executed, 
+with a single command. 
+
+::: columns
+::: {.column width="50%"}
+
+[***testthat.R***]{.underline} today
+
+```{.r code-line-numbers="9-13"}
+## To change defaults, change these specific environment variables, before
+## running the tests:
+## Sys.setenv("SPARK_VERSION" = "2.4.0")
+## Sys.setenv("LIVY_VERSION" = "0.6.0")
+## Sys.setenv("ARROW_VERSION" = "release") # Or "devel"
+## devtools::test(reporter = sparklyr_reporter())
+## For Coverage us: Sys.setenv("CODE_COVERAGE" = "true")
+
+if(identical(Sys.getenv("CODE_COVERAGE"), "true")) {
+  library(testthat)
+  library(sparklyr)
+  test_check("sparklyr")
+}
+
+```
+
+:::
+
+::: {.column width="50%"}
+
+:::{.fragment}
+*Runs all tests using the default Spark version*
+```.r
+devtools::test()
+```
+:::
+
+:::{.fragment}
+*Runs all tests using the Spark 2.4*
+```.r
+Sys.setenv("SPARK_VERSION" = "2.4.0")
+devtools::test()
+```
+:::
+
+:::{.fragment}
+*Runs only the test scripts that contain "dplyr" in the name*
+```.r
+devtools::test(filter = "dplyr")
+```
+:::
+
+:::
+:::
+
+
+
