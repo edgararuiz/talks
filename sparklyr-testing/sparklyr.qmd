@@ -148,6 +148,7 @@ with a single command.
 ::: columns
 ::: {.column width="50%"}
 
+:::{.fragment}
 [***testthat.R***]{.underline} today
 
 ```{.r code-line-numbers="9-13"}
@@ -166,7 +167,7 @@ if(identical(Sys.getenv("CODE_COVERAGE"), "true")) {
 }
 
 ```
-
+:::
 :::
 
 ::: {.column width="50%"}
@@ -196,5 +197,18 @@ devtools::test(filter = "dplyr")
 :::
 :::
 
+## Results
 
+Solution work on console and IDE
+
+:::{.fragment}
+![](images/sparklyr-test2.png){.absolute top=100 left=0 width="700"}
+:::
+
+:::{.fragment}
+![](images/sparklyr-test.png){.absolute top=150 left=450 width="700"}
+:::
+
+
+## Thank you!
 
