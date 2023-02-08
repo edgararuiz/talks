@@ -1,0 +1,55 @@
+---
+title: "Millaje de Carros"
+date: 2023-2-15
+format: html
+---
+
+```{r setup}
+#| include: false
+library(tidyverse)
+library(datos)
+```
+
+Vamos a utilizar los datos `millas` del paquete `datos`
+
+```{r}
+millas
+```
+
+Ahora vamos a ver el promedio de las diferentes caracterisiticas de los carros por fabricante
+
+```{r}
+millas %>% 
+  group_by(fabricante) %>% 
+  summarise_if(is.numeric, mean)
+```
+
+Y ahora por año
+
+```{r}
+millas %>% 
+  group_by(anio) %>% 
+  summarise_if(is.numeric, mean)
+```
+
+Ver una grafica de como afecta el numero de los cilindros a el millaje en autopista
+
+```{r}
+millas %>% 
+  ggplot() +
+  geom_boxplot(aes(as.factor(cilindros),  autopista))
+```
+
+Creamos un modelo con las variables
+
+```{r}
+modelo <- lm(autopista ~ cilindros, data = millas)
+
+summary(modelo)
+```
+```{r}
+millas %>% 
+  glimpse()
+```
+
+
