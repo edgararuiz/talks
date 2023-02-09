@@ -1,0 +1,56 @@
+---
+title: "Usando Big Data con R"
+format: html
+---
+
+```{r}
+#| include: false 
+library(tidyverse)
+library(glue)
+library(arrow)
+library(fs)
+
+```
+
+
+```{r}
+
+site <- "https://d37ci6vzurychx.cloudfront.net/trip-data/"
+
+year_month <- c("2022-01", "2022-02", "2022-03", "2022-04", "2022-05", "2022-06",
+                "2021-07", "2021-08", "2021-09", "2021-10", "2021-11", "2021-12") 
+
+parquet_files <- glue("yellow_tripdata_{year_month}.parquet")
+
+
+dir_create("datos")
+
+parquet_files %>% 
+  walk(~{
+    dest <- path("datos", .x)
+    if(!file_exists(dest)) {
+      message("Downloading file - ", dest, "\n")
+      download.file(path(site, .x), dest)
+    } else{
+      cat("File exists - ", dest, "\n")
+    }
+  })
+```
+
+```{r}
+folder_csv <- here::here("peru", "datos-csv")
+
+dir_create(folder_csv)
+
+dir_ls("datos") %>% 
+  walk(~ {
+    pq <- open_dataset(.x) 
+    fl <- .x %>% 
+      path_file() %>% 
+      path_ext_remove() %>% 
+      path(ext = "csv")
+    flp <- path(folder_csv, fl)
+    if(! file_exists(flp)) write_csv_arrow(pq, file = flp)
+  })
+```
+
