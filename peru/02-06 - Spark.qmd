@@ -1,0 +1,58 @@
+---
+title: "Usando Big Data con R"
+type: html
+---
+
+```{r setup,  include = FALSE}
+
+## Librería principal
+library(sparklyr)
+library(dplyr)
+
+## Librerías secundarias
+library(tictoc) ## Para ver cuanto tiempo toma una sección del código
+library(here) ## Para saber la dirección exacta de nustro folder de trabajo
+library(fs) ## Librería que ayuda con directorios y archivos
+```
+
+
+```{r}
+library(sparklyr)
+library(dplyr)
+
+```
+
+```{r}
+Sys.setenv("JAVA_HOME" = "/usr/local/java")
+```
+
+
+```{r}
+direccion_del_documento <- here::here("peru")
+folder_arrow <- path(direccion_del_documento, "datos")
+```
+
+```{r}
+sc <- spark_connect("local")
+```
+
+```{r}
+tbl_spark_taxi <- spark_read_parquet(sc, "taxi", path = folder_arrow, memory = FALSE)
+```
+
+```{r}
+tbl_spark_taxi %>% 
+    mutate(mes_empieza_viaje = month(tpep_pickup_datetime)) %>% 
+  group_by(mes_empieza_viaje) %>% 
+  summarise(
+    cantidad = n(),
+    promedio_de_pasajeros = mean(passenger_count, na.rm = TRUE)
+  ) %>% 
+  arrange(mes_empieza_viaje)
+```
+
+
+```{r}
+spark_disconnect(sc)
+```
+

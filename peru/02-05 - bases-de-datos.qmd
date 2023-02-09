@@ -1,0 +1,81 @@
+---
+title: "Usando Big Data con R"
+type: html
+---
+
+```{r setup,  include = FALSE}
+
+## Librería principal
+library(DBI)
+library(dplyr)
+library(dbplyr)
+
+## Librerías secundarias
+library(tictoc) ## Para ver cuanto tiempo toma una sección del código
+library(here) ## Para saber la dirección exacta de nustro folder de trabajo
+library(fs) ## Librería que ayuda con directorios y archivos
+```
+
+
+```{r}
+con <- dbConnect(odbc::odbc(), dsn = "datawarehouse", uid = "edgar", pwd = "edgar")
+```
+
+```{r}
+datos_db <- tbl(con, "taxi_trips")
+```
+
+```{r}
+lobstr::obj_size(datos_db)
+```
+
+
+```{r}
+datos_db %>% 
+  mutate(
+    mes_empieza_viaje = month(tpep_pickup_datetime),
+    passenger_count = as.numeric(passenger_count)
+    ) %>% 
+  group_by(mes_empieza_viaje) %>% 
+  summarise(
+    cantidad = n(),
+    promedio_de_pasajeros = mean(passenger_count)
+  ) %>% 
+  arrange(mes_empieza_viaje)
+```
+
+```{r}
+datos_db %>% 
+  mutate(
+    mes_empieza_viaje = month(tpep_pickup_datetime),
+    passenger_count = as.numeric(passenger_count)
+    ) %>% 
+  group_by(mes_empieza_viaje) %>% 
+  summarise(
+    cantidad = n(),
+    promedio_de_pasajeros = mean(passenger_count)
+  ) %>% 
+  arrange(mes_empieza_viaje) %>% 
+  show_query()
+```
+
+```{r}
+mes_de_viajes <- datos_db %>% 
+  mutate(
+    mes_empieza_viaje = month(tpep_pickup_datetime),
+    passenger_count = as.numeric(passenger_count)
+    ) %>% 
+  group_by(mes_empieza_viaje) %>% 
+  summarise(
+    cantidad = n(),
+    promedio_de_pasajeros = mean(passenger_count)
+  ) %>% 
+  arrange(mes_empieza_viaje) %>% 
+  collect()
+```
+
+
+```{r}
+mes_de_viajes
+```
+

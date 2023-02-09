@@ -1,4 +1,6 @@
 *.html
 *.pdf
 *_files/
-
+datos/
+datos-csv/
+derby.log

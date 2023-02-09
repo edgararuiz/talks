@@ -1,0 +1,95 @@
+---
+title: "Usando Big Data con R"
+type: html
+---
+
+```{r setup,  include = FALSE}
+
+## Librería principal
+library(arrow)
+library(dplyr)
+
+## Librerías secundarias
+library(tictoc) ## Para ver cuanto tiempo toma una sección del código
+library(here) ## Para saber la dirección exacta de nustro folder de trabajo
+library(fs) ## Librería que ayuda con directorios y archivos
+```
+
+## `arrow`
+
+Arrow es un proyecto que está enfocado en facilitar el analysís de datos sin 
+tener que cargarlos a la memoria.  
+
+```{r}
+library(arrow)
+library(dplyr)
+```
+
+```{r}
+direccion_del_documento <- here::here("peru")
+folder_arrow <- path(direccion_del_documento, "datos")
+```
+
+El uso mas efectivo de Arrow es interactuando con archivos de tipo Parquet. Este
+formato de archivo es bastante eficiente. Los mismos datos de los archivos CSV
+fueron convertidos a Parquet. Los nuevos archivos son un quarto del tamaño de los
+originales.
+
+```{r}
+folder_arrow %>% 
+  dir_ls() %>% 
+  file.size() %>% 
+  sum() %>% 
+  {. / 1000000000} %>% 
+  round(2)
+```
+
+Muy similar a como funciona con Hadoop y Spark, en lugar de leer archivo por archivo
+como se hace con `tidyverse`, y `data.table`, Arrow puede tratar a un folder como
+la fuente de los datos. Con que cada archivo dentro del folder tenga las mismas 
+variables, Arrow puede leer la información hasta de nuevos archivos sin problema.
+
+Usamos `open_dataset()` para decirle a Arrow donde estan los datos
+```{r}
+datos_arrow <- open_dataset(folder_arrow)
+```
+
+El nuevo objeto de Arrow es un "pointer" a donde estan los archivos. El tamaño 
+en la memoria de R es mínima
+```{r}
+lobstr::obj_size(datos_arrow)
+```
+
+Podemos usar `dplyr` para manipular los datos, pero el resultado es un "query"
+```{r}
+
+datos_arrow %>% 
+  mutate(mes_empieza_viaje = month(tpep_pickup_datetime)) %>% 
+  group_by(mes_empieza_viaje) %>% 
+  summarise(
+    cantidad = n(),
+    promedio_de_pasajeros = mean(passenger_count)
+  ) %>% 
+  arrange(mes_empieza_viaje)
+  
+```
+
+Igual que con `data.table`, para ver los resultados, usamos `as_tibble()`
+```{r}
+datos_arrow %>% 
+  mutate(mes_empieza_viaje = month(tpep_pickup_datetime)) %>% 
+  group_by(mes_empieza_viaje) %>% 
+  summarise(
+    cantidad = n(),
+    promedio_de_pasajeros = mean(passenger_count, na.rm = TRUE)
+  ) %>% 
+  arrange(mes_empieza_viaje) %>% 
+  as_tibble()
+
+```
+
+Note que manipular los datos no afecta el tamaño del objecto dentro de R
+```{r}
+lobstr::obj_size(datos_arrow)
+```
+
