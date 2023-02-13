@@ -18,64 +18,40 @@ library(fs) ## Librería que ayuda con directorios y archivos
 
 
 ```{r}
-con <- dbConnect(odbc::odbc(), dsn = "datawarehouse", uid = "edgar", pwd = "edgar")
+con <- dbConnect(odbc(), "SQL Server")
 ```
 
 ```{r}
-datos_db <- tbl(con, "taxi_trips")
-```
-
-```{r}
-lobstr::obj_size(datos_db)
+aerolineas <- tbl(con, in_schema("dbo", "airlines"))
+aeropuertos <- tbl(con, in_schema("dbo", "airports"))
+vuelos <- tbl(con, in_schema("dbo", "flights"))
 ```
 
 
 ```{r}
-datos_db %>% 
-  mutate(
-    mes_empieza_viaje = month(tpep_pickup_datetime),
-    passenger_count = as.numeric(passenger_count)
-    ) %>% 
-  group_by(mes_empieza_viaje) %>% 
-  summarise(
-    cantidad = n(),
-    promedio_de_pasajeros = mean(passenger_count)
-  ) %>% 
-  arrange(mes_empieza_viaje)
+aerolineas
+aeropuertos
+vuelos
+```
+```{r}
+juntos <- vuelos %>% 
+  inner_join(aerolineas, by = "carrier") %>% 
+  inner_join(aeropuertos, by = c("dest" = "faa"))
+
+juntos
 ```
 
 ```{r}
-datos_db %>% 
-  mutate(
-    mes_empieza_viaje = month(tpep_pickup_datetime),
-    passenger_count = as.numeric(passenger_count)
-    ) %>% 
-  group_by(mes_empieza_viaje) %>% 
-  summarise(
-    cantidad = n(),
-    promedio_de_pasajeros = mean(passenger_count)
-  ) %>% 
-  arrange(mes_empieza_viaje) %>% 
+juntos %>% 
   show_query()
 ```
 
 ```{r}
-mes_de_viajes <- datos_db %>% 
-  mutate(
-    mes_empieza_viaje = month(tpep_pickup_datetime),
-    passenger_count = as.numeric(passenger_count)
-    ) %>% 
-  group_by(mes_empieza_viaje) %>% 
-  summarise(
-    cantidad = n(),
-    promedio_de_pasajeros = mean(passenger_count)
-  ) %>% 
-  arrange(mes_empieza_viaje) %>% 
-  collect()
+juntos %>% 
+  count(dest, sort = TRUE)
 ```
 
-
 ```{r}
-mes_de_viajes
+dbDisconnect(con)
 ```
 
