@@ -77,7 +77,7 @@ datos_dtp %>%
   group_by(mes_empieza_viaje) %>% 
   summarise(
     cantidad = n(),
-    promedio_de_pasajeros = mean(passenger_count)
+    promedio_de_pasajeros = mean(passenger_count, na.rm = TRUE)
   )
 ```
 
