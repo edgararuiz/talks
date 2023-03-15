@@ -57,6 +57,17 @@ library(dplyr)
 library(ggplot2)
 ```
 
+## How to install Spark with `sparklyr`
+
+```{r}
+#| eval: false
+
+install.packages("sparklyr")
+library(sparklyr)
+
+spark_install()
+```
+
 
 ```{r}
 library(sparklyr)
@@ -69,6 +80,9 @@ flights_tbl <- copy_to(sc, nycflights13::flights, "flights")
 
 airlines_tbl <- copy_to(sc, nycflights13::airlines, "airlines")
 
+#my_big_table <- tbl(sc, "big.table.name")
+
+#flights_tbl[, "year"]
 ```
 
 
@@ -88,12 +102,16 @@ commands:
 
 
 ```{r}
-select(flights_tbl, year:day, arr_delay, dep_delay)
+select(flights_tbl, year:day, arr_delay, dep_delay) 
 ```
 
 
 ```{r}
-filter(flights_tbl, dep_delay > 1000)
+flights_tbl %>% 
+  select(year:day, arr_delay, dep_delay) %>% 
+  filter(dep_delay > 1000) %>% 
+  show_query()
+
 ```
 
 ```{r}
@@ -105,7 +123,8 @@ arrange(flights_tbl, desc(dep_delay))
 summarise(
   flights_tbl, 
   mean_dep_delay = mean(dep_delay, na.rm = TRUE)
-  )
+  ) %>% 
+  show_query()
 ```
 
 
@@ -324,6 +343,26 @@ flights_tbl %>%
 
 ```{r}
 spark_disconnect(sc)
+```
+
+
+## reading files
+
+
+```{r}
+spark_read_csv(sc, path = "path/to/folder/my_file.csv", memory = FALSE)
+spark_read_csv(sc, path = "path/to/folder/")
+
+# way 1
+my_table <- spark_read_csv(sc, path = "path/to/folder/")
+
+# way 2
+spark_read_csv(sc, path = "path/to/folder/", name = "table_1")
+
+my_table <- tbl(sc, "table_1")
+
+# https://spark.rstudio.com/guides/caching.html
+
 ```
 
 

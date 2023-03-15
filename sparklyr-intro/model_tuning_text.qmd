@@ -272,7 +272,7 @@ sff_grid <-  list(
       num_features = 2^c(8, 10, 12)  
     ),
     logistic_regression = list(
-      elastic_net_param = 10^seq(-3, 0, length = 20), 
+      elastic_net_param = 10^seq(-3, 0, length = 10), 
       reg_param = seq(0, 1, length = 5)    
     )
   )

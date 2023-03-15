@@ -44,6 +44,12 @@ The `cells` data is copied to the Spark session.
 tbl_cells <- copy_to(sc, cells, name = "cells_tbl")
 ```
 
+```{r}
+tbl_cells %>% 
+  count(class)
+```
+
+
 We will split the data into two sets, "training" and "test".  The **test** split will
 be treated as the "holdout" data to be used at the end of the process to confirm
 that we did not over fit the model.

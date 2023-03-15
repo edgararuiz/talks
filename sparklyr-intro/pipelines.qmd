@@ -122,13 +122,16 @@ df <- spark_flights %>%
     day = paste0("d", day)
   ) %>%
   select(dep_delay, sched_dep_time, month, day, distance) 
+
+df %>% 
+  show_query()
 ```
 
 
 This is the resulting pipeline stage produced from the `dplyr` code:
 
 ```{r}
-ft_dplyr_transformer(sc, df)
+x <- ft_dplyr_transformer(sc, df)
 ```
 
 
