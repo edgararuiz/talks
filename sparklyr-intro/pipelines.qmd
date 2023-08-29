@@ -205,6 +205,8 @@ partitioned_flights <- sdf_random_split(
   testing = 0.01,
   rest = 0.98
 )
+
+partitioned_flights$
 ```
 
 

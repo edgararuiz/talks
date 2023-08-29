@@ -74,15 +74,17 @@ library(sparklyr)
 library(dplyr)
 library(ggplot2)
 
-sc <- spark_connect(master="local")
+sc <- spark_connect(master="yarn-client")
 
 flights_tbl <- copy_to(sc, nycflights13::flights, "flights")
 
+my_files <- spark_read_csv("my_location/my_folder/")
+
+my_table <- tbl(sc, "customers")
+
 airlines_tbl <- copy_to(sc, nycflights13::airlines, "airlines")
 
-#my_big_table <- tbl(sc, "big.table.name")
-
-#flights_tbl[, "year"]
+flights_tbl
 ```
 
 
@@ -102,7 +104,8 @@ commands:
 
 
 ```{r}
-select(flights_tbl, year:day, arr_delay, dep_delay) 
+flights_tbl %>% 
+  select(year:day, arr_delay, dep_delay) 
 ```
 
 
@@ -123,13 +126,28 @@ arrange(flights_tbl, desc(dep_delay))
 summarise(
   flights_tbl, 
   mean_dep_delay = mean(dep_delay, na.rm = TRUE)
-  ) %>% 
-  show_query()
+  )
 ```
 
 
 ```{r}
 mutate(flights_tbl, speed = distance / air_time * 60)
+```
+
+```{r}
+my_var <- summarise(
+  flights_tbl, 
+  mean_dep_delay = mean(dep_delay, na.rm = TRUE)
+  ) %>% 
+  collect()
+```
+
+```{r}
+flights_tbl %>% 
+  count(origin) %>% 
+  collect() %>% 
+  ggplot() +
+  geom_col(aes(origin, n))
 ```
 
 
