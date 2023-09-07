@@ -1,0 +1,17 @@
+---
+format: 
+  revealjs:
+    smaller: true
+    transition: fade
+    background-transition: fade
+    theme: [default, theme.scss]
+execute: 
+  eval: false
+  echo: false
+---
+
+# Databricks with R {background-image="assets/title-slide-white.png"}
+
+Edgar Ruiz @ Posit 
+
+[linkedin.com/in/edgararuiz](https://www.linkedin.com/in/edgararuiz/)
