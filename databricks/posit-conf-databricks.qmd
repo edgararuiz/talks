@@ -5,6 +5,7 @@ format:
     transition: fade
     background-transition: fade
     theme: [default, theme.scss]
+    menu: false
 execute: 
   eval: false
   echo: false
@@ -15,3 +16,11 @@ execute:
 Edgar Ruiz @ Posit 
 
 [linkedin.com/in/edgararuiz](https://www.linkedin.com/in/edgararuiz/)
+
+## Slide 1 {background-image="assets/slide.png"}
+
+## Slide 2 {background-image="assets/slide-frame.png"}
+
+- one
+- two
+- three
