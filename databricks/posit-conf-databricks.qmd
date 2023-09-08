@@ -13,40 +13,39 @@ execute:
 
 # Databricks with R {background-image="assets/title-slide-white.png"}
 
-Edgar Ruiz @ Posit 
+Edgar Ruiz \@ Posit
 
 [linkedin.com/in/edgararuiz](https://www.linkedin.com/in/edgararuiz/)
 
 ## Spark Connect {background-image="assets/slide-frame.png"}
 
-- Introduced a decoupled client-server architecture that allows remote
-connectivity to Spark clusters using the DataFrame API. 
+-   Introduced a decoupled client-server architecture. It enables remote connectivity to Spark clusters.
 
-- The **separation will allow R users to interact with a cluster**
-from the comfort of their preferred environment, laptop or otherwise.
+-   **Allows R users to interact with a cluster** from their preferred environment, laptop or otherwise.
 
-- [Databricks
-Connect](https://docs.databricks.com/dev-tools/databricks-connect.html),
-available in DBR version 13 and above, is based on **Spark Connect** architecture
+-   [Databricks Connect](https://docs.databricks.com/dev-tools/databricks-connect.html), 
+    available in DBR version 13+, is based on **Spark Connect** architecture.
 
-## Integrating R  {background-image="assets/slide-frame.png"}
+-   Uses of a *remote procedure call* framework, named **gRPC**.
 
-- Connect, uses of a remote procedure call framework, named gRPC.  **Torch**
-for the ML capabilities.
+-   Uses **Torch** for the ML capabilities.
 
-- `PySpark`, the Python library, offers the best integration with Connect.
+## Integrating R {background-image="assets/slide-frame.png"}
 
-- `sparklyr` will integrate to PySpark via the `reticulate` package.
+-   `PySpark` offers the best integration with Connect.
 
-- Extends the functionality, and user experience: `dplyr` back-end, `DBI` back-end,
-RStudio's *Connections pane* integration.
+-   `sparklyr` integrates to PySpark via `reticulate` 
+
+-   Extends the functionality, and user experience: 
+    - `dplyr` back-end
+    - `DBI` back-end 
+    - RStudio's *Connections pane* integration.
 
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png"}
 
 `sparkly` 1.8.3 now supports Databricks Connect "v2":
 
-
-```r
+``` r
 library(sparklyr)
 
 sc <- spark_connect(
@@ -59,18 +58,17 @@ sc <- spark_connect(
 
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png"}
 
-`sparklyr` will use these environment variables if they are not
-provided as arguments:
+`sparklyr` uses environment variables, if provided:
 
-- `DATABRICKS_HOST` - Your org's address
-
-- `DATABRICKS_CLUSTER_ID` - Your cluster's ID
-
-- `DATABRICKS_TOKEN` - Your personal token
+  -   `DATABRICKS_HOST` - Your org's address
+  
+  -   `DATABRICKS_CLUSTER_ID` - Your cluster's ID
+  
+  -   `DATABRICKS_TOKEN` - Your personal token
 
 Simplifies, and secures connection code:
 
-```r
+``` r
 sc <- spark_connect(
   method = "databricks_connect"
  )
@@ -80,13 +78,10 @@ sc <- spark_connect(
 
 ![](assets/catalog-explorer.png)
 
-
 ## Connection Pane {background-image="assets/slide-frame.png"}
 
-![](assets/rstudio-connection.png)
+![](assets/rstudio-connection.png){width="507"}
 
 ## Preview top 1000 rows {background-image="assets/slide-frame.png"}
 
 ![](assets/preview.png)
-
-
