@@ -3,7 +3,7 @@
 $body-bg: #eee;
 $body-color: #444;
 $link-color: #666;
-$code-block-bg: #fff;
+$code-block-bg: #eee;
 $presentation-h1-font-size: 2.8em;
 $presentation-h2-font-size: 2.3em;
 $mermaid-font-size: 5px;
@@ -31,4 +31,12 @@ $mermaid-font-size: 5px;
 
 .slide code {
   font-size: 36px;
+}
+
+.sample-large code {
+  font-size: 28px;
+}
+
+.sample-small code {
+  font-size: 19px;
 }

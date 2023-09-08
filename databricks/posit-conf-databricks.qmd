@@ -115,8 +115,9 @@ flowchart LR
 
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png"}
 
-`sparkly` 1.8.3 now supports Databricks Connect "v2":
+`sparklyr` 1.8.3 now supports Databricks Connect "v2":
 
+::: sample-large
 ``` r
 library(sparklyr)
 
@@ -127,6 +128,7 @@ sc <- spark_connect(
   method     = "databricks_connect"
  )
 ```
+:::
 
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png"}
 
@@ -140,8 +142,97 @@ sc <- spark_connect(
 
 Simplifies, and secures connection code:
 
+::: sample-large
 ``` r
 sc <- spark_connect(
   method = "databricks_connect"
  )
 ```
+:::
+
+## Accessing the Catalog data {background-image="assets/slide-frame.png"}
+
+::: sample-small
+```r
+library(dplyr)
+library(dbplyr)
+
+trips <- tbl(sc, in_catalog("samples", "nyctaxi", "trips"))
+
+trips
+#> # Source: spark<`samples`.`nyctaxi`.`trips`> [?? x 6]
+#>    tpep_pickup_datetime tpep_dropoff_datetime trip_distance fare_amount
+#>    <dttm>               <dttm>                        <dbl>       <dbl>
+#>  1 2016-02-14 10:52:13  2016-02-14 11:16:04            4.94        19  
+#>  2 2016-02-04 12:44:19  2016-02-04 12:46:00            0.28         3.5
+#>  3 2016-02-17 11:13:57  2016-02-17 11:17:55            0.7          5  
+#>  4 2016-02-18 04:36:07  2016-02-18 04:41:45            0.8          6  
+#>  5 2016-02-22 08:14:41  2016-02-22 08:31:52            4.51        17  
+#>  6 2016-02-05 00:45:02  2016-02-05 00:50:26            1.8          7  
+#>  7 2016-02-15 09:03:28  2016-02-15 09:18:45            2.58        12  
+#>  8 2016-02-25 13:09:26  2016-02-25 13:24:50            1.4         11  
+#>  9 2016-02-13 10:28:18  2016-02-13 10:36:36            1.21         7.5
+#> 10 2016-02-13 18:03:48  2016-02-13 18:10:24            0.6          6  
+#> # ℹ more rows
+#> # ℹ 2 more variables: pickup_zip <int>, dropoff_zip <int>
+```
+:::
+
+
+## Accessing the Catalog data {background-image="assets/slide-frame.png"}
+
+::: sample-small
+```r
+trips %>%
+  group_by(pickup_zip) %>%
+  summarise(
+    count = n(),
+    avg_distance = mean(trip_distance, na.rm = TRUE)
+  )
+#> # Source: spark<?> [?? x 3]
+#>    pickup_zip count avg_distance
+#>         <int> <dbl>        <dbl>
+#>  1      10032    15         4.49
+#>  2      10013   273         2.98
+#>  3      10022   519         2.00
+#>  4      10162   414         2.19
+#>  5      10018  1012         2.60
+#>  6      11106    39         2.03
+#>  7      10011  1129         2.29
+#>  8      11103    16         2.75
+#>  9      11237    15         3.31
+#> 10      11422   429        15.5 
+#> # ℹ more rows
+```
+:::
+
+## Supported vs Not {background-image="assets/slide-frame.png"}
+
+:::{.columns}
+:::{.column width='60%'}
+
+### Supported
+
+- Most of the `dplyr`, and `DBI`, APIs
+
+- `invoke()` command
+
+- Connections Pane navigation
+
+- PAT for Databricks Connect
+
+- Most read and write commands
+
+:::
+:::{.column width='40%'}
+
+### Not supported
+
+- ML functions 
+
+- `SDF` functions
+
+- `tidyr` 
+
+:::
+:::
