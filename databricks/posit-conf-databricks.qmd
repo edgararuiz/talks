@@ -17,10 +17,28 @@ Edgar Ruiz @ Posit
 
 [linkedin.com/in/edgararuiz](https://www.linkedin.com/in/edgararuiz/)
 
-## Slide 1 {background-image="assets/slide.png"}
+## Spark Connect {background-image="assets/slide-frame.png"}
 
-## Slide 2 {background-image="assets/slide-frame.png"}
+- Introduced a decoupled client-server architecture that allows remote
+connectivity to Spark clusters using the DataFrame API. 
 
-- one
-- two
-- three
+- The **separation will allow R users to interact with a cluster**
+from the comfort of their preferred environment, laptop or otherwise.
+
+- [Databricks
+Connect](https://docs.databricks.com/dev-tools/databricks-connect.html),
+available in DBR version 13 and above, is based on this
+new architecture.
+
+## Integrating R  {background-image="assets/slide-frame.png"}
+
+- Connect, uses of a remote procedure call framework, named gRPC.  **Torch**
+for the ML capabilities.
+
+- `PySpark`, the Python library, offers the best integration with Connect.
+
+- `sparklyr` will integrate to PySpark via the `reticulate` package.
+
+- Extends the functionality, and user experience: `dplyr` back-end, `DBI` back-end,
+RStudio's *Connections pane* integration.
+
