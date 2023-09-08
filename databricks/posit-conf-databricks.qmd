@@ -7,7 +7,6 @@ format:
     theme: [default, theme.scss]
     menu: false
 execute: 
-  eval: false
   echo: false
 ---
 
@@ -24,15 +23,35 @@ Edgar Ruiz \@ Posit
 -   **Allows R users to interact with a cluster** from their preferred environment, laptop or otherwise.
 
 -   [Databricks Connect](https://docs.databricks.com/dev-tools/databricks-connect.html), 
-    available in DBR version 13+, is based on **Spark Connect** architecture.
+    is based on **Spark Connect** architecture. Available in DBR version 13+
+
+
+## Spark Connect {background-image="assets/slide-frame.png"}
 
 -   Uses of a *remote procedure call* framework, named **gRPC**.
 
 -   Uses **Torch** for the ML capabilities.
 
-## Integrating R {background-image="assets/slide-frame.png"}
-
 -   `PySpark` offers the best integration with Connect.
+
+```{mermaid}
+flowchart LR
+  subgraph lp[User's machine]
+    ps[PySpark]
+    g1[gRPC]
+  end
+  sp[Spark]
+  
+  g1 <-. Network .-> sp
+  ps --> g1
+  
+  style ps  fill:#eff,stroke:#666
+  style lp  fill:#fff,stroke:#666
+  style sp  fill:#f4c430,stroke:#666
+  style g1  fill:#447099,stroke:#666,color:#fff
+```
+
+## Integrating R {background-image="assets/slide-frame.png"}
 
 -   `sparklyr` integrates to PySpark via `reticulate` 
 
