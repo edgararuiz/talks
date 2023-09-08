@@ -42,3 +42,25 @@ for the ML capabilities.
 - Extends the functionality, and user experience: `dplyr` back-end, `DBI` back-end,
 RStudio's *Connections pane* integration.
 
+## Databricks Connect (ML 13+) {background-image="assets/slide-frame.png"}
+
+-   Your [Workspace Instance
+    URL](https://docs.databricks.com/workspace/workspace-details.html#workspace-url)
+-   The ID of a currently running
+    [cluster](https://docs.databricks.com/workspace/workspace-details.html#cluster-url-and-id)
+    within your workspace
+-   Authentication setup. At this time, `sparklyr` supports
+    [PAT](https://docs.databricks.com/dev-tools/auth.html#pat)
+- In `spark_connect()` use `databricks_connect` as the `method` argument
+
+``` r
+library(sparklyr)
+
+sc <- spark_connect(
+ host = "[Your Workspace Instance URL]", 
+ cluster_id = "[Cluster ID]"
+ token = "[Your PAT - Please do not include 
+          it as plain text here,  please refer 
+          to the next section]"
+  )
+```
