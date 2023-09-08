@@ -64,11 +64,11 @@ flowchart LR
   style g1  fill:#447099,stroke:#666,color:#fff
 ```
 
-## Integrating R {background-image="assets/slide-frame.png"}
+## Integrating R via *sparklyr* {background-image="assets/slide-frame.png"}
 
--   `sparklyr` integrates with PySpark, via `reticulate`
+-   Integrates with PySpark, via `reticulate`
 
--   `sparklyr` extends the functionality, and user experience:
+-   Extends the functionality, and user experience:
 
     -   `dplyr` back-end
     -   `DBI` back-end
@@ -100,6 +100,18 @@ flowchart LR
 :::{.incremental}
 - -----------   No need to install Java in my machine!!! 🎉  -------------
 :::
+
+## Databricks Catalog Explorer {background-image="assets/slide-frame.png"}
+
+![](assets/catalog-explorer.png)
+
+## Connection Pane {background-image="assets/slide-frame.png"}
+
+![](assets/rstudio-connection.png)
+
+## Preview top 1000 rows {background-image="assets/slide-frame.png"}
+
+![](assets/preview.png)
 
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png"}
 
@@ -133,15 +145,3 @@ sc <- spark_connect(
   method = "databricks_connect"
  )
 ```
-
-## Databricks Catalog Explorer {background-image="assets/slide-frame.png"}
-
-![](assets/catalog-explorer.png)
-
-## Connection Pane {background-image="assets/slide-frame.png"}
-
-![](assets/rstudio-connection.png){width="507"}
-
-## Preview top 1000 rows {background-image="assets/slide-frame.png"}
-
-![](assets/preview.png)
