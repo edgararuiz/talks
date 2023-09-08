@@ -5,7 +5,7 @@ $body-color: #444;
 $link-color: #666;
 $code-block-bg: #fff;
 $presentation-h1-font-size: 2.5em;
-$presentation-h2-font-size: 2.5em;
+$presentation-h2-font-size: 2.3em;
 /*-- scss:rules --*/
 
 .reveal .slide blockquote {
@@ -15,12 +15,12 @@ $presentation-h2-font-size: 2.5em;
 
 
 .slide li {
-    font-size: 25px;
+    font-size: 40px;
     color: #666;
 }
 
 .slide p {
-    font-size: 25px;
+    font-size: 40px;
     color: #666;
 }
 
@@ -29,5 +29,5 @@ $presentation-h2-font-size: 2.5em;
 }
 
 .slide code {
-  font-size: 25px;
+  font-size: 36px;
 }
