@@ -27,8 +27,7 @@ from the comfort of their preferred environment, laptop or otherwise.
 
 - [Databricks
 Connect](https://docs.databricks.com/dev-tools/databricks-connect.html),
-available in DBR version 13 and above, is based on this
-new architecture.
+available in DBR version 13 and above, is based on **Spark Connect** architecture
 
 ## Integrating R  {background-image="assets/slide-frame.png"}
 
@@ -73,9 +72,21 @@ Simplifies, and secures connection code:
 
 ```r
 sc <- spark_connect(
-  method     = "databricks_connect"
+  method = "databricks_connect"
  )
 ```
 
+## Databricks Catalog Explorer {background-image="assets/slide-frame.png"}
+
+![](assets/catalog-explorer.png)
+
+
+## Connection Pane {background-image="assets/slide-frame.png"}
+
+![](assets/rstudio-connection.png)
+
+## Preview top 1000 rows {background-image="assets/slide-frame.png"}
+
+![](assets/preview.png)
 
 
