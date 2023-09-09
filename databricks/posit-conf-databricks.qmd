@@ -4,7 +4,7 @@ format:
     smaller: true
     transition: fade
     background-transition: fade
-    theme: [default, theme.scss]
+    theme: [simple, theme.scss]
     menu: false
 execute: 
   echo: false
@@ -236,3 +236,39 @@ trips %>%
 
 :::
 :::
+
+## Spark Connect, locally {background-image="assets/slide-frame.png"}
+
+- Install Spark 3.4+ (one time)
+
+::: sample-small
+``` r
+spark_install("3.4")
+```
+:::
+
+- Start the Spark Connect service using: 
+
+::: sample-small
+``` r
+pysparklyr::spark_connect_service_start()
+
+#> Starting Spark Connect locally ...
+#>   starting org.apache.spark.sql.connect.service.SparkConnectServer, logging to
+#>   /Users/edgar/spark/spark-3.4.0-bin-hadoop3/logs/spark-edgar-org.apache.spark.sql.connect.service.SparkConnectServer-1-Edgars-work-laptop.local.out
+```
+:::
+
+- To stop the service use:
+
+::: sample-small
+```r
+pysparklyr::spark_connect_service_stop()
+
+#> Stopping Spark Connect
+#>   - Shutdown command sent
+```
+:::
+
+
+## {background-image="assets/thank-you.png"}
