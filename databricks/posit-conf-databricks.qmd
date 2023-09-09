@@ -1,10 +1,11 @@
 ---
 format: 
   revealjs:
+    width: 1200
     smaller: true
     transition: fade
     background-transition: fade
-    theme: [simple, theme.scss]
+    theme: [default, theme.scss]
     menu: false
 execute: 
   echo: false
@@ -98,7 +99,7 @@ flowchart LR
 ```
 
 :::{.incremental}
-- -----------   No need to install Java in my machine!!! 🎉  -------------
+- ----------------- No need to install Java in my machine!!! 🎉  ----------------- 
 :::
 
 ## Databricks Catalog Explorer {background-image="assets/slide-frame.png"}
