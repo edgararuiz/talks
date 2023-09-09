@@ -44,7 +44,7 @@ flowchart LR
 
 -   Uses of a *remote procedure call* framework, named **gRPC**.
 
--   Uses **Torch** for the ML capabilities.
+-   Uses **Torch** for the ML capabilities (Spark 3.5+).
 
 -   `PySpark` offers the best integration with Connect.
 
@@ -104,15 +104,15 @@ flowchart LR
 
 ## Databricks Catalog Explorer {background-image="assets/slide-frame.png"}
 
-![](assets/catalog-explorer.png)
+![](assets/catalog-explorer.png){height="500"}
 
 ## Connection Pane {background-image="assets/slide-frame.png"}
 
-![](assets/rstudio-connection.png)
+![](assets/rstudio-connection.png){height="500"}
 
 ## Preview top 1000 rows {background-image="assets/slide-frame.png"}
 
-![](assets/preview.png)
+![](assets/preview.png){height="500"}
 
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png"}
 
