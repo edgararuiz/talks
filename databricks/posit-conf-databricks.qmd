@@ -160,7 +160,12 @@ library(dplyr)
 library(dbplyr)
 
 trips <- tbl(sc, in_catalog("samples", "nyctaxi", "trips"))
+```
+:::
 
+::: {.fragment .fade-in}
+::: sample-small
+```r
 trips
 #> # Source: spark<`samples`.`nyctaxi`.`trips`> [?? x 6]
 #>    tpep_pickup_datetime tpep_dropoff_datetime trip_distance fare_amount
@@ -179,9 +184,10 @@ trips
 #> # ℹ 2 more variables: pickup_zip <int>, dropoff_zip <int>
 ```
 :::
+:::
 
 
-## Accessing the Catalog data {background-image="assets/slide-frame.png"}
+## Interacting with the data {background-image="assets/slide-frame.png"}
 
 ::: sample-small
 ```r
@@ -191,6 +197,12 @@ trips %>%
     count = n(),
     avg_distance = mean(trip_distance, na.rm = TRUE)
   )
+```
+:::
+
+::: {.fragment .fade-in}
+::: sample-small
+```r
 #> # Source: spark<?> [?? x 3]
 #>    pickup_zip count avg_distance
 #>         <int> <dbl>        <dbl>
@@ -206,6 +218,7 @@ trips %>%
 #> 10      11422   429        15.5 
 #> # ℹ more rows
 ```
+:::
 :::
 
 ## Supported vs Not {background-image="assets/slide-frame.png"}
@@ -239,7 +252,7 @@ trips %>%
 :::
 :::
 
-## Spark Connect, locally {background-image="assets/slide-frame.png"}
+## Run Spark Connect locally {background-image="assets/slide-frame.png"}
 
 - Install Spark 3.4+ (one time)
 
@@ -249,6 +262,7 @@ spark_install("3.4")
 ```
 :::
 
+::: {.fragment .fade-in}
 - Start the Spark Connect service using: 
 
 ::: sample-small
@@ -260,7 +274,9 @@ pysparklyr::spark_connect_service_start()
 #>   /Users/edgar/spark/spark-3.4.0-bin-hadoop3/logs/spark-edgar-org.apache.spark.sql.connect.service.SparkConnectServer-1-Edgars-work-laptop.local.out
 ```
 :::
+:::
 
+::: {.fragment .fade-in}
 - To stop the service use:
 
 ::: sample-small
@@ -271,7 +287,8 @@ pysparklyr::spark_connect_service_stop()
 #>   - Shutdown command sent
 ```
 :::
-
+:::
+ 
 ## Python session {background-image="assets/slide-frame.png"}
 
 Easy to interact with the underlying Python components
