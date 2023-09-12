@@ -283,14 +283,62 @@ sc <- spark_connect("sc://localhost", method = "spark_connect")
 
 session <- sc$python_obj
 
+
 tbl_mtcars <- session$createDataFrame(mtcars)
 
 tbl_mtcars
 #> DataFrame[mpg: double, cyl: double, disp: double, hp: double, drat: double, wt: double, qsec: double, vs: double, am: double, gear: double, carb: double]
 
+
 tbl_mtcars$corr("wt", "mpg")
 #> [1] -0.8676594
 ```
 ::: 
+
+## Going further {background-image="assets/slide-frame.png"}
+
+Use `reticulate` to extend functionality
+
+::: sample-large
+```r
+library(reticulate)
+
+pyspark <- import("pyspark")
+connect_classification <- import("pyspark.ml.connect.classification")
+
+
+feature_fields <- pyspark$sql$functions$array("mpg", "wt")
+tbl_features <- tbl_mtcars$withColumn("features", feature_fields)
+
+
+log_reg <- connect_classification$LogisticRegression()
+log_reg_label <- log_reg$setLabelCol("am")
+
+
+model <- log_reg_label$fit(tbl_features)
+
+model
+#> LogisticRegression_144975e223ce
+```
+:::
+
+## Going further {background-image="assets/slide-frame.png"}
+
+Use `reticulate` to extend functionality
+
+::: sample-large
+```r
+preds <- model$transform(tbl_features)
+r_preds <- preds$toPandas()
+head(r_preds)
+#>    mpg cyl disp  hp drat    wt  qsec vs am gear carb      features prediction          probability
+#> 1 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4   21.00, 2.62          1 0.4157636, 0.5842364
+#> 2 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4 21.000, 2.875          1 0.4890891, 0.5109109
+#> 3 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1   22.80, 2.32          1 0.2807752, 0.7192248
+#> 4 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1 21.400, 3.215          0 0.5734229, 0.4265772
+#> 5 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2   18.70, 3.44          0 0.7180533, 0.2819467
+#> 6 18.1   6  225 105 2.76 3.460 20.22  1  0    3    1   18.10, 3.46          0 0.7392238, 0.2607762
+```
+:::
 
 ## {background-image="assets/thank-you.png"}

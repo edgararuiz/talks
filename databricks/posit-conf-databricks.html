@@ -652,13 +652,55 @@
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>session <span class="ot">&lt;-</span> sc<span class="sc">$</span>python_obj</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>tbl_mtcars <span class="ot">&lt;-</span> session<span class="sc">$</span><span class="fu">createDataFrame</span>(mtcars)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>tbl_mtcars</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; DataFrame[mpg: double, cyl: double, disp: double, hp: double, drat: double, wt: double, qsec: double, vs: double, am: double, gear: double, carb: double]</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>tbl_mtcars<span class="sc">$</span><span class="fu">corr</span>(<span class="st">"wt"</span>, <span class="st">"mpg"</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] -0.8676594</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>tbl_mtcars <span class="ot">&lt;-</span> session<span class="sc">$</span><span class="fu">createDataFrame</span>(mtcars)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>tbl_mtcars</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; DataFrame[mpg: double, cyl: double, disp: double, hp: double, drat: double, wt: double, qsec: double, vs: double, am: double, gear: double, carb: double]</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>tbl_mtcars<span class="sc">$</span><span class="fu">corr</span>(<span class="st">"wt"</span>, <span class="st">"mpg"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] -0.8676594</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="going-further" class="slide level2" data-background-image="assets/slide-frame.png">
+<h2>Going further</h2>
+<p>Use <code>reticulate</code> to extend functionality</p>
+<div class="sample-large">
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>pyspark <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"pyspark"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>connect_classification <span class="ot">&lt;-</span> <span class="fu">import</span>(<span class="st">"pyspark.ml.connect.classification"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>feature_fields <span class="ot">&lt;-</span> pyspark<span class="sc">$</span>sql<span class="sc">$</span>functions<span class="sc">$</span><span class="fu">array</span>(<span class="st">"mpg"</span>, <span class="st">"wt"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>tbl_features <span class="ot">&lt;-</span> tbl_mtcars<span class="sc">$</span><span class="fu">withColumn</span>(<span class="st">"features"</span>, feature_fields)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>log_reg <span class="ot">&lt;-</span> connect_classification<span class="sc">$</span><span class="fu">LogisticRegression</span>()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>log_reg_label <span class="ot">&lt;-</span> log_reg<span class="sc">$</span><span class="fu">setLabelCol</span>(<span class="st">"am"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> log_reg_label<span class="sc">$</span><span class="fu">fit</span>(tbl_features)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>model</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; LogisticRegression_144975e223ce</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="going-further-1" class="slide level2" data-background-image="assets/slide-frame.png">
+<h2>Going further</h2>
+<p>Use <code>reticulate</code> to extend functionality</p>
+<div class="sample-large">
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> model<span class="sc">$</span><span class="fu">transform</span>(tbl_features)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>r_preds <span class="ot">&lt;-</span> preds<span class="sc">$</span><span class="fu">toPandas</span>()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(r_preds)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mpg cyl disp  hp drat    wt  qsec vs am gear carb      features prediction          probability</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4   21.00, 2.62          1 0.4157636, 0.5842364</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4 21.000, 2.875          1 0.4890891, 0.5109109</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1   22.80, 2.32          1 0.2807752, 0.7192248</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1 21.400, 3.215          0 0.5734229, 0.4265772</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2   18.70, 3.44          0 0.7180533, 0.2819467</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 18.1   6  225 105 2.76 3.460 20.22  1  0    3    1   18.10, 3.46          0 0.7392238, 0.2607762</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="section" class="slide level2" data-background-image="assets/thank-you.png">
