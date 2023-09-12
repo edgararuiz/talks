@@ -6,6 +6,7 @@ format:
     transition: fade
     background-transition: fade
     theme: [default, theme.scss]
+    code-line-numbers: false
     menu: false
 execute: 
   echo: false
@@ -283,6 +284,7 @@ sc <- spark_connect("sc://localhost", method = "spark_connect")
 session <- sc$python_obj
 
 tbl_mtcars <- session$createDataFrame(mtcars)
+
 tbl_mtcars
 #> DataFrame[mpg: double, cyl: double, disp: double, hp: double, drat: double, wt: double, qsec: double, vs: double, am: double, gear: double, carb: double]
 
