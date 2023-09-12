@@ -103,18 +103,6 @@ flowchart LR
 - ----------------- No need to install Java in my machine!!! 🎉  ----------------- 
 :::
 
-## Databricks Catalog Explorer {background-image="assets/slide-frame.png"}
-
-![](assets/catalog-explorer.png){height="500"}
-
-## Connection Pane {background-image="assets/slide-frame.png"}
-
-![](assets/rstudio-connection.png){height="500"}
-
-## Preview top 1000 rows {background-image="assets/slide-frame.png"}
-
-![](assets/preview.png){height="500"}
-
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png"}
 
 `sparklyr` 1.8.3 now supports Databricks Connect "v2":
@@ -151,6 +139,18 @@ sc <- spark_connect(
  )
 ```
 :::
+
+## Databricks Catalog Explorer {background-image="assets/slide-frame.png"}
+
+![](assets/catalog-explorer.png){height="500"}
+
+## Connection Pane {background-image="assets/slide-frame.png"}
+
+![](assets/rstudio-connection.png){height="500"}
+
+## Preview top 1000 rows {background-image="assets/slide-frame.png"}
+
+![](assets/preview.png){height="500"}
 
 ## Accessing the Catalog data {background-image="assets/slide-frame.png"}
 
@@ -333,7 +333,7 @@ tbl_mtcars$corr("wt", "mpg")
 
 Use `reticulate` to extend functionality
 
-::: sample-large
+::: sample-medium
 ```r
 library(reticulate)
 
@@ -344,7 +344,6 @@ connect_classification <- import("pyspark.ml.connect.classification")
 
 :::{.fragment .fade-in}
 ```r
-
 # Build an array column that contains the feature variables
 feature_fields <- pyspark$sql$functions$array("mpg", "wt")
 ```
@@ -357,7 +356,6 @@ tbl_features <- tbl_mtcars$withColumn("features", feature_fields)
 
 :::{.fragment .fade-in}
 ```r
-
 # Instanciate a new model, and designate the label column
 log_reg <- connect_classification$LogisticRegression()
 ```
@@ -370,7 +368,6 @@ log_reg_label <- log_reg$setLabelCol("am")
 
 :::{.fragment .fade-in}
 ```r
-
 # Fit the model 
 model <- log_reg_label$fit(tbl_features)
 ```
