@@ -643,6 +643,23 @@
 <span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;   - Shutdown command sent</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="python-session" class="slide level2" data-background-image="assets/slide-frame.png">
+<h2>Python session</h2>
+<p>Easy to interact with the underlying Python components</p>
+<div class="sample-large">
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(sparklyr)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>sc <span class="ot">&lt;-</span> <span class="fu">spark_connect</span>(<span class="st">"sc://localhost"</span>, <span class="at">method =</span> <span class="st">"spark_connect"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a>session <span class="ot">&lt;-</span> sc<span class="sc">$</span>python_obj</span>
+<span id="cb8-5"><a href="#cb8-5"></a></span>
+<span id="cb8-6"><a href="#cb8-6"></a>tbl_mtcars <span class="ot">&lt;-</span> session<span class="sc">$</span><span class="fu">createDataFrame</span>(mtcars)</span>
+<span id="cb8-7"><a href="#cb8-7"></a>tbl_mtcars</span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt; DataFrame[mpg: double, cyl: double, disp: double, hp: double, drat: double, wt: double, qsec: double, vs: double, am: double, gear: double, carb: double]</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a>tbl_mtcars<span class="sc">$</span><span class="fu">corr</span>(<span class="st">"wt"</span>, <span class="st">"mpg"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; [1] -0.8676594</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="section" class="slide level2" data-background-image="assets/thank-you.png">
 <h2></h2>
 <div class="footer footer-default">

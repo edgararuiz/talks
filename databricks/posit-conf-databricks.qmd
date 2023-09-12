@@ -271,5 +271,24 @@ pysparklyr::spark_connect_service_stop()
 ```
 :::
 
+## Python session {background-image="assets/slide-frame.png"}
+
+Easy to interact with the underlying Python components
+
+::: sample-large
+```r
+library(sparklyr)
+sc <- spark_connect("sc://localhost", method = "spark_connect")
+
+session <- sc$python_obj
+
+tbl_mtcars <- session$createDataFrame(mtcars)
+tbl_mtcars
+#> DataFrame[mpg: double, cyl: double, disp: double, hp: double, drat: double, wt: double, qsec: double, vs: double, am: double, gear: double, carb: double]
+
+tbl_mtcars$corr("wt", "mpg")
+#> [1] -0.8676594
+```
+::: 
 
 ## {background-image="assets/thank-you.png"}
