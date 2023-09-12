@@ -280,19 +280,36 @@ Easy to interact with the underlying Python components
 ```r
 library(sparklyr)
 sc <- spark_connect("sc://localhost", method = "spark_connect")
+```
+:::{.fragment .fade-in}
+```r
 
 session <- sc$python_obj
+```
+:::
 
+:::{.fragment .fade-in}
+```r
 
 tbl_mtcars <- session$createDataFrame(mtcars)
+```
+:::
+
+:::{.fragment .fade-in}
+```r
 
 tbl_mtcars
 #> DataFrame[mpg: double, cyl: double, disp: double, hp: double, drat: double, wt: double, qsec: double, vs: double, am: double, gear: double, carb: double]
+```
+:::
 
+:::{.fragment .fade-in}
+```r
 
 tbl_mtcars$corr("wt", "mpg")
 #> [1] -0.8676594
 ```
+:::
 ::: 
 
 ## Going further {background-image="assets/slide-frame.png"}
@@ -303,23 +320,50 @@ Use `reticulate` to extend functionality
 ```r
 library(reticulate)
 
+# Load the Python libraries
 pyspark <- import("pyspark")
 connect_classification <- import("pyspark.ml.connect.classification")
+```
 
+:::{.fragment .fade-in}
+```r
 
+# Build an array column that contains the feature variables
 feature_fields <- pyspark$sql$functions$array("mpg", "wt")
+```
+:::
+:::{.fragment .fade-in}
+```r
 tbl_features <- tbl_mtcars$withColumn("features", feature_fields)
+```
+:::
 
+:::{.fragment .fade-in}
+```r
 
+# Instanciate a new model, and designate the label column
 log_reg <- connect_classification$LogisticRegression()
+```
+:::
+:::{.fragment .fade-in}
+```r
 log_reg_label <- log_reg$setLabelCol("am")
+```
+:::
 
+:::{.fragment .fade-in}
+```r
 
+# Fit the model 
 model <- log_reg_label$fit(tbl_features)
-
+```
+:::
+:::{.fragment .fade-in}
+```r
 model
 #> LogisticRegression_144975e223ce
 ```
+:::
 :::
 
 ## Going further {background-image="assets/slide-frame.png"}
@@ -328,8 +372,17 @@ Use `reticulate` to extend functionality
 
 ::: sample-large
 ```r
+# Create the predictions
 preds <- model$transform(tbl_features)
+```
+:::{.fragment .fade-in}
+```r
+# Import data into R 
 r_preds <- preds$toPandas()
+```
+:::
+:::{.fragment .fade-in}
+```r
 head(r_preds)
 #>    mpg cyl disp  hp drat    wt  qsec vs am gear carb      features prediction          probability
 #> 1 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4   21.00, 2.62          1 0.4157636, 0.5842364
@@ -339,6 +392,7 @@ head(r_preds)
 #> 5 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2   18.70, 3.44          0 0.7180533, 0.2819467
 #> 6 18.1   6  225 105 2.76 3.460 20.22  1  0    3    1   18.10, 3.46          0 0.7392238, 0.2607762
 ```
+:::
 :::
 
 ## {background-image="assets/thank-you.png"}
