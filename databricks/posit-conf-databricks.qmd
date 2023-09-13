@@ -1,7 +1,10 @@
 ---
 format: 
   revealjs:
-    width: 1200
+    width: 1250
+    height: 740
+    max-scale: 1
+    min-scale: 1
     smaller: true
     transition: fade
     background-transition: fade
@@ -12,13 +15,13 @@ execute:
   echo: false
 ---
 
-# Databricks with R {background-image="assets/title-slide-white.png"}
+# Databricks with R {background-image="assets/title-slide-white.png" background-size="1500px"}
 
 Edgar Ruiz \@ Posit
 
 [linkedin.com/in/edgararuiz](https://www.linkedin.com/in/edgararuiz/)
 
-## Spark Connect {background-image="assets/slide-frame.png"}
+## Spark Connect {background-image="assets/slide-frame.png" background-size="1500px"}
 
 -   Introduced a decoupled client-server architecture
 
@@ -41,7 +44,7 @@ flowchart LR
   style sp  fill:#f4c430,stroke:#666
 ```
 
-## Spark Connect {background-image="assets/slide-frame.png"}
+## Spark Connect {background-image="assets/slide-frame.png" background-size="1500px"}
 
 -   Uses of a *remote procedure call* framework, named **gRPC**.
 
@@ -66,7 +69,7 @@ flowchart LR
   style g1  fill:#447099,stroke:#666,color:#fff
 ```
 
-## Integrating R via *sparklyr* {background-image="assets/slide-frame.png"}
+## Integrating R via *sparklyr* {background-image="assets/slide-frame.png" background-size="1500px"}
 
 -   Integrates with PySpark, via `reticulate`
 
@@ -103,7 +106,7 @@ flowchart LR
 - ----------------- No need to install Java in my machine!!! 🎉  ----------------- 
 :::
 
-## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png"}
+## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px"}
 
 `sparklyr` 1.8.3 now supports Databricks Connect "v2":
 
@@ -120,7 +123,7 @@ sc <- spark_connect(
 ```
 :::
 
-## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png"}
+## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px"}
 
 `sparklyr` uses environment variables, if provided:
 
@@ -140,19 +143,19 @@ sc <- spark_connect(
 ```
 :::
 
-## Databricks Catalog Explorer {background-image="assets/slide-frame.png"}
+## Databricks Catalog Explorer {background-image="assets/slide-frame.png" background-size="1500px"}
 
 ![](assets/catalog-explorer.png){height="500"}
 
-## Connection Pane {background-image="assets/slide-frame.png"}
+## Connection Pane {background-image="assets/slide-frame.png" background-size="1500px"}
 
 ![](assets/rstudio-connection.png){height="500"}
 
-## Preview top 1000 rows {background-image="assets/slide-frame.png"}
+## Preview top 1000 rows {background-image="assets/slide-frame.png" background-size="1500px"}
 
 ![](assets/preview.png){height="500"}
 
-## Accessing the Catalog data {background-image="assets/slide-frame.png"}
+## Accessing the Catalog data {background-image="assets/slide-frame.png" background-size="1500px"}
 
 ::: sample-small
 ```r
@@ -187,7 +190,7 @@ trips
 :::
 
 
-## Interacting with the data {background-image="assets/slide-frame.png"}
+## Interacting with the data {background-image="assets/slide-frame.png" background-size="1500px"}
 
 ::: sample-small
 ```r
@@ -221,7 +224,7 @@ trips %>%
 :::
 :::
 
-## Supported vs Not {background-image="assets/slide-frame.png"}
+## Supported vs Not {background-image="assets/slide-frame.png" background-size="1500px"}
 
 :::{.columns}
 :::{.column width='60%'}
@@ -252,7 +255,7 @@ trips %>%
 :::
 :::
 
-## Run Spark Connect locally {background-image="assets/slide-frame.png"}
+## Run Spark Connect locally {background-image="assets/slide-frame.png" background-size="1500px"}
 
 - Install Spark 3.4+ (one time)
 
@@ -289,7 +292,7 @@ pysparklyr::spark_connect_service_stop()
 :::
 :::
  
-## Python session {background-image="assets/slide-frame.png"}
+## Python session {background-image="assets/slide-frame.png" background-size="1500px"}
 
 Easy to interact with the underlying Python components
 
@@ -329,7 +332,7 @@ tbl_mtcars$corr("wt", "mpg")
 :::
 ::: 
 
-## Going further {background-image="assets/slide-frame.png"}
+## Going further {background-image="assets/slide-frame.png" background-size="1500px"}
 
 Use `reticulate` to extend functionality
 
@@ -380,11 +383,11 @@ model
 :::
 :::
 
-## Going further {background-image="assets/slide-frame.png"}
+## Going further {background-image="assets/slide-frame.png" background-size="1500px"}
 
 Use `reticulate` to extend functionality
 
-::: sample-large
+::: sample-medium
 ```r
 # Create the predictions
 preds <- model$transform(tbl_features)
@@ -409,4 +412,4 @@ head(r_preds)
 :::
 :::
 
-## {background-image="assets/thank-you.png"}
+## {background-image="assets/thank-you.png" background-size="1500px"}

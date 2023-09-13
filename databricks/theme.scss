@@ -5,8 +5,8 @@ $body-color: #444;
 $link-color: #666;
 $code-block-bg: #f5f4f4;
 $code-block-border-color: #f5f4f4;
-$presentation-h1-font-size: 2.8em;
-$presentation-h2-font-size: 2.3em;
+$presentation-h1-font-size: 3.4em;
+$presentation-h2-font-size: 2em;
 $presentation-h3-font-size: 2em;
 $mermaid-font-size: 5px;
 /*-- scss:rules --*/
@@ -23,7 +23,7 @@ $mermaid-font-size: 5px;
 }
 
 .slide p {
-    font-size: 40px;
+    font-size: 35px;
     color: #666;
 }
 
@@ -32,7 +32,7 @@ $mermaid-font-size: 5px;
 }
 
 .slide code {
-  font-size: 36px;
+  font-size: 31px;
 }
 
 .sample-large code {
