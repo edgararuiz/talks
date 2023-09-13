@@ -145,11 +145,26 @@ sc <- spark_connect(
 
 ## Databricks Catalog Explorer {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
-![](assets/catalog-explorer.png){height="500"}
+![](assets/catalog-explorer.png){.absolute top=80 left=50 width=1100}
 
-## Connection Pane {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
-![](assets/rstudio-connection.png){height="500"}
+## Now inside RStudio! {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}
+
+
+![](assets/rstudio-full.png){.absolute top=60 left=30}
+![](assets/rstudio-connections-pane.png){.absolute top=84 left=718 width=500}
+
+
+## Connection Pane {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}
+
+![](assets/rstudio-connections-pane.png){.absolute top=80 left=220 width=800}
+
+## Connection Pane {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}
+
+![](assets/catalog-explorer-closeup.png){.absolute top=120 left=0}
+
+![](assets/rstudio-connections-pane.png){.absolute top=120 left=650 width=600}
+
 
 ## Preview top 1000 rows {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
