@@ -393,12 +393,12 @@
 
 
 <section>
-<section id="databricks-with-r" class="title-slide slide level1 center" data-background-image="assets/title-slide-white.png" data-background-size="1500px">
+<section id="databricks-with-r" class="title-slide slide level1 center" data-background-image="assets/title-slide-white.png" data-background-size="1500px" data-background-color="white" data-transition="convex-out" data-transition-speed="slowest">
 <h1>Databricks with R</h1>
 <p>Edgar Ruiz @ Posit</p>
 <p><a href="https://www.linkedin.com/in/edgararuiz/">linkedin.com/in/edgararuiz</a></p>
 </section>
-<section id="spark-connect" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="spark-connect" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Spark Connect</h2>
 <ul>
 <li><p>Introduced a decoupled client-server architecture</p></li>
@@ -424,7 +424,7 @@
 </div>
 </div>
 </section>
-<section id="spark-connect-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="spark-connect-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Spark Connect</h2>
 <ul>
 <li><p>Uses of a <em>remote procedure call</em> framework, named <strong>gRPC</strong>.</p></li>
@@ -455,7 +455,7 @@
 </div>
 </div>
 </section>
-<section id="integrating-r-via-sparklyr" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="integrating-r-via-sparklyr" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Integrating R via <em>sparklyr</em></h2>
 <ul>
 <li><p>Integrates with PySpark, via <code>reticulate</code></p></li>
@@ -495,13 +495,11 @@
 </div>
 </div>
 </div>
-<div>
-<ul>
-<li class="fragment">—————– No need to install Java in my machine!!! 🎉 —————–</li>
-</ul>
+<div class="fragment">
+<p>-<strong>———————- No need to install Java in my machine!!! 🎉 ———————-</strong></p>
 </div>
 </section>
-<section id="databricks-connect-dbr-13" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="databricks-connect-dbr-13" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Databricks Connect (DBR 13+)</h2>
 <p><code>sparklyr</code> 1.8.3 now supports Databricks Connect “v2”:</p>
 <div class="sample-large">
@@ -515,7 +513,7 @@
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="databricks-connect-dbr-13-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="databricks-connect-dbr-13-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Databricks Connect (DBR 13+)</h2>
 <p><code>sparklyr</code> uses environment variables, if provided:</p>
 <ul>
@@ -530,28 +528,28 @@
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="databricks-catalog-explorer" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="databricks-catalog-explorer" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Databricks Catalog Explorer</h2>
 <p><img data-src="assets/catalog-explorer.png" height="500"></p>
 </section>
-<section id="connection-pane" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="connection-pane" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Connection Pane</h2>
 <p><img data-src="assets/rstudio-connection.png" height="500"></p>
 </section>
-<section id="preview-top-1000-rows" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="preview-top-1000-rows" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Preview top 1000 rows</h2>
 <p><img data-src="assets/preview.png" height="500"></p>
 </section>
-<section id="accessing-the-catalog-data" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="accessing-the-catalog-data" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Accessing the Catalog data</h2>
-<div class="sample-small">
+<div class="sample-medium">
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> <span class="fu">tbl</span>(sc, <span class="fu">in_catalog</span>(<span class="st">"samples"</span>, <span class="st">"nyctaxi"</span>, <span class="st">"trips"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment fade-in">
-<div class="sample-small">
+<div class="sample-medium">
 <div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trips</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Source: spark&lt;`samples`.`nyctaxi`.`trips`&gt; [?? x 6]</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    tpep_pickup_datetime tpep_dropoff_datetime trip_distance fare_amount</span></span>
@@ -571,9 +569,9 @@
 </div>
 </div>
 </section>
-<section id="interacting-with-the-data" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="interacting-with-the-data" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Interacting with the data</h2>
-<div class="sample-small">
+<div class="sample-medium">
 <div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trips <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pickup_zip) <span class="sc">%&gt;%</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
@@ -582,7 +580,7 @@
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment fade-in">
-<div class="sample-small">
+<div class="sample-medium">
 <div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Source: spark&lt;?&gt; [?? x 3]</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    pickup_zip count avg_distance</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &lt;int&gt; &lt;dbl&gt;        &lt;dbl&gt;</span></span>
@@ -600,7 +598,7 @@
 </div>
 </div>
 </section>
-<section id="supported-vs-not" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="supported-vs-not" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Supported vs Not</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
@@ -622,19 +620,19 @@
 </div>
 </div>
 </section>
-<section id="run-spark-connect-locally" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="run-spark-connect-locally" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Run Spark Connect locally</h2>
 <ul>
 <li>Install Spark 3.4+ (one time)</li>
 </ul>
-<div class="sample-small">
+<div class="sample-medium">
 <div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spark_install</span>(<span class="st">"3.4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment fade-in">
 <ul>
 <li>Start the Spark Connect service using:</li>
 </ul>
-<div class="sample-small">
+<div class="sample-medium">
 <div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pysparklyr<span class="sc">::</span><span class="fu">spark_connect_service_start</span>()</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting Spark Connect locally ...</span></span>
@@ -646,7 +644,7 @@
 <ul>
 <li>To stop the service use:</li>
 </ul>
-<div class="sample-small">
+<div class="sample-medium">
 <div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pysparklyr<span class="sc">::</span><span class="fu">spark_connect_service_stop</span>()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Stopping Spark Connect</span></span>
@@ -654,7 +652,7 @@
 </div>
 </div>
 </section>
-<section id="python-session" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="python-session" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Python session</h2>
 <p>Easy to interact with the underlying Python components</p>
 <div class="sample-large">
@@ -680,7 +678,7 @@
 </div>
 </div>
 </section>
-<section id="going-further" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="going-further" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Going further</h2>
 <p>Use <code>reticulate</code> to extend functionality</p>
 <div class="sample-medium">
@@ -713,7 +711,7 @@
 </div>
 </div>
 </section>
-<section id="going-further-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px">
+<section id="going-further-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Going further</h2>
 <p>Use <code>reticulate</code> to extend functionality</p>
 <div class="sample-medium">
@@ -735,7 +733,7 @@
 </div>
 </div>
 </section>
-<section id="section" class="slide level2" data-background-image="assets/thank-you.png" data-background-size="1500px">
+<section id="section" class="slide level2" data-background-image="assets/thank-you.png" data-background-size="1500px" data-background-color="black">
 <h2></h2>
 <div class="footer footer-default">
 

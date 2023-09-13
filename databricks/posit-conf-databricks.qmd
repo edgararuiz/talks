@@ -15,13 +15,13 @@ execute:
   echo: false
 ---
 
-# Databricks with R {background-image="assets/title-slide-white.png" background-size="1500px"}
+# Databricks with R {background-image="assets/title-slide-white.png" background-size="1500px" background-color="white" transition="convex-out" transition-speed="slowest"}
 
 Edgar Ruiz \@ Posit
 
 [linkedin.com/in/edgararuiz](https://www.linkedin.com/in/edgararuiz/)
 
-## Spark Connect {background-image="assets/slide-frame.png" background-size="1500px"}
+## Spark Connect {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 -   Introduced a decoupled client-server architecture
 
@@ -44,7 +44,7 @@ flowchart LR
   style sp  fill:#f4c430,stroke:#666
 ```
 
-## Spark Connect {background-image="assets/slide-frame.png" background-size="1500px"}
+## Spark Connect {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 -   Uses of a *remote procedure call* framework, named **gRPC**.
 
@@ -69,7 +69,7 @@ flowchart LR
   style g1  fill:#447099,stroke:#666,color:#fff
 ```
 
-## Integrating R via *sparklyr* {background-image="assets/slide-frame.png" background-size="1500px"}
+## Integrating R via *sparklyr* {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 -   Integrates with PySpark, via `reticulate`
 
@@ -102,11 +102,11 @@ flowchart LR
   style g1  fill:#447099,stroke:#666,color:#fff
 ```
 
-:::{.incremental}
-- ----------------- No need to install Java in my machine!!! 🎉  ----------------- 
+:::{.fragment}
+-**---------------------- No need to install Java in my machine!!! 🎉  ----------------------**
 :::
 
-## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px"}
+## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 `sparklyr` 1.8.3 now supports Databricks Connect "v2":
 
@@ -123,7 +123,7 @@ sc <- spark_connect(
 ```
 :::
 
-## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px"}
+## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 `sparklyr` uses environment variables, if provided:
 
@@ -143,21 +143,21 @@ sc <- spark_connect(
 ```
 :::
 
-## Databricks Catalog Explorer {background-image="assets/slide-frame.png" background-size="1500px"}
+## Databricks Catalog Explorer {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 ![](assets/catalog-explorer.png){height="500"}
 
-## Connection Pane {background-image="assets/slide-frame.png" background-size="1500px"}
+## Connection Pane {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 ![](assets/rstudio-connection.png){height="500"}
 
-## Preview top 1000 rows {background-image="assets/slide-frame.png" background-size="1500px"}
+## Preview top 1000 rows {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 ![](assets/preview.png){height="500"}
 
-## Accessing the Catalog data {background-image="assets/slide-frame.png" background-size="1500px"}
+## Accessing the Catalog data {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
-::: sample-small
+::: sample-medium
 ```r
 library(dplyr)
 library(dbplyr)
@@ -167,7 +167,7 @@ trips <- tbl(sc, in_catalog("samples", "nyctaxi", "trips"))
 :::
 
 ::: {.fragment .fade-in}
-::: sample-small
+::: sample-medium
 ```r
 trips
 #> # Source: spark<`samples`.`nyctaxi`.`trips`> [?? x 6]
@@ -190,9 +190,9 @@ trips
 :::
 
 
-## Interacting with the data {background-image="assets/slide-frame.png" background-size="1500px"}
+## Interacting with the data {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
-::: sample-small
+::: sample-medium
 ```r
 trips %>%
   group_by(pickup_zip) %>%
@@ -204,7 +204,7 @@ trips %>%
 :::
 
 ::: {.fragment .fade-in}
-::: sample-small
+::: sample-medium
 ```r
 #> # Source: spark<?> [?? x 3]
 #>    pickup_zip count avg_distance
@@ -224,7 +224,7 @@ trips %>%
 :::
 :::
 
-## Supported vs Not {background-image="assets/slide-frame.png" background-size="1500px"}
+## Supported vs Not {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 :::{.columns}
 :::{.column width='60%'}
@@ -255,11 +255,11 @@ trips %>%
 :::
 :::
 
-## Run Spark Connect locally {background-image="assets/slide-frame.png" background-size="1500px"}
+## Run Spark Connect locally {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 - Install Spark 3.4+ (one time)
 
-::: sample-small
+::: sample-medium
 ``` r
 spark_install("3.4")
 ```
@@ -268,7 +268,7 @@ spark_install("3.4")
 ::: {.fragment .fade-in}
 - Start the Spark Connect service using: 
 
-::: sample-small
+::: sample-medium
 ``` r
 pysparklyr::spark_connect_service_start()
 
@@ -282,7 +282,7 @@ pysparklyr::spark_connect_service_start()
 ::: {.fragment .fade-in}
 - To stop the service use:
 
-::: sample-small
+::: sample-medium
 ```r
 pysparklyr::spark_connect_service_stop()
 
@@ -292,7 +292,7 @@ pysparklyr::spark_connect_service_stop()
 :::
 :::
  
-## Python session {background-image="assets/slide-frame.png" background-size="1500px"}
+## Python session {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 Easy to interact with the underlying Python components
 
@@ -332,7 +332,7 @@ tbl_mtcars$corr("wt", "mpg")
 :::
 ::: 
 
-## Going further {background-image="assets/slide-frame.png" background-size="1500px"}
+## Going further {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 Use `reticulate` to extend functionality
 
@@ -383,7 +383,7 @@ model
 :::
 :::
 
-## Going further {background-image="assets/slide-frame.png" background-size="1500px"}
+## Going further {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 Use `reticulate` to extend functionality
 
@@ -412,4 +412,4 @@ head(r_preds)
 :::
 :::
 
-## {background-image="assets/thank-you.png" background-size="1500px"}
+## {background-image="assets/thank-you.png" background-size="1500px" background-color="black"}
