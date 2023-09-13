@@ -44,13 +44,13 @@ flowchart LR
   style sp  fill:#f4c430,stroke:#666
 ```
 
-## Spark Connect {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Underlying technologies {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 -   Uses of a *remote procedure call* framework, named **gRPC**.
 
 -   Uses **Torch** for the ML capabilities (Spark 3.5+).
 
--   `PySpark` offers the best integration with Connect.
+-   `PySpark` offers the best integration with Spark Connect.
 
 ```{mermaid}
 flowchart LR
@@ -69,7 +69,7 @@ flowchart LR
   style g1  fill:#447099,stroke:#666,color:#fff
 ```
 
-## Integrating R via *sparklyr* {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Integrating R, via *sparklyr* {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 -   Integrates with PySpark, via `reticulate`
 
@@ -104,6 +104,49 @@ flowchart LR
 
 :::{.fragment}
 -**---------------------- No need to install Java in my machine!!! 🎉  ----------------------**
+:::
+
+## Slight catch {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+Along with **Python 3.9** or above, you will need an environment with the following Python libraries installed:
+
+:::{.columns}
+:::{.column width="40%"}
+- `pyspark`
+- `pandas`
+- `PyArrow`
+- `grpcio`
+- `grpcio_status`
+:::
+:::{.column width="60%"}
+- `google-api-python-client`
+- `databricks-connect` *(if using Databricks)*
+- `delta-spark`
+- `torch` *(Spark 3.5+)*
+- `torcheval` *(Spark 3.5+)*
+:::
+:::
+
+## Get started easy {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+Create the Python environment that contains the needed libraries with one command:
+
+:::{.sample-large}
+```r
+pysparklyr::install_pyspark()
+
+#> Using Python: /Users/edgar/.pyenv/versions/3.10.13/bin/python3.10
+#> Creating virtual environment 'r-sparklyr' ... 
+#> + /Users/edgar/.pyenv/versions/3.10.13/bin/python3.10 -m venv /Users/edgar/.virtualenvs/r-sparklyr
+#> Done!
+#> Installing packages: pip, wheel, setuptools
+#> + /Users/edgar/.virtualenvs/r-sparklyr/bin/python -m pip install --upgrade --no-user pip wheel setuptools
+#> Requirement already satisfied: pip in /Users/edgar/.virtualenvs/r-sparklyr/lib/python3.10/site-packages (23.0.1)
+#> Collecting pip
+#>   Using cached pip-23.2.1-py3-none-any.whl (2.1 MB)
+...
+#> Successfully installed MarkupSafe-2.1.3 PyArrow-13.0.0 cachetools-5.3.1 certifi-2023.7.22 charset-normalizer-3.2.0 databricks-connect-13.3.0 databricks-sdk-0.8.0 delta-spark-2.4.0 filelock-3.12.4 google-api-core-2.11.1 google-api-python-client-2.99.0 google-auth-2.23.0 google-auth-httplib2-0.1.1 googleapis-common-protos-1.60.0 grpcio-1.58.0 grpcio_status-1.58.0 httplib2-0.22.0 idna-3.4 importlib-metadata-6.8.0 jinja2-3.1.2 mpmath-1.3.0 networkx-3.1 numpy-1.25.2 pandas-2.1.0 protobuf-4.24.3 py4j-0.10.9.7 pyasn1-0.5.0 pyasn1-modules-0.3.0 pyparsing-3.1.1 pyspark-3.4.1 python-dateutil-2.8.2 pytz-2023.3.post1 requests-2.31.0 rsa-4.9 six-1.16.0 sympy-1.12 torch-2.0.1 torcheval-0.0.7 typing-extensions-4.7.1 tzdata-2023.3 uritemplate-4.1.1 urllib3-1.26.16 zipp-3.16.2
+```
 :::
 
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
