@@ -413,3 +413,5 @@ head(r_preds)
 :::
 
 ## {background-image="assets/thank-you.png" background-size="1500px" background-color="black"}
+
+![](assets/racoon.jpg){.absolute top=210 left=820 width=450}
