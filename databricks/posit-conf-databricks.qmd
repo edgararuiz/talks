@@ -166,7 +166,6 @@ pysparklyr::install_pyspark()
 ...
 #> Successfully installed MarkupSafe-2.1.3 PyArrow-13.0.0 cachetools-5.3.1 certifi-2023.7.22 charset-normalizer-3.2.0 databricks-connect-13.3.0 databricks-sdk-0.8.0 delta-spark-2.4.0 filelock-3.12.4 google-api-core-2.11.1 google-api-python-client-2.99.0 google-auth-2.23.0 google-auth-httplib2-0.1.1 googleapis-common-protos-1.60.0 grpcio-1.58.0 grpcio_status-1.58.0 httplib2-0.22.0 idna-3.4 importlib-metadata-6.8.0 jinja2-3.1.2 mpmath-1.3.0 networkx-3.1 numpy-1.25.2 pandas-2.1.0 protobuf-4.24.3 py4j-0.10.9.7 pyasn1-0.5.0 pyasn1-modules-0.3.0 pyparsing-3.1.1 pyspark-3.4.1 python-dateutil-2.8.2 pytz-2023.3.post1 requests-2.31.0 rsa-4.9 six-1.16.0 sympy-1.12 torch-2.0.1 torcheval-0.0.7 typing-extensions-4.7.1 tzdata-2023.3 uritemplate-4.1.1 urllib3-1.26.16 zipp-3.16.2
 ```
-
 :::
 :::
 
@@ -552,6 +551,13 @@ A quick review, and link sharing
 - The integration was developed using Python, and `PySpark`
 - Access the entire `PySpark` API through `reticulate`
 :::
+
+## Links{background-image="assets/slide-frame.png" background-size="1500px" background-color="#fff"}
+
+- Spark Connect Overview - [https://spark.apache.org/docs/latest/spark-connect-overview.html](https://spark.apache.org/docs/latest/spark-connect-overview.html)
+- Databricks Connect v2 intro post - [https://www.databricks.com/blog/2023/04/18/use-databricks-anywhere-databricks-connect-v2.html](https://www.databricks.com/blog/2023/04/18/use-databricks-anywhere-databricks-connect-v2.html)
+- Using `sparklyr` with Connect article [https://spark.rstudio.com/deployment/databricks-spark-connect.html](https://spark.rstudio.com/deployment/databricks-spark-connect.html)
+
 
 ## {background-image="assets/thank-you.png" background-size="1500px" background-color="black"}
 
