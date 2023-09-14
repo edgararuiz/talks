@@ -206,13 +206,14 @@ pysparklyr::spark_connect_service_stop()
 ```
 :::
 :::
- 
 
 # Databricks Connect{background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
 
 :::{.dark-slide}
 Use from any application, running anywhere
 :::
+
+## Databricks Connect "v2" {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
@@ -252,7 +253,6 @@ sc <- spark_connect(
 :::
 
 ## Explore data in the Unity Catalog {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}
-
 
 ![](assets/catalog-explorer.png){.absolute top=80 left=50 width=1100}
 
@@ -322,7 +322,6 @@ trips
 ```
 :::
 :::
-
 
 ## Interacting with the data {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
@@ -535,6 +534,23 @@ head(r_preds, 3)
 #> 3 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1   22.80, 2.32          1 0.2807752, 0.7192248
 ```
 :::
+:::
+
+# In closing {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+
+:::{.dark-slide}
+A quick review, and link sharing
+:::
+
+## Today, we covered{background-image="assets/slide-frame.png" background-size="1500px" background-color="#fff"}
+:::{.incremental}
+-  <u>Spark Connect</u> enables remote connectivity to Spark clusters
+-  Allows R users to interact with a cluster from their preferred environment
+-  <u>Databricks Connect</u> , is based on **Spark Connect** architecture. Available in DBR version 13+
+- Posit Workbench will support remote cluster management
+- `sparklyr` supports Spark & Databricks Connect, via the `pysparklyr` extension
+- The integration was developed using Python, and `PySpark`
+- Access the entire `PySpark` API through `reticulate`
 :::
 
 ## {background-image="assets/thank-you.png" background-size="1500px" background-color="black"}
