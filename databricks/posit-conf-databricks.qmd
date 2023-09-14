@@ -558,7 +558,20 @@ A quick review, and link sharing
 - Databricks Connect v2 intro post - [https://www.databricks.com/blog/2023/04/18/use-databricks-anywhere-databricks-connect-v2.html](https://www.databricks.com/blog/2023/04/18/use-databricks-anywhere-databricks-connect-v2.html)
 - Using `sparklyr` with Connect article [https://spark.rstudio.com/deployment/databricks-spark-connect.html](https://spark.rstudio.com/deployment/databricks-spark-connect.html)
 
-
 ## {background-image="assets/thank-you.png" background-size="1500px" background-color="black"}
 
 ![](assets/racoon.jpg){.absolute top=210 left=820 width=450}
+
+## {background-image="assets/thank-you.png" background-size="1500px" background-color="black"}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+:::{.dark-slide}
+--------------- Link to the presentation ----->
+:::
+
+![](assets/qr-code.png){.absolute top=190 left=790 width=500}
