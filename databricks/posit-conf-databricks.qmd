@@ -21,6 +21,12 @@ Edgar Ruiz \@ Posit
 
 [linkedin.com/in/edgararuiz](https://www.linkedin.com/in/edgararuiz/)
 
+# Spark Connect{background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+
+:::{.dark-slide}
+Thin client, with the full power of Apache Spark
+:::
+
 ## Spark Connect {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 -   Introduced a decoupled client-server architecture
@@ -127,7 +133,7 @@ Along with **Python 3.9** or above, you will need an environment with the follow
 :::
 :::
 
-## Get started easy {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Getting started is easy {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 The new functionality is available in an `sparklyr` extension called `pysparklyr`.
 It contains a function that creates and prepares your Python environment.
@@ -162,6 +168,50 @@ pysparklyr::install_pyspark()
 ```
 
 :::
+:::
+
+## Run Spark Connect locally {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+- Install Spark 3.4+ (one time)
+
+::: sample-medium
+``` r
+spark_install("3.4")
+```
+:::
+
+::: {.fragment .fade-in}
+- Start the Spark Connect service using: 
+
+::: sample-medium
+``` r
+pysparklyr::spark_connect_service_start()
+
+#> Starting Spark Connect locally ...
+#>   starting org.apache.spark.sql.connect.service.SparkConnectServer, logging to
+#>   /Users/edgar/spark/spark-3.4.0-bin-hadoop3/logs/spark-edgar-org.apache.spark.sql.connect.service.SparkConnectServer-1-Edgars-work-laptop.local.out
+```
+:::
+:::
+
+::: {.fragment .fade-in}
+- To stop the service use:
+
+::: sample-medium
+```r
+pysparklyr::spark_connect_service_stop()
+
+#> Stopping Spark Connect
+#>   - Shutdown command sent
+```
+:::
+:::
+ 
+
+# Databricks Connect{background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+
+:::{.dark-slide}
+Use from any application, running anywhere
 :::
 
 ## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
@@ -321,6 +371,12 @@ trips %>%
 
 ## Posit Workbench! {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
+# Additional info{background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+
+:::{.dark-slide}
+What is supported, and some advanced functionality
+:::
+
 ## Spark Connect & Databricks Connect {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 <br>
@@ -344,6 +400,7 @@ trips %>%
 
 :::{.column width='40%'}
 
+
 ### Not supported
 
 - ML functions 
@@ -355,43 +412,6 @@ trips %>%
 :::
 :::
 
-## Run Spark Connect locally {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
-
-- Install Spark 3.4+ (one time)
-
-::: sample-medium
-``` r
-spark_install("3.4")
-```
-:::
-
-::: {.fragment .fade-in}
-- Start the Spark Connect service using: 
-
-::: sample-medium
-``` r
-pysparklyr::spark_connect_service_start()
-
-#> Starting Spark Connect locally ...
-#>   starting org.apache.spark.sql.connect.service.SparkConnectServer, logging to
-#>   /Users/edgar/spark/spark-3.4.0-bin-hadoop3/logs/spark-edgar-org.apache.spark.sql.connect.service.SparkConnectServer-1-Edgars-work-laptop.local.out
-```
-:::
-:::
-
-::: {.fragment .fade-in}
-- To stop the service use:
-
-::: sample-medium
-```r
-pysparklyr::spark_connect_service_stop()
-
-#> Stopping Spark Connect
-#>   - Shutdown command sent
-```
-:::
-:::
- 
 ## Access the entire API {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 Easy to interact with the underlying Python components
@@ -435,7 +455,7 @@ tbl_mtcars$corr("wt", "mpg")
 :::
 ::: 
 
-## Going further using *reticulate* {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Go further using *reticulate* {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 Use `reticulate` to extend functionality
 
@@ -475,7 +495,7 @@ log_reg_label <- log_reg$setLabelCol("am")
 
 :::
 
-## Going further using *reticulate* {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Go further using *reticulate* {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 Use `reticulate` to extend functionality
 

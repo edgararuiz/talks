@@ -392,13 +392,20 @@
     <div class="slides">
 
 
-<section>
 <section id="databricks-with-r" class="title-slide slide level1 center" data-background-image="assets/title-slide-white.png" data-background-size="1500px" data-background-color="white">
 <h1>Databricks with R</h1>
 <p>Edgar Ruiz @ Posit</p>
 <p><a href="https://www.linkedin.com/in/edgararuiz/">linkedin.com/in/edgararuiz</a></p>
 </section>
-<section id="spark-connect" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
+
+<section>
+<section id="spark-connect" class="title-slide slide level1 center" data-background-image="assets/slide-frame-dark.png" data-background-size="1500px" data-background-color="#2a7070">
+<h1>Spark Connect</h1>
+<div class="dark-slide">
+<p>Thin client, with the full power of Apache Spark</p>
+</div>
+</section>
+<section id="spark-connect-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Spark Connect</h2>
 <ul>
 <li><p>Introduced a decoupled client-server architecture</p></li>
@@ -522,8 +529,8 @@
 </div>
 </div>
 </section>
-<section id="get-started-easy" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
-<h2>Get started easy</h2>
+<section id="getting-started-is-easy" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
+<h2>Getting started is easy</h2>
 <p>The new functionality is available in an <code>sparklyr</code> extension called <code>pysparklyr</code>. It contains a function that creates and prepares your Python environment.</p>
 <div class="sample-medium">
 <div class="fragment">
@@ -547,18 +554,57 @@
 </div>
 </div>
 </section>
+<section id="run-spark-connect-locally" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
+<h2>Run Spark Connect locally</h2>
+<ul>
+<li>Install Spark 3.4+ (one time)</li>
+</ul>
+<div class="sample-medium">
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spark_install</span>(<span class="st">"3.4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment fade-in">
+<ul>
+<li>Start the Spark Connect service using:</li>
+</ul>
+<div class="sample-medium">
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pysparklyr<span class="sc">::</span><span class="fu">spark_connect_service_start</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting Spark Connect locally ...</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   starting org.apache.spark.sql.connect.service.SparkConnectServer, logging to</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   /Users/edgar/spark/spark-3.4.0-bin-hadoop3/logs/spark-edgar-org.apache.spark.sql.connect.service.SparkConnectServer-1-Edgars-work-laptop.local.out</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment fade-in">
+<ul>
+<li>To stop the service use:</li>
+</ul>
+<div class="sample-medium">
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pysparklyr<span class="sc">::</span><span class="fu">spark_connect_service_stop</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Stopping Spark Connect</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Shutdown command sent</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="databricks-connect" class="title-slide slide level1 center" data-background-image="assets/slide-frame-dark.png" data-background-size="1500px" data-background-color="#2a7070">
+<h1>Databricks Connect</h1>
+<div class="dark-slide">
+<p>Use from any application, running anywhere</p>
+</div>
+</section>
 <section id="databricks-connect-dbr-13" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Databricks Connect (DBR 13+)</h2>
 <p><code>sparklyr</code> 1.8.3, along with <code>pysparklyr</code>, supports Databricks Connect “v2”:</p>
 <div class="sample-large">
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sparklyr)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">spark_connect</span>(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">master     =</span> <span class="st">""</span>, <span class="co"># Your org's address</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster_id =</span> <span class="st">""</span>, <span class="co"># Your cluster's ID</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">token      =</span> <span class="st">""</span>, <span class="co"># Your personal token</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">method     =</span> <span class="st">"databricks_connect"</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sparklyr)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">spark_connect</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">master     =</span> <span class="st">""</span>, <span class="co"># Your org's address</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster_id =</span> <span class="st">""</span>, <span class="co"># Your cluster's ID</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">token      =</span> <span class="st">""</span>, <span class="co"># Your personal token</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">method     =</span> <span class="st">"databricks_connect"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="databricks-connect-dbr-13-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
@@ -571,9 +617,9 @@
 </ul>
 <p>Simplifies, and secures connection code:</p>
 <div class="sample-large">
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">spark_connect</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"databricks_connect"</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">spark_connect</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"databricks_connect"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="explore-data-in-the-unity-catalog" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white" data-auto-animate="true">
@@ -607,58 +653,58 @@
 <section id="accessing-the-catalog-data" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Accessing the Catalog data</h2>
 <div class="sample-medium">
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> <span class="fu">tbl</span>(sc, <span class="fu">in_catalog</span>(<span class="st">"samples"</span>, <span class="st">"nyctaxi"</span>, <span class="st">"trips"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>trips <span class="ot">&lt;-</span> <span class="fu">tbl</span>(sc, <span class="fu">in_catalog</span>(<span class="st">"samples"</span>, <span class="st">"nyctaxi"</span>, <span class="st">"trips"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment fade-in">
 <div class="sample-medium">
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>trips</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Source: spark&lt;`samples`.`nyctaxi`.`trips`&gt; [?? x 6]</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    tpep_pickup_datetime tpep_dropoff_datetime trip_distance fare_amount</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;               &lt;dttm&gt;                        &lt;dbl&gt;       &lt;dbl&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2016-02-14 10:52:13  2016-02-14 11:16:04            4.94        19  </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2016-02-04 12:44:19  2016-02-04 12:46:00            0.28         3.5</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2016-02-17 11:13:57  2016-02-17 11:17:55            0.7          5  </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2016-02-18 04:36:07  2016-02-18 04:41:45            0.8          6  </span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2016-02-22 08:14:41  2016-02-22 08:31:52            4.51        17  </span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2016-02-05 00:45:02  2016-02-05 00:50:26            1.8          7  </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2016-02-15 09:03:28  2016-02-15 09:18:45            2.58        12  </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2016-02-25 13:09:26  2016-02-25 13:24:50            1.4         11  </span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2016-02-13 10:28:18  2016-02-13 10:36:36            1.21         7.5</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2016-02-13 18:03:48  2016-02-13 18:10:24            0.6          6  </span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ more rows</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: pickup_zip &lt;int&gt;, dropoff_zip &lt;int&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>trips</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Source: spark&lt;`samples`.`nyctaxi`.`trips`&gt; [?? x 6]</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    tpep_pickup_datetime tpep_dropoff_datetime trip_distance fare_amount</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dttm&gt;               &lt;dttm&gt;                        &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 2016-02-14 10:52:13  2016-02-14 11:16:04            4.94        19  </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 2016-02-04 12:44:19  2016-02-04 12:46:00            0.28         3.5</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 2016-02-17 11:13:57  2016-02-17 11:17:55            0.7          5  </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 2016-02-18 04:36:07  2016-02-18 04:41:45            0.8          6  </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 2016-02-22 08:14:41  2016-02-22 08:31:52            4.51        17  </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 2016-02-05 00:45:02  2016-02-05 00:50:26            1.8          7  </span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 2016-02-15 09:03:28  2016-02-15 09:18:45            2.58        12  </span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 2016-02-25 13:09:26  2016-02-25 13:24:50            1.4         11  </span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 2016-02-13 10:28:18  2016-02-13 10:36:36            1.21         7.5</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2016-02-13 18:03:48  2016-02-13 18:10:24            0.6          6  </span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ more rows</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: pickup_zip &lt;int&gt;, dropoff_zip &lt;int&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
 <section id="interacting-with-the-data" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Interacting with the data</h2>
 <div class="sample-medium">
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>trips <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pickup_zip) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">count =</span> <span class="fu">n</span>(),</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_distance =</span> <span class="fu">mean</span>(trip_distance, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>trips <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pickup_zip) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">count =</span> <span class="fu">n</span>(),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_distance =</span> <span class="fu">mean</span>(trip_distance, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment fade-in">
 <div class="sample-medium">
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Source: spark&lt;?&gt; [?? x 3]</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    pickup_zip count avg_distance</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &lt;int&gt; &lt;dbl&gt;        &lt;dbl&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1      10032    15         4.49</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2      10013   273         2.98</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3      10022   519         2.00</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4      10162   414         2.19</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5      10018  1012         2.60</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6      11106    39         2.03</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7      10011  1129         2.29</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8      11103    16         2.75</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9      11237    15         3.31</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      11422   429        15.5 </span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Source: spark&lt;?&gt; [?? x 3]</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    pickup_zip count avg_distance</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         &lt;int&gt; &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1      10032    15         4.49</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2      10013   273         2.98</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3      10022   519         2.00</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4      10162   414         2.19</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5      10018  1012         2.60</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6      11106    39         2.03</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7      10011  1129         2.29</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8      11103    16         2.75</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9      11237    15         3.31</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      11422   429        15.5 </span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -669,6 +715,13 @@
 </section>
 <section id="posit-workbench" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Posit Workbench!</h2>
+</section></section>
+<section>
+<section id="additional-info" class="title-slide slide level1 center" data-background-image="assets/slide-frame-dark.png" data-background-size="1500px" data-background-color="#2a7070">
+<h1>Additional info</h1>
+<div class="dark-slide">
+<p>What is supported, and some advanced functionality</p>
+</div>
 </section>
 <section id="spark-connect-databricks-connect" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Spark Connect &amp; Databricks Connect</h2>
@@ -690,38 +743,6 @@
 <li><p><code>SDF</code> functions</p></li>
 <li><p><code>tidyr</code></p></li>
 </ul>
-</div>
-</div>
-</section>
-<section id="run-spark-connect-locally" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
-<h2>Run Spark Connect locally</h2>
-<ul>
-<li>Install Spark 3.4+ (one time)</li>
-</ul>
-<div class="sample-medium">
-<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spark_install</span>(<span class="st">"3.4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment fade-in">
-<ul>
-<li>Start the Spark Connect service using:</li>
-</ul>
-<div class="sample-medium">
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>pysparklyr<span class="sc">::</span><span class="fu">spark_connect_service_start</span>()</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting Spark Connect locally ...</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   starting org.apache.spark.sql.connect.service.SparkConnectServer, logging to</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   /Users/edgar/spark/spark-3.4.0-bin-hadoop3/logs/spark-edgar-org.apache.spark.sql.connect.service.SparkConnectServer-1-Edgars-work-laptop.local.out</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<div class="fragment fade-in">
-<ul>
-<li>To stop the service use:</li>
-</ul>
-<div class="sample-medium">
-<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pysparklyr<span class="sc">::</span><span class="fu">spark_connect_service_stop</span>()</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Stopping Spark Connect</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - Shutdown command sent</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -754,8 +775,8 @@
 </div>
 </div>
 </section>
-<section id="going-further-using-reticulate" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
-<h2>Going further using <em>reticulate</em></h2>
+<section id="go-further-using-reticulate" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
+<h2>Go further using <em>reticulate</em></h2>
 <p>Use <code>reticulate</code> to extend functionality</p>
 <div class="sample-large">
 <div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -779,8 +800,8 @@
 </div>
 </div>
 </section>
-<section id="going-further-using-reticulate-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
-<h2>Going further using <em>reticulate</em></h2>
+<section id="go-further-using-reticulate-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
+<h2>Go further using <em>reticulate</em></h2>
 <p>Use <code>reticulate</code> to extend functionality</p>
 <div class="sample-large">
 <div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the model </span></span>
