@@ -595,11 +595,12 @@
 </section>
 <section id="databricks-connect-v2" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Databricks Connect “v2”</h2>
-</section>
-<section id="databricks-connect-dbr-13" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
-<h2>Databricks Connect (DBR 13+)</h2>
-<p><code>sparklyr</code> 1.8.3, along with <code>pysparklyr</code>, supports Databricks Connect “v2”:</p>
 <div class="sample-large">
+<ul>
+<li><p>Based on Spark Connect</p></li>
+<li><p>Available on DBR 13 onward</p></li>
+<li><p>Databricks Connect becomes a thin client that is simple and easy to use</p></li>
+<li><p><code>sparklyr</code> 1.8.3, along with <code>pysparklyr</code>, supports Databricks Connect:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sparklyr)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">spark_connect</span>(</span>
@@ -607,22 +608,23 @@
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster_id =</span> <span class="st">""</span>, <span class="co"># Your cluster's ID</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">token      =</span> <span class="st">""</span>, <span class="co"># Your personal token</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">method     =</span> <span class="st">"databricks_connect"</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
 </div>
 </section>
-<section id="databricks-connect-dbr-13-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
-<h2>Databricks Connect (DBR 13+)</h2>
+<section id="databricks-connect-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
+<h2>Databricks Connect</h2>
 <p><code>sparklyr</code> uses environment variables, if provided:</p>
 <ul>
 <li><p><code>DATABRICKS_HOST</code> - Your org’s address</p></li>
-<li><p><code>DATABRICKS_CLUSTER_ID</code> - Your cluster’s ID</p></li>
 <li><p><code>DATABRICKS_TOKEN</code> - Your personal token</p></li>
 </ul>
 <p>Simplifies, and secures connection code:</p>
 <div class="sample-large">
 <div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">spark_connect</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"databricks_connect"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster_id =</span> <span class="st">"{your cluster id}"</span>, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"databricks_connect"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="explore-data-in-the-unity-catalog" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white" data-auto-animate="true">
@@ -1089,6 +1091,44 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

@@ -13,6 +13,7 @@ format:
     menu: false
 execute: 
   echo: false
+engine: knitr
 ---
 
 # Databricks with R {background-image="assets/title-slide-white.png" background-size="1500px" background-color="white"}
@@ -214,30 +215,32 @@ pysparklyr::spark_connect_service_stop()
 
 ## Databricks Connect "v2" {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
-## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
-
-`sparklyr` 1.8.3, along with `pysparklyr`, supports Databricks Connect "v2":
-
 ::: sample-large
-``` r
-library(sparklyr)
+- Based on Spark Connect 
 
-sc <- spark_connect(
-  master     = "", # Your org's address
-  cluster_id = "", # Your cluster's ID
-  token      = "", # Your personal token
-  method     = "databricks_connect"
- )
-```
+- Available on DBR 13 onward
+
+- Databricks Connect becomes a thin client that is simple and easy to use
+
+- `sparklyr` 1.8.3, along with `pysparklyr`, supports Databricks Connect:
+
+    ``` r
+    library(sparklyr)
+    
+    sc <- spark_connect(
+      master     = "", # Your org's address
+      cluster_id = "", # Your cluster's ID
+      token      = "", # Your personal token
+      method     = "databricks_connect"
+     )
+    ```
 :::
 
-## Databricks Connect (DBR 13+) {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Databricks Connect {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 `sparklyr` uses environment variables, if provided:
 
 -   `DATABRICKS_HOST` - Your org's address
-
--   `DATABRICKS_CLUSTER_ID` - Your cluster's ID
 
 -   `DATABRICKS_TOKEN` - Your personal token
 
@@ -246,6 +249,7 @@ Simplifies, and secures connection code:
 ::: sample-large
 ``` r
 sc <- spark_connect(
+  cluster_id = "{your cluster id}", 
   method = "databricks_connect"
  )
 ```
@@ -575,5 +579,5 @@ A quick review, and link sharing
 :::{.dark-slide}
 --------------- Link to the presentation ----->
 :::
-
+  
 ![](assets/qr-code.png){.absolute top=190 left=790 width=500}
