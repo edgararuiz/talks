@@ -24,7 +24,7 @@ Edgar Ruiz \@ Posit
 # Spark Connect{background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
 
 :::{.dark-slide}
-Thin client, with the full power of Apache Spark
+'Thin client, with the full power of Apache Spark'
 :::
 
 ## Spark Connect {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
@@ -209,7 +209,7 @@ pysparklyr::spark_connect_service_stop()
 # Databricks Connect{background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
 
 :::{.dark-slide}
-Use from any application, running anywhere
+'Use from any application, running anywhere'
 :::
 
 ## Databricks Connect "v2" {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
@@ -542,7 +542,7 @@ A quick review, and link sharing
 :::
 
 ## Today, we covered{background-image="assets/slide-frame.png" background-size="1500px" background-color="#fff"}
-:::{.incremental}
+
 -  <u>Spark Connect</u> enables remote connectivity to Spark clusters
 -  Allows R users to interact with a cluster from their preferred environment
 -  <u>Databricks Connect</u> , is based on **Spark Connect** architecture. Available in DBR version 13+
@@ -550,13 +550,15 @@ A quick review, and link sharing
 - `sparklyr` supports Spark & Databricks Connect, via the `pysparklyr` extension
 - The integration was developed using Python, and `PySpark`
 - Access the entire `PySpark` API through `reticulate`
-:::
+
 
 ## Links{background-image="assets/slide-frame.png" background-size="1500px" background-color="#fff"}
 
 - Spark Connect Overview - [https://spark.apache.org/docs/latest/spark-connect-overview.html](https://spark.apache.org/docs/latest/spark-connect-overview.html)
 - Databricks Connect v2 intro post - [https://www.databricks.com/blog/2023/04/18/use-databricks-anywhere-databricks-connect-v2.html](https://www.databricks.com/blog/2023/04/18/use-databricks-anywhere-databricks-connect-v2.html)
-- Using `sparklyr` with Connect article [https://spark.rstudio.com/deployment/databricks-spark-connect.html](https://spark.rstudio.com/deployment/databricks-spark-connect.html)
+- Using `sparklyr` with Connect article -  [https://spark.rstudio.com/deployment/databricks-spark-connect.html](https://spark.rstudio.com/deployment/databricks-spark-connect.html)
+
+- Talk GitHub repo - [https://github.com/edgararuiz/talks/tree/main/databricks](https://github.com/edgararuiz/talks/tree/main/databricks)
 
 ## {background-image="assets/thank-you.png" background-size="1500px" background-color="black"}
 
