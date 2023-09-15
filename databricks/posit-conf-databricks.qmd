@@ -371,7 +371,18 @@ trips %>%
 
 ### And, coming soon...
 
-## Posit Workbench! {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Databricks Compute {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}
+
+![](assets/wb-compute.png){.absolute top=80 left=50 width=1100}
+
+## Inside RStudio {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}
+
+![](assets/wb-compute.png){.absolute top=400 left=1000 width=10}
+![](assets/wb-rstudio.png){.absolute top=80 left=50 width=1100}
+
+![](assets/wb-pane.png){.absolute top=295 left=690 width=459}
+
+
 
 # Additional info{background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
 
