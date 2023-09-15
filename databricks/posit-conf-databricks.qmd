@@ -396,6 +396,66 @@ trips %>%
 ![](assets/wb-pane-expanded.png){.absolute top=130 left=800 width=500}
 ![](assets/wb-cluster.png){.absolute top=130 left=0 width=790}
 
+## Makes it easy to connect {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}
+
+![](assets/wb-pane-expanded.png){.absolute top=100 left=700 width=600}
+
+:::{.sample-large}
+:::{.columns}
+:::{.column width="55%"}
+<br><br>
+```r
+library(sparklyr)
+
+sc <- spark_connect(
+  cluster_id = "",
+  method = "databricks_connect"
+)
+```
+:::
+:::
+:::
+
+## Copy the cluster ID from the pane {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}
+
+![](assets/wb-pane-expanded-copy.png){.absolute top=100 left=700 width=600}
+
+:::{.sample-large}
+:::{.columns}
+:::{.column width="55%"}
+<br><br>
+```r
+library(sparklyr)
+
+sc <- spark_connect(
+  cluster_id = "",
+  method = "databricks_connect"
+)
+```
+:::
+:::
+:::
+
+## Paste to your connection code {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}
+
+![](assets/wb-pane-expanded-paste.png){.absolute top=100 left=700 width=600}
+
+:::{.sample-large}
+:::{.columns}
+:::{.column width="55%"}
+<br><br>
+```r
+library(sparklyr)
+
+sc <- spark_connect(
+  cluster_id = "0608-170338-jwkec0wi",
+  method = "databricks_connect"
+)
+```
+:::
+:::
+:::
+
 # Additional info{background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
 
 :::{.dark-slide}

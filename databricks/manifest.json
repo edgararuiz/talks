@@ -53,8 +53,20 @@
     "assets/title-slide.png": {
       "checksum": "c61cb3812c778144e2306a8bfd7fd7a7"
     },
+    "assets/wb-cluster.png": {
+      "checksum": "5f11cb273cb43627990c9c09a91c7ce3"
+    },
     "assets/wb-compute.png": {
       "checksum": "7eaa3ab7747dabbd2f996e7a92cc530d"
+    },
+    "assets/wb-pane-expanded-copy.png": {
+      "checksum": "dff96acb6251182351dc3f7d5b9608f8"
+    },
+    "assets/wb-pane-expanded-paste.png": {
+      "checksum": "aad80217209cecb4233cb629ba0cb116"
+    },
+    "assets/wb-pane-expanded.png": {
+      "checksum": "1be936050e29ca493916cee7349440eb"
     },
     "assets/wb-pane.png": {
       "checksum": "41fe9108d326abf59f11c0e3ac4c7a13"
@@ -63,7 +75,7 @@
       "checksum": "34eec38e21450202a7735991d162e6b9"
     },
     "manifest.json": {
-      "checksum": "98cfc9c78c82df115070798fd0ec787b"
+      "checksum": "11148af79fe88e58e18b34c46c3a3b84"
     },
     "metadata.yml": {
       "checksum": "d9ee8f28362dc480916851036fb9ab93"
@@ -291,7 +303,7 @@
       "checksum": "dbab999c1a2fe1f31046733759dd1e2b"
     },
     "posit-conf-databricks.html": {
-      "checksum": "47c36efc8b76cc7234d1c18e0551618a"
+      "checksum": "2edcaa3fdabddb9e1b67fe6526fa48cd"
     },
     "README.md": {
       "checksum": "07ab51c6fb504f2132f25764817ea432"
