@@ -44,6 +44,15 @@
     "assets/slide.png": {
       "checksum": "b4f718dff697e8c515178f1bf08ad26e"
     },
+    "assets/sp-catalog.png": {
+      "checksum": "090432eea9ddc6f82b29d8188c301106"
+    },
+    "assets/sp-code.png": {
+      "checksum": "3f28941c0a1494274b6c815b99a8ab9f"
+    },
+    "assets/sp-connections.png": {
+      "checksum": "3677d5faf67531f14ecfda6c856b6e8b"
+    },
     "assets/thank-you.png": {
       "checksum": "e197b643407319650b686c8a4829b467"
     },
@@ -65,6 +74,9 @@
     "assets/wb-pane-expanded-paste.png": {
       "checksum": "aad80217209cecb4233cb629ba0cb116"
     },
+    "assets/wb-pane-expanded-top.png": {
+      "checksum": "77a75edcf16da07d1b6c07dd34b77267"
+    },
     "assets/wb-pane-expanded.png": {
       "checksum": "1be936050e29ca493916cee7349440eb"
     },
@@ -75,7 +87,7 @@
       "checksum": "34eec38e21450202a7735991d162e6b9"
     },
     "manifest.json": {
-      "checksum": "11148af79fe88e58e18b34c46c3a3b84"
+      "checksum": "9d9ac4bfe1f0d5bdce0e70420fa7b6f9"
     },
     "metadata.yml": {
       "checksum": "d9ee8f28362dc480916851036fb9ab93"
@@ -303,7 +315,7 @@
       "checksum": "dbab999c1a2fe1f31046733759dd1e2b"
     },
     "posit-conf-databricks.html": {
-      "checksum": "2edcaa3fdabddb9e1b67fe6526fa48cd"
+      "checksum": "7cca9b253cc2aa16b2147ab26e40e725"
     },
     "README.md": {
       "checksum": "07ab51c6fb504f2132f25764817ea432"
