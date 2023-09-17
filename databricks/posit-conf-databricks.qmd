@@ -590,7 +590,7 @@ tbl_mtcars$corr("wt", "mpg")
 
 ## Go further using *reticulate* {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
-Use `reticulate` to extend functionality
+Spark Connect 3.5+ supports GLM. It can be accessed via `reticulate` today:
 
 ::: sample-large
 
@@ -630,7 +630,7 @@ log_reg_label <- log_reg$setLabelCol("am")
 
 ## Go further using *reticulate* {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
-Use `reticulate` to extend functionality
+Spark Connect 3.5+ supports GLM. It can be accessed via `reticulate` today:
 
 ::: sample-large
 
