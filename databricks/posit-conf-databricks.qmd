@@ -113,27 +113,6 @@ flowchart LR
 -**---------------------- No need to install Java in my machine!!! 🎉  ----------------------**
 :::
 
-## Slight catch {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
-
-Along with **Python 3.9** or above, you will need an environment with the following Python libraries installed:
-
-:::{.columns}
-:::{.column width="40%"}
-- `pyspark`
-- `pandas`
-- `PyArrow`
-- `grpcio`
-- `grpcio_status`
-:::
-:::{.column width="60%"}
-- `google-api-python-client`
-- `databricks-connect` *(if using Databricks)*
-- `delta-spark`
-- `torch` *(Spark 3.5+)*
-- `torcheval` *(Spark 3.5+)*
-:::
-:::
-
 ## Getting started is easy {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
 The new functionality is available in an `sparklyr` extension called `pysparklyr`.
@@ -170,11 +149,35 @@ pysparklyr::install_pyspark()
 :::
 :::
 
+## What does it install? {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+Installs the following Python libraries:
+
+:::{.columns}
+:::{.column width="40%"}
+- `pyspark`
+- `pandas`
+- `PyArrow`
+- `grpcio`
+- `grpcio_status`
+- `delta-spark`
+:::
+:::{.column width="60%"}
+- `google-api-python-client`
+- `databricks-connect` *(for using with Databricks)*
+- `torch` *(Spark 3.5+)*
+- `torcheval` *(Spark 3.5+)*
+:::
+:::
+
+Needs Python 3.9 or higher. `install_pyspark()` will
+check for you.
+
 ## Run Spark Connect locally {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
+::: sample-medium
 - Install Spark 3.4+ (one time)
 
-::: sample-medium
 ``` r
 spark_install("3.4")
 ```
@@ -236,23 +239,23 @@ pysparklyr::spark_connect_service_stop()
     ```
 :::
 
-## Databricks Connect {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Secure your connection {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
 
-`sparklyr` uses environment variables, if provided:
+- `sparklyr` uses environment variables, if provided:
 
--   `DATABRICKS_HOST` - Your org's address
+  -   `DATABRICKS_HOST` - Your org's address
 
--   `DATABRICKS_TOKEN` - Your personal token
-
-Simplifies, and secures connection code:
+  -   `DATABRICKS_TOKEN` - Your personal token
 
 ::: sample-large
-``` r
-sc <- spark_connect(
-  cluster_id = "{your cluster id}", 
-  method = "databricks_connect"
- )
-```
+- Only the method, and cluster ID will be needed:
+  
+  ``` r
+  sc <- spark_connect(
+    cluster_id = "{your cluster id}", 
+    method = "databricks_connect"
+   )
+  ```
 :::
 
 ## Explore data in the Unity Catalog {background-image="assets/slide-frame.png" background-size="1500px" background-color="white" auto-animate=true}

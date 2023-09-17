@@ -506,29 +506,6 @@
 <p>-<strong>———————- No need to install Java in my machine!!! 🎉 ———————-</strong></p>
 </div>
 </section>
-<section id="slight-catch" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
-<h2>Slight catch</h2>
-<p>Along with <strong>Python 3.9</strong> or above, you will need an environment with the following Python libraries installed:</p>
-<div class="columns">
-<div class="column" style="width:40%;">
-<ul>
-<li><code>pyspark</code></li>
-<li><code>pandas</code></li>
-<li><code>PyArrow</code></li>
-<li><code>grpcio</code></li>
-<li><code>grpcio_status</code></li>
-</ul>
-</div><div class="column" style="width:60%;">
-<ul>
-<li><code>google-api-python-client</code></li>
-<li><code>databricks-connect</code> <em>(if using Databricks)</em></li>
-<li><code>delta-spark</code></li>
-<li><code>torch</code> <em>(Spark 3.5+)</em></li>
-<li><code>torcheval</code> <em>(Spark 3.5+)</em></li>
-</ul>
-</div>
-</div>
-</section>
 <section id="getting-started-is-easy" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Getting started is easy</h2>
 <p>The new functionality is available in an <code>sparklyr</code> extension called <code>pysparklyr</code>. It contains a function that creates and prepares your Python environment.</p>
@@ -554,12 +531,36 @@
 </div>
 </div>
 </section>
+<section id="what-does-it-install" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
+<h2>What does it install?</h2>
+<p>Installs the following Python libraries:</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li><code>pyspark</code></li>
+<li><code>pandas</code></li>
+<li><code>PyArrow</code></li>
+<li><code>grpcio</code></li>
+<li><code>grpcio_status</code></li>
+<li><code>delta-spark</code></li>
+</ul>
+</div><div class="column" style="width:60%;">
+<ul>
+<li><code>google-api-python-client</code></li>
+<li><code>databricks-connect</code> <em>(for using with Databricks)</em></li>
+<li><code>torch</code> <em>(Spark 3.5+)</em></li>
+<li><code>torcheval</code> <em>(Spark 3.5+)</em></li>
+</ul>
+</div>
+</div>
+<p>Needs Python 3.9 or higher. <code>install_pyspark()</code> will check for you.</p>
+</section>
 <section id="run-spark-connect-locally" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
 <h2>Run Spark Connect locally</h2>
+<div class="sample-medium">
 <ul>
 <li>Install Spark 3.4+ (one time)</li>
 </ul>
-<div class="sample-medium">
 <div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spark_install</span>(<span class="st">"3.4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment fade-in">
@@ -612,19 +613,23 @@
 </ul>
 </div>
 </section>
-<section id="databricks-connect-1" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
-<h2>Databricks Connect</h2>
-<p><code>sparklyr</code> uses environment variables, if provided:</p>
+<section id="secure-your-connection" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white">
+<h2>Secure your connection</h2>
+<ul>
+<li><p><code>sparklyr</code> uses environment variables, if provided:</p>
 <ul>
 <li><p><code>DATABRICKS_HOST</code> - Your org’s address</p></li>
 <li><p><code>DATABRICKS_TOKEN</code> - Your personal token</p></li>
+</ul></li>
 </ul>
-<p>Simplifies, and secures connection code:</p>
 <div class="sample-large">
+<ul>
+<li><p>Only the method, and cluster ID will be needed:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">spark_connect</span>(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster_id =</span> <span class="st">"{your cluster id}"</span>, </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"databricks_connect"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
 </div>
 </section>
 <section id="explore-data-in-the-unity-catalog" class="slide level2" data-background-image="assets/slide-frame.png" data-background-size="1500px" data-background-color="white" data-auto-animate="true">
