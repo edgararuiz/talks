@@ -23,7 +23,7 @@ Welcome to
 :::
 
 ::: {.content-slide}
-**My awesome<br/>talk**
+**Easing the pain of connecting to databases **
 :::
 
 ::: {.content-slide-thin}
