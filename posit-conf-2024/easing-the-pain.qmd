@@ -16,34 +16,37 @@ engine: knitr
 ---
 
 
-# {background-image="assets/background/title-slide-light.svg" background-size="1700px" background-color="white"}
+# {background-image="assets/background/title-slide.svg" background-size="1700px" background-color="#3D6E74"}
 
-![](assets/linkedin.png){.absolute top="464" left="0" width="45"}
+![](assets/linkedin.png){.absolute top="634" left="43" width="45"}
 
 ::: {.content-slide-thin}
 Welcome to
 :::
 
 ::: {.content-slide}
-**Easing the pain of <br/> connecting to <br/> databases **
+**Easing the pain <br/> of connecting <br/> to databases **
 :::
+
+<br/>
 
 :::{.colums}
 
-:::{.colum width="30%"}
+:::{.column width="3%"}
+
+:::
+
+:::{.column width="80%"}
 
 :::{.content-slide-thin}
 Edgar Ruiz<br/>
--- edgararuiz
-:::
-
-:::{.colum}
-
+_ edgararuiz
 :::
 
 :::
 
 :::
+
 
 # {background-image="assets/background/title-slide-dark.svg" background-size="1700px" background-color="#3D6E74"}
 
