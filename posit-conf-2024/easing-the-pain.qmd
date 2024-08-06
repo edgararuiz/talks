@@ -18,16 +18,31 @@ engine: knitr
 
 # {background-image="assets/background/title-slide-light.svg" background-size="1700px" background-color="white"}
 
+![](assets/linkedin.png){.absolute top="464" left="0" width="45"}
+
 ::: {.content-slide-thin}
 Welcome to
 :::
 
 ::: {.content-slide}
-**Easing the pain of connecting to databases **
+**Easing the pain of <br/> connecting to <br/> databases **
 :::
 
-::: {.content-slide-thin}
-August 13
+:::{.colums}
+
+:::{.colum width="30%"}
+
+:::{.content-slide-thin}
+Edgar Ruiz<br/>
+-- edgararuiz
+:::
+
+:::{.colum}
+
+:::
+
+:::
+
 :::
 
 # {background-image="assets/background/title-slide-dark.svg" background-size="1700px" background-color="#3D6E74"}

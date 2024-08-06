@@ -17,10 +17,8 @@ $font-family-sans-serif: "Source Sans Pro", !default;
   padding-left: 0.5em;
 }
 
-
-
 .slide h1 {
-  margin-top: -100px;
+  margin-top: -130px;
 }
 
 .slide li {
@@ -104,7 +102,7 @@ $font-family-sans-serif: "Source Sans Pro", !default;
 
 .content-slide p {
   color: #666;
-  line-height: 1.05;
+  line-height: .85;
   font-size: 140px;
 }
 
@@ -113,7 +111,7 @@ $font-family-sans-serif: "Source Sans Pro", !default;
 }
 
 .content-slide-thin p {
-  font-size: 90px;
+  font-size: 70px;
   font-weight: 100;
   font-family:Helvetica Neue
 }
