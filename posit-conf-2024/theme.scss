@@ -21,6 +21,12 @@ $font-family-sans-serif: "Source Sans Pro", !default;
   margin-top: -80px;
 }
 
+.slide h2 code {
+  font-size: 85px;
+  color: #99ccff;
+  font-weight: 250;
+}
+
 .slide li {
     font-size: 50px;
     color: #666;
@@ -159,4 +165,26 @@ $font-family-sans-serif: "Source Sans Pro", !default;
 
 .sample-code code {
   font-size: 40px;
+}
+
+.code-slim-35 {
+  background-color: #eee;
+  padding: 15px;
+}
+
+.code-slim-35 code {
+  font-family:Helvetica Neue;
+  font-weight:300;
+  font-size:35px;
+}
+
+.code-slim-45 {
+  background-color: #eee;
+  padding: 15px;
+}
+
+.code-slim-45 code {
+  font-family:Helvetica Neue;
+  font-weight:300;
+  font-size:38px;
 }

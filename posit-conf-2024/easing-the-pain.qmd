@@ -47,36 +47,42 @@ _ edgararuiz
 
 :::
 
+## [Improvements to `odbc`]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
-# {background-image="assets/background/title-slide-dark.svg" background-size="1700px" background-color="#3D6E74"}
+:::{.colums}
 
-[My awesome talk]{style="color:#fff;font-size:140px;"}
-<br/>
-[My even <br/> better subtitle]{style="color:#ddd;font-size:80px;"}
+:::{.column width="40%"}
 
-# {background-image="assets/background/title-slide.svg" background-size="1700px" background-color="#3D6E74"}
-
-[My awesome <br/>talk]{style="color:#fff;font-size:140px;"}
-<br/>
-[My even <br/> better subtitle]{style="color:#ddd;font-size:80px;"}
-
-
-## [Slide light]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
-
-<br/>
-
-:::{.columns}
-::: {.column width="20%"}
 :::
 
-::: {.column width="80%"}
-::: custom
-- Item 1
-- Item 2
-- Item 3
+:::{.column width="60%"}
+
+:::{.code-slim-45}
+
+```r
+con <- dbConnect(
+  odbc::odbc(),
+  Driver = ".../lib/libsparkodbc_sb64-universal.dylib",
+  Host = Sys.getenv("DATABRICKS_HOST"),
+  PWD = Sys.getenv("DATABRICKS_TOKEN"),
+  HTTPPath = "/sql/1.0/warehouses/300bd24ba12adf8e",
+  Port = 443,
+  AuthMech = 3,
+  Protocol = "https",
+  ThriftTransport = 2,
+  SSL = 1,
+  UID = "token"
+  )
+```
 :::
+
 :::
+
 :::
+
+
+
+![](assets/hexes/odbc.png){.absolute top="0" left="1450" width="150"}
 
 ## {background-image="assets/background/boxed-light.svg" background-size="1700px" background-color="white"}
 
