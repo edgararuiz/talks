@@ -33,8 +33,10 @@ engine: knitr
 :::
 :::{.column width="80%"}
 :::{.content-slide-thin}
-[Edgar Ruiz<br/>
-_ edgararuiz]{style="font-size:60px;"}
+[
+Edgar Ruiz<br/>
+_ edgararuiz
+]{style="font-size:60px;"}
 :::
 :::
 :::
@@ -48,13 +50,9 @@ To properly connect to Databricks, you need to specify [10]{style="font-size:60p
 :::
 
 :::{.colums}
-
 :::{.column width="16%"}
-
 :::
-
 :::{.column width="67%"}
-
 :::{.code-slim-45}
 
 ```{r}
@@ -75,13 +73,10 @@ con <- dbConnect(
   UID = "token"
 )
 ```
-:::
 
 :::
-
 :::
-
-
+:::
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
