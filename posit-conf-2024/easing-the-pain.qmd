@@ -18,39 +18,33 @@ engine: knitr
 
 # {background-image="assets/background/title-slide.svg" background-size="1700px" background-color="#3D6E74"}
 
-![](assets/linkedin.png){.absolute top="634" left="43" width="45"}
-
 ::: {.content-slide-thin}
-Welcome to
+[Welcome to]{style="font-size: 80px;"}
 :::
 
 ::: {.content-slide}
-**Easing the pain <br/> of connecting <br/> to databases **
+[**Easing the pain <br/> of connecting <br/> to databases**]{style="font-size:130px;"}
 :::
 
 <br/>
 
 :::{.colums}
-
 :::{.column width="3%"}
-
 :::
-
 :::{.column width="80%"}
-
 :::{.content-slide-thin}
-Edgar Ruiz<br/>
-_ edgararuiz
+[Edgar Ruiz<br/>
+_ edgararuiz]{style="font-size:60px;"}
+:::
+:::
 :::
 
-:::
-
-:::
+![](assets/linkedin.png){.absolute top="624" left="43" width="45"}
 
 ## [Improvements to `odbc`]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
-To properly connect to Databricks, you need to specify `10` arguments
+To properly connect to Databricks, you need to specify [10]{style="font-size:60px;"} arguments
 :::
 
 :::{.colums}
@@ -79,7 +73,7 @@ con <- dbConnect(
   ThriftTransport = 2,
   SSL = 1,
   UID = "token"
-  )
+)
 ```
 :::
 
@@ -171,4 +165,3 @@ as_tibble(iris)
 :::
 
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
-
