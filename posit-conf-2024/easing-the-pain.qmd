@@ -16,14 +16,14 @@ engine: knitr
 ---
 
 
-# {background-image="assets/background/title-slide.svg" background-size="1700px" background-color="#3D6E74"}
+# {background-image="assets/background/title-slide-dark.svg" background-size="1700px" background-color="#3D6E74"}
 
 ::: {.content-slide-thin}
 [Welcome to]{style="font-size: 80px;"}
 :::
 
 ::: {.content-slide}
-[**Easing the pain <br/> of connecting <br/> to databases**]{style="font-size:130px;"}
+[**Easing the pain <br/> of connecting <br/> to databases**]{style="font-size:135px; color: #eee;"}
 :::
 
 <br/>
@@ -41,7 +41,8 @@ _ edgararuiz
 :::
 :::
 
-![](assets/linkedin.png){.absolute top="624" left="43" width="45"}
+![](assets/linkedin.png){.absolute top="656" left="43" width="45"}
+![](assets/qr-code){.absolute top="405" left="1279" width="345"}
 
 ## [Improvements to `odbc`]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
@@ -160,3 +161,8 @@ as_tibble(iris)
 :::
 
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
+
+
+![](assets/racoon.jpg){.absolute top=210 left=0 width=450}
+
+![](assets/qr-code.png){.absolute top=280 left=1150 width=350}
