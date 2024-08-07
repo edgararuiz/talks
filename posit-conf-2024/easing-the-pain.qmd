@@ -44,6 +44,14 @@ _ edgararuiz
 ![](assets/linkedin.png){.absolute top="656" left="43" width="45"}
 ![](assets/qr-code){.absolute top="405" left="1279" width="345"}
 
+## {background-image="assets/background/boxed-light.svg" background-size="1700px" background-color="white"}
+
+:::{.subject-slide}
+[Improvements to]{.absolute top="300" left="130"}
+:::
+
+![](assets/hexes/odbc.png){.absolute top="215" left="1100" width="300"}
+
 ## [Improvements to `odbc`]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
@@ -80,15 +88,6 @@ con <- dbConnect(
 :::
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
-
-## {background-image="assets/background/boxed-light.svg" background-size="1700px" background-color="white"}
-
-<br/>
-
-:::{.custom2}
-I'm in a box!
-
-:::
 
 ## {background-image="assets/background/boxed-green.svg" background-size="1700px" background-color="#799857"}
 
@@ -163,6 +162,6 @@ as_tibble(iris)
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
 
-![](assets/racoon.jpg){.absolute top=210 left=0 width=450}
+![](assets/racoon.jpg){.absolute top=100 left=270 width=380}
 
-![](assets/qr-code.png){.absolute top=280 left=1150 width=350}
+![](assets/qr-code.png){.absolute top=280 left=1150 width=430}
