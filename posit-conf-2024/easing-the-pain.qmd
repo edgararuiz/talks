@@ -47,12 +47,12 @@ _ edgararuiz
 ## {background-image="assets/background/boxed-light.svg" background-size="1700px" background-color="white"}
 
 :::{.subject-slide}
-[Improvements to]{.absolute top="300" left="130"}
+[Improvements to]{.absolute top="300" left="150"}
 :::
 
-![](assets/hexes/odbc.png){.absolute top="215" left="1100" width="300"}
+![](assets/hexes/odbc.png){.absolute top="215" left="1120" width="300"}
 
-## [Improvements to `odbc`]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+## [Before...]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
 To properly connect to Databricks, you need to specify [10]{style="font-size:60px;"} arguments
@@ -62,7 +62,7 @@ To properly connect to Databricks, you need to specify [10]{style="font-size:60p
 :::{.column width="16%"}
 :::
 :::{.column width="67%"}
-:::{.code-slim-45}
+:::{.code-slim-35}
 
 ```{r}
 #| eval: false
@@ -84,6 +84,39 @@ con <- dbConnect(
 ```
 
 :::
+:::
+:::
+
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
+## [Now...]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+<br/>
+
+:::{.custom2}
+`databricks()` uses sensible defaults for you! You just need your `httpPath`
+:::
+
+<br/>
+
+:::{.colums}
+:::{.column width="16%"}
+:::
+:::{.column width="67%"}
+
+:::{.code-slim-45}
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-line-numbers: "|2"
+con <- DBI::dbConnect(
+  odbc::databricks(),
+  httpPath = "[SQL Warehouse service path]"
+  )
+```
+:::
+
 :::
 :::
 
