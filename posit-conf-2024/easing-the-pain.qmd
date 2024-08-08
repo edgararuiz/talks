@@ -15,7 +15,6 @@ format:
 engine: knitr
 ---
 
-
 # {background-image="assets/background/title-slide-dark.svg" background-size="1700px" background-color="#3D6E74"}
 
 ::: {.content-slide-thin}
@@ -44,7 +43,7 @@ _ edgararuiz
 ![](assets/linkedin.png){.absolute top="656" left="43" width="45"}
 ![](assets/qr-code){.absolute top="405" left="1279" width="345"}
 
-## {background-image="assets/background/boxed-light.svg" background-size="1700px" background-color="white"}
+## {background-image="assets/background/boxed-light.svg" background-size="1700px" background-color="white" auto-animate=true}
 
 :::{.subject-slide}
 [Improvements to]{.absolute top="300" left="150"}
@@ -52,7 +51,12 @@ _ edgararuiz
 
 ![](assets/hexes/odbc.png){.absolute top="215" left="1120" width="300"}
 
-## [Before...]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+## {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white" auto-animate=true}
+
+
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
+[Before...]{style="color:#666; font-size:2.4em; font-weight:600; line-height:0.9;"}
 
 :::{.custom2}
 You need [10]{style="font-size:75px;"} arguments to connect to Databricks
@@ -93,8 +97,6 @@ con <- dbConnect(
 :::
 :::
 :::
-
-![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
 ## [Now...]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
@@ -147,6 +149,8 @@ and sets correct defaults
 - 🕺 Any argument can be overriden by user
 :::
 :::
+
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
