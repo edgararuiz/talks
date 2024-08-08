@@ -58,7 +58,7 @@ _ edgararuiz
 [Before...]{style="color:#666; font-size:2.4em; font-weight:600; line-height:0.9;"}
 
 :::{.custom2}
-You need [10]{style="font-size:75px;"} arguments to connect to Databricks
+You needed [10]{style="font-size:75px;"} arguments to connect to **Databricks**
 :::
 
 :::{.colums}
@@ -78,8 +78,7 @@ You need [10]{style="font-size:75px;"} arguments to connect to Databricks
 #| eval: false
 #| echo: true
 
-con <- dbConnect(
-  odbc::odbc(),
+con <- dbConnect(odbc::odbc(),
   Driver = ".../lib/libsparkodbc_sb64-universal.dylib",
   Host = Sys.getenv("DATABRICKS_HOST"),
   PWD = Sys.getenv("DATABRICKS_TOKEN"),
@@ -124,7 +123,7 @@ con <- dbConnect(
 #| eval: false
 #| echo: true
 
-con <- DBI::dbConnect(
+con <- dbConnect(
   odbc::databricks(),
   httpPath = "[SQL Warehouse service path]"
   )
@@ -191,7 +190,7 @@ libodbcinst.dylib file]**, **DriverManagerEncoding=UTF-16**
 :::{.code-slim-35 }
 ```r
 
-con <- DBI::dbConnect(odbc::databricks(), httpPath = "[SQL Service path]")
+con <- dbConnect(odbc::databricks(), httpPath = "[SQL Service path]")
 ```
 :::
 :::
@@ -199,7 +198,6 @@ con <- DBI::dbConnect(odbc::databricks(), httpPath = "[SQL Service path]")
 [✅]{style="font-size:100px;"}
 :::
 :::
-
 
 
 1. ~~Search for a file called libodbcinst.dylib in the '/usr/local/lib/' folder.~~
@@ -212,6 +210,45 @@ libodbcinst.dylib file]**, **DriverManagerEncoding=UTF-16**~~
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
+## [Same functionality for Snowflake 🎉]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+
+:::{.custom2}
+[`odbc` v1.5.0 introduced the `snowflake()` function]{style="line-height:1.5;"}
+:::
+
+
+:::{.columns}
+:::{.column width="55%"}
+:::{.custom2}
+Before
+:::
+:::{.code-slim-35}
+```r
+con <- dbConnect(odbc::odbc(),
+  Account = "testorg-test_account",
+  Driver = ".../bin/lib/libsnowflakeodbc_sb64.so",
+  Server = "[your server's path]",
+  UID = "[your user]",
+  PWD   = "[your password]",
+  )
+```
+:::
+:::
+:::{.column width="45%"}
+:::{.custom2}
+Now!
+:::
+:::{.code-slim-35}
+```r
+con <- dbConnect(
+  odbc::snowflake()
+)
+```
+:::
+:::
+:::
+
 
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
@@ -219,76 +256,5 @@ libodbcinst.dylib file]**, **DriverManagerEncoding=UTF-16**~~
 ![](assets/racoon.jpg){.absolute top=100 left=270 width=380}
 
 ![](assets/qr-code.png){.absolute top=280 left=1150 width=430}
-
-
-## {background-image="assets/background/boxed-green.svg" background-size="1700px" background-color="#799857"}
-
-:::{.dark-slide}
-A green slide!
-:::
-
-## {background-image="assets/background/boxed-dark.svg" background-size="1700px" background-color="#3D6E74"}
-
-:::{.dark-slide}
-Not a green slide!
-:::
-
-## {background-image="assets/background/content-slide.svg" background-size="1710px" background-color="#2a7070"}
-
-:::{.content-slide-title}
-Section 1
-:::
-
-:::{.content-slide}
-Title of <br/> this section
-:::
-
-## {background-image="assets/background/content-green-dark.svg" background-size="1710px" background-color="#3D6E74"}
-
-:::{.columns}
-:::{.column width="35%"}
-[My smart points]{style="color:#fff;font-size:120px;"}
-:::
-:::{.column width="65%"}
-:::{.dark-slide}
-- Smart point No. 1
-- Smart point No. 2
-- Smart point No. 3
-:::
-:::
-:::
-
-## {background-image="assets/background/content-dark-green.svg" background-size="1710px" background-color="#799857"}
-
-:::{.columns}
-:::{.column width="35%"}
-[My smartier points]{style="color:#fff;font-size:120px;"}
-:::
-:::{.column width="65%"}
-:::{.dark-slide}
-- Smart point No. 1
-- Smart point No. 2
-- Smart point No. 3
-:::
-:::
-:::
-
-## [Here's some code]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
-
-:::{.sample-code}
-```r
-as_tibble(iris)
-#> # A tibble: 150 × 5
-#>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-#>          <dbl>       <dbl>        <dbl>       <dbl> <fct>  
-#> 1          5.1         3.5          1.4         0.2 setosa 
-#> 2          4.9         3            1.4         0.2 setosa 
-#> 3          4.7         3.2          1.3         0.2 setosa 
-#> 4          4.6         3.1          1.5         0.2 setosa 
-#> 5          5           3.6          1.4         0.2 setosa 
-#> 6          5.4         3.9          1.7         0.4 setosa 
-#> # ℹ 144 more rows
-```
-:::
 
 
