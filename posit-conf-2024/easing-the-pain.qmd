@@ -239,16 +239,56 @@ con <- dbConnect(odbc::odbc(),
 :::{.custom2}
 Now!
 :::
+
 :::{.code-slim-35}
 ```r
+# Using ambient credentials 
+
 con <- dbConnect(
   odbc::snowflake()
 )
 ```
 :::
+
+
 :::
 :::
 
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
+## [Same functionality for Snowflake 🎉]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+
+:::{.custom2}
+[`odbc` v1.5.0 introduced the `snowflake()` function]{style="line-height:1.1;"}
+:::
+
+Use browser-based SSO (if configured). Only works on desktop.
+
+:::{.code-slim-35}
+```r
+con <- dbConnect(
+  odbc::snowflake(),
+  account = "testorg-test_account",
+  authenticator = "externalbrowser"
+)
+```
+:::
+
+Use a traditional username & password.
+
+:::{.code-slim-35}
+```r
+con <- dbConnect(
+  odbc::snowflake(),
+  account = "testorg-test_account",
+  uid = "me",
+  pwd = rstudioapi::askForPassword()
+)
+```
+:::
+
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
