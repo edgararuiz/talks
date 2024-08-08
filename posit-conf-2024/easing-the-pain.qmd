@@ -66,8 +66,15 @@ You need [10]{style="font-size:75px;"} arguments to connect to Databricks
 
 ```{r}
 #| eval: false
-#| echo: true
+#| echo: false
 #| code-line-numbers: "|3|4|5|6|7|8|9|10|11|12"
+```
+
+
+```{r}
+#| eval: false
+#| echo: true
+
 con <- dbConnect(
   odbc::odbc(),
   Driver = ".../lib/libsparkodbc_sb64-universal.dylib",
@@ -108,8 +115,14 @@ con <- dbConnect(
 
 ```{r}
 #| eval: false
-#| echo: true
+#| echo: false
 #| code-line-numbers: "|2|3"
+```
+
+```{r}
+#| eval: false
+#| echo: true
+
 con <- DBI::dbConnect(
   odbc::databricks(),
   httpPath = "[SQL Warehouse service path]"
@@ -121,6 +134,23 @@ con <- DBI::dbConnect(
 :::
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
+## [What `databricks()` does]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom}
+:::{.incremental1}
+- Looks for your **driver** in default areas (Linux, Mac)
+- Determines your **authentication** method (*PAT, M2M, CLI, Posit Workbench*)
+:::
+:::
+
+## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
+
+
+![](assets/racoon.jpg){.absolute top=100 left=270 width=380}
+
+![](assets/qr-code.png){.absolute top=280 left=1150 width=430}
+
 
 ## {background-image="assets/background/boxed-green.svg" background-size="1700px" background-color="#799857"}
 
@@ -192,9 +222,4 @@ as_tibble(iris)
 ```
 :::
 
-## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
-
-![](assets/racoon.jpg){.absolute top=100 left=270 width=380}
-
-![](assets/qr-code.png){.absolute top=280 left=1150 width=430}
