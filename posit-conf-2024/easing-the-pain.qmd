@@ -138,18 +138,19 @@ con <- DBI::dbConnect(
 
 ## [What `databricks()` does]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
-:::{.custom}
+:::{.custom2}
 :::{.incremental1}
 - 🚗 Searches for **driver** in default areas (Linux, Mac)
 - 🔑 Determines **authentication** method (*PAT, M2M, CLI, Posit Workbench*),
 sets correct defaults
 - 🪪 Passes your credentials
-- ✅ Defaults for *ThriftTransport*, *Protocol*, *SSL*, and *Port*
+- ✅ Defaults for `ThriftTransport`, `Protocol`, `SSL`, and `Port`
 - 🕺 Any argument can be overriden by user
 :::
 :::
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
 
 ## [Issue in with Mac ODBC driver]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
