@@ -55,7 +55,7 @@ _ edgararuiz
 ## [Before...]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
-To connect to Databricks, you need to specify [10]{style="font-size:70px;"} arguments
+You need [10]{style="font-size:75px;"} arguments to connect to Databricks
 :::
 
 :::{.colums}
@@ -94,7 +94,7 @@ con <- dbConnect(
 <br/>
 
 :::{.custom2}
-`databricks()` uses sensible defaults for you! You just need your `httpPath`
+`databricks()` uses sensible defaults for you 🎉 <br/> You just need your `httpPath`
 :::
 
 <br/>
@@ -109,7 +109,7 @@ con <- dbConnect(
 ```{r}
 #| eval: false
 #| echo: true
-#| code-line-numbers: "|2"
+#| code-line-numbers: "|2|3"
 con <- DBI::dbConnect(
   odbc::databricks(),
   httpPath = "[SQL Warehouse service path]"
