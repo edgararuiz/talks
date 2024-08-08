@@ -141,9 +141,9 @@ con <- DBI::dbConnect(
 
 :::{.custom}
 :::{.incremental1}
-- 🚗 Looks for your **driver** in default areas (Linux, Mac)
-- 🔑 Determines your **authentication** method (*PAT, M2M, CLI, Posit Workbench*), 
-and sets correct defaults
+- 🚗 Searches for **driver** in default areas (Linux, Mac)
+- 🔑 Determines **authentication** method (*PAT, M2M, CLI, Posit Workbench*),
+sets correct defaults
 - 🪪 Passes your credentials
 - ✅ Defaults for *ThriftTransport*, *Protocol*, *SSL*, and *Port*
 - 🕺 Any argument can be overriden by user
@@ -151,6 +151,45 @@ and sets correct defaults
 :::
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
+## [Issue in with Mac ODBC driver]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.code-slim-35 }
+```python
+Unable to locate SQLGetPrivateProfileString function: [Simba][Support] (50483) 
+Could not load shared library, all attempted paths ("") failed
+```
+:::
+
+:::{.incremental1}
+1. Search for a file called libodbcinst.dylib in the '/usr/local/lib/' folder.
+2. If not found, install it via Homebrew in the terminal: **brew install unixodbc**
+3. Use: brew --prefix unixodbc to find out where Homebrew installed it. 
+The libodbcinst.dylib file should be inside the 'lib' sub-folder.
+4. Open: **'/Library/simba/spark/lib/simba.sparkodbc.ini'.**
+5. Append the following two lines at the end: **ODBCInstLib=[Location of your 
+libodbcinst.dylib file]**, **DriverManagerEncoding=UTF-16**
+:::  
+  
+## [`databricks()` does that for you!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.code-slim-35 }
+```r
+
+con <- DBI::dbConnect(odbc::databricks(), httpPath = "[SQL Warehouse service path]")
+```
+:::
+
+1. ~~Search for a file called libodbcinst.dylib in the '/usr/local/lib/' folder.~~
+2. ~~If not found, install it via Homebrew in the terminal: **brew install unixodbc**~~
+3. ~~Use: brew --prefix unixodbc to find out where Homebrew installed it.
+The libodbcinst.dylib file should be inside the 'lib' sub-folder.~~
+4. ~~Open: **'/Library/simba/spark/lib/simba.sparkodbc.ini'.**~~
+5. ~~Append the following two lines at the end: **ODBCInstLib=[Location of your 
+libodbcinst.dylib file]**, **DriverManagerEncoding=UTF-16**~~
+
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
 
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
