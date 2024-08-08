@@ -25,7 +25,6 @@ engine: knitr
 [**Easing the pain <br/> of connecting <br/> to databases**]{style="font-size:135px; color: #eee;"}
 :::
 
-<br/>
 
 :::{.colums}
 :::{.column width="3%"}
@@ -40,7 +39,7 @@ _ edgararuiz
 :::
 :::
 
-![](assets/linkedin.png){.absolute top="656" left="43" width="45"}
+![](assets/linkedin.png){.absolute top="653" left="43" width="45"}
 ![](assets/qr-code){.absolute top="405" left="1279" width="345"}
 
 ## {background-image="assets/background/boxed-light.svg" background-size="1700px" background-color="white" auto-animate=true}
@@ -154,11 +153,17 @@ sets correct defaults
 
 ## [Issue in with Mac ODBC driver]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
+:::{.columns}
+:::{.column width="9%"}
+:::
+:::{.column width="82%"}
 :::{.code-slim-35 }
 ```python
 Unable to locate SQLGetPrivateProfileString function: [Simba][Support] (50483) 
 Could not load shared library, all attempted paths ("") failed
 ```
+:::
+:::
 :::
 
 :::{.incremental1}
@@ -173,12 +178,20 @@ libodbcinst.dylib file]**, **DriverManagerEncoding=UTF-16**
   
 ## [`databricks()` does that for you!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
+:::{.columns}
+:::{.column width="3%"}
+:::
+:::{.column width="90%"}
 :::{.code-slim-35 }
 ```r
 
 con <- DBI::dbConnect(odbc::databricks(), httpPath = "[SQL Warehouse service path]")
 ```
 :::
+:::
+:::
+
+
 
 1. ~~Search for a file called libodbcinst.dylib in the '/usr/local/lib/' folder.~~
 2. ~~If not found, install it via Homebrew in the terminal: **brew install unixodbc**~~

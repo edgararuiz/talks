@@ -21,6 +21,11 @@ $font-family-sans-serif: "Source Sans Pro", !default;
   margin-top: -70px;
 }
 
+.slide p code {
+  color: #579297;
+  font-weight: 400;
+}
+
 .slide h2 code {
   font-size: 85px;
   color: #579297;
@@ -44,18 +49,6 @@ $font-family-sans-serif: "Source Sans Pro", !default;
 
 .slide code {
   font-size: 45px;
-}
-
-.schedule p {
-  font-size: 80px;
-  line-height: 1.4;
-}
-
-.schedule1 p {
-  padding-left: 140px;
-  padding-top: 330px;
-  font-size: 130px;
-  color: #579297;
 }
 
 .custom li {
@@ -82,9 +75,9 @@ $font-family-sans-serif: "Source Sans Pro", !default;
 
 .custom2 p {
   text-align: center;
-  color: #579297;
+  color: #666;
   font-size: 60px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.1;
   
 }
@@ -94,12 +87,9 @@ $font-family-sans-serif: "Source Sans Pro", !default;
   font-weight: 100;
 }
 
-.custom2 code {
+.custom2 p code {
   font-size: 55px;
-  font-weight: 1000;
 }
-
-
 
 .content-slide-title p {
   color: #579297;
