@@ -139,12 +139,12 @@ con <- DBI::dbConnect(
 
 :::{.custom}
 :::{.incremental1}
-- Looks for your **driver** in default areas (Linux, Mac)
-- Determines your **authentication** method (*PAT, M2M, CLI, Posit Workbench*), 
+- 🚗 Looks for your **driver** in default areas (Linux, Mac)
+- 🔑 Determines your **authentication** method (*PAT, M2M, CLI, Posit Workbench*), 
 and sets correct defaults
-- Passes your credentials
-- Defaults for *ThriftTransport*, *Protocol*, *SSL*, and *Port*
-- Any argument can be overriden by user
+- 🪪 Passes your credentials
+- ✅ Defaults for *ThriftTransport*, *Protocol*, *SSL*, and *Port*
+- 🕺 Any argument can be overriden by user
 :::
 :::
 
