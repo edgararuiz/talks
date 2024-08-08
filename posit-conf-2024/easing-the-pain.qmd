@@ -55,7 +55,7 @@ _ edgararuiz
 ## [Before...]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
-To properly connect to Databricks, you need to specify [10]{style="font-size:60px;"} arguments
+To connect to Databricks, you need to specify [10]{style="font-size:70px;"} arguments
 :::
 
 :::{.colums}
