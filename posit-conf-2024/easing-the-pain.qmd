@@ -301,6 +301,23 @@ con <- dbConnect(
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
+## [What `snowflake()` does]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+<br/>
+
+:::{.custom2}
+:::{.incremental1}
+- 🚗 Searches for **driver** in default areas (Linux, Mac)
+- 🔑 Determines **authentication** method, sets correct defaults
+- 🪪 Passes your credentials
+- 🕺 Any argument can be overriden by user
+:::
+:::
+
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
+
+
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
 
