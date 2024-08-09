@@ -256,15 +256,17 @@ con <- dbConnect(
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
-## [Same functionality for Snowflake 🎉]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+## [Flexible ways to authenticate]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
+:::{.columns}
+:::{.column width="60%"}
 
-:::{.custom2}
-[`odbc` v1.5.0 introduced the `snowflake()` function]{style="line-height:1.1;"}
+[
+**Use browser-based SSO** - Currently in the development version. Only for desktops
+]{style="font-size:55px;"}
+
 :::
-
-Use browser-based SSO (if configured). Only works on desktop.
-
+:::{.column width="40%"}
 :::{.code-slim-35}
 ```r
 con <- dbConnect(
@@ -274,9 +276,16 @@ con <- dbConnect(
 )
 ```
 :::
+:::
+:::
 
-Use a traditional username & password.
+<br/>
 
+:::{.columns}
+:::{.column width="60%"}
+[Use a traditional username & password]{style="font-size:55px;"}
+:::
+:::{.column width="40%"}
 :::{.code-slim-35}
 ```r
 con <- dbConnect(
@@ -286,6 +295,8 @@ con <- dbConnect(
   pwd = rstudioapi::askForPassword()
 )
 ```
+:::
+:::
 :::
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
