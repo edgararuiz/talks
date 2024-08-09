@@ -259,14 +259,14 @@ con <- dbConnect(
 ## [Flexible ways to authenticate️]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.columns}
-:::{.column width="50%"}
+:::{.column width="47%"}
 
 [
 **Use browser-based SSO** - Currently in the development version. Only for desktops
 ]{style="font-size:55px;"}
 
 :::
-:::{.column width="50%"}
+:::{.column width="45%"}
 :::{.code-slim-35}
 ```r
 con <- dbConnect(
@@ -277,15 +277,17 @@ con <- dbConnect(
 ```
 :::
 :::
+:::{.column width="8%"}
+:::
 :::
 
 <br/>
 
 :::{.columns}
-:::{.column width="50%"}
+:::{.column width="47%"}
 [Use a traditional username & password]{style="font-size:55px;"}
 :::
-:::{.column width="50%"}
+:::{.column width="45%"}
 :::{.code-slim-35}
 ```r
 con <- dbConnect(
@@ -296,6 +298,8 @@ con <- dbConnect(
 )
 ```
 :::
+:::
+:::{.column width="8%"}
 :::
 :::
 
