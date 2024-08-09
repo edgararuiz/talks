@@ -256,17 +256,17 @@ con <- dbConnect(
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
-## [Flexible ways to authenticate]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+## [Flexible ways to authenticate️]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.columns}
-:::{.column width="60%"}
+:::{.column width="50%"}
 
 [
 **Use browser-based SSO** - Currently in the development version. Only for desktops
 ]{style="font-size:55px;"}
 
 :::
-:::{.column width="40%"}
+:::{.column width="50%"}
 :::{.code-slim-35}
 ```r
 con <- dbConnect(
@@ -282,10 +282,10 @@ con <- dbConnect(
 <br/>
 
 :::{.columns}
-:::{.column width="60%"}
+:::{.column width="50%"}
 [Use a traditional username & password]{style="font-size:55px;"}
 :::
-:::{.column width="40%"}
+:::{.column width="50%"}
 :::{.code-slim-35}
 ```r
 con <- dbConnect(
