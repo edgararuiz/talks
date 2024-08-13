@@ -388,6 +388,46 @@ The data viewer offers stats about the previewed rows
 
 ![](assets/positron-preview-2.png){.absolute top="170" left="200" width="1200"}
 
+## [Works with Python!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+Connections Pane integrates Python via SQLAlchemy
+:::
+
+![](assets/positron-python.png){.absolute top="200" left="400" width="900"}
+
+## [Works with Python!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+The `engine` object is recognize in Positron's **Variables** pane
+:::
+
+![](assets/positron-engine.png){.absolute top="200" left="400" width="900"}
+
+## [Works with Python!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+Clicking on the **engine** adds it to the **Connections Pane**
+:::
+
+![](assets/positron-python-connection.png){.absolute top="200" left="400" width="900"}
+
+## [Works with Python!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+New connection works the same as with an R connection
+:::
+
+![](assets/positron-python-connection2.png){.absolute top="200" left="400" width="900"}
+
+## [Preview also works]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+Clicking on a particular table opens the same preview
+:::
+
+![](assets/positron-python-preview.png){.absolute top="180" left="250" width="1100"}
+
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
 
