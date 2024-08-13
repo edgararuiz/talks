@@ -99,12 +99,22 @@ con <- dbConnect(
 `databricks()` uses sensible defaults for you 🎉 <br/> You just need your `httpPath`
 :::
 
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
+## [Now...]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+<br/>
+
+:::{.custom2}
+`databricks()` uses sensible defaults for you 🎉 <br/> You just need your `httpPath`
+:::
+
 <br/>
 
 :::{.colums}
-:::{.column width="16%"}
+:::{.column width="10%"}
 :::
-:::{.column width="67%"}
+:::{.column width="80%"}
 
 :::{.code-slim-45}
 
@@ -128,7 +138,7 @@ con <- dbConnect(
 ## [What `databricks()` does]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
-:::{.incremental1}
+:::{.incremental}
 - 🚗 Searches for **driver** in default areas (Linux, Mac)
 - 🔑 Determines **authentication** method (*PAT, M2M, CLI, Posit Workbench*),
 sets correct defaults
@@ -141,7 +151,7 @@ sets correct defaults
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
 
-## [Issue in with Mac ODBC driver]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+## [Issue with Mac ODBC driver]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.columns}
 :::{.column width="10%"}
@@ -160,7 +170,7 @@ Could not load shared library, all attempted paths ("") failed
 :::
 :::
 
-:::{.incremental1}
+
 1. Search for a file called libodbcinst.dylib in the '/usr/local/lib/' folder.
 2. If not found, install it via Homebrew in the terminal: **brew install unixodbc**
 3. Use: **brew --prefix unixodbc** to find out where Homebrew installed it. 
@@ -168,7 +178,8 @@ The libodbcinst.dylib file should be inside the 'lib' sub-folder.
 4. Open: **'/Library/simba/spark/lib/simba.sparkodbc.ini'.**
 5. Append the following two lines at the end: **ODBCInstLib=[Location of your 
 libodbcinst.dylib file]**, **DriverManagerEncoding=UTF-16**
-:::  
+
+
   
 ## [`databricks()` does that for you!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
@@ -197,6 +208,47 @@ The libodbcinst.dylib file should be inside the 'lib' sub-folder.~~
 4. ~~Open: **'/Library/simba/spark/lib/simba.sparkodbc.ini'.**~~
 5. ~~Append the following two lines at the end: **ODBCInstLib=[Location of your 
 libodbcinst.dylib file]**, **DriverManagerEncoding=UTF-16**~~
+
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
+## [Same functionality for Snowflake 🎉]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+
+:::{.custom2}
+[`odbc` v1.5.0 introduced the `snowflake()` function]{style="line-height:1.5;"}
+:::
+
+![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
+
+## [Same functionality for Snowflake 🎉]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+
+:::{.custom2}
+[`odbc` v1.5.0 introduced the `snowflake()` function]{style="line-height:1.5;"}
+:::
+
+
+:::{.columns}
+:::{.column width="55%"}
+:::{.custom2}
+Before
+:::
+:::{.code-slim-35}
+```r
+con <- dbConnect(odbc::odbc(),
+  Account = "testorg-test_account",
+  Driver = ".../bin/lib/libsnowflakeodbc_sb64.so",
+  Server = "[your server's path]",
+  UID = "[your user]",
+  PWD   = "[your password]",
+  )
+```
+:::
+:::
+:::{.column width="45%"}
+
+:::
+:::
 
 ![](assets/hexes/odbc.png){.absolute top="0" left="1470" width="120"}
 
@@ -300,7 +352,7 @@ con <- dbConnect(
 <br/>
 
 :::{.custom2}
-:::{.incremental1}
+:::{.incremental}
 - 🚗 Searches for **driver** in default areas (Linux, Mac)
 - 🔑 Determines **authentication** method, sets correct defaults
 - 🪪 Passes your credentials
@@ -324,7 +376,7 @@ con <- dbConnect(
 :::{.columns}
 :::{.column width="50%"}
 :::{.custom2}
-:::{.incremental1}
+:::{.incremental}
 - The beloved Connections Pane in RStudio introduced in v1.0
 - Let's us navigate the multiple levels of the DB structure
 - Preview field names and types
@@ -342,7 +394,7 @@ con <- dbConnect(
 :::{.columns}
 :::{.column width="50%"}
 :::{.custom2}
-:::{.incremental1}
+:::{.incremental}
 - Introduced in the public beta
 - Let's us navigate the multiple levels of the DB structure
 - Preview field names and types
