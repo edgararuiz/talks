@@ -389,7 +389,7 @@ con <- dbConnect(
 
 ![](assets/rstudio-connections.png){.absolute top="100" left="900" width="650"}
 
-## [Connections Pane in ~~RStudio~~ Positron!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+## [Connections Pane in Positron! 🎉🎉]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.columns}
 :::{.column width="50%"}
@@ -407,6 +407,8 @@ con <- dbConnect(
 :::
 
 ![](assets/positron-connections.png){.absolute top="100" left="900" width="650"}
+
+![](assets/positron.png){.absolute top="-20" left="1450" width="115"}
 
 ## [RStudio data preview]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
@@ -432,6 +434,8 @@ Data preview is enhanced in Positron!
 
 ![](assets/positron-connections-preview.png){.absolute top="200" left="240" width="1150"}
 
+![](assets/positron.png){.absolute top="-20" left="1450" width="115"}
+
 ## [Positron data preview]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
@@ -439,6 +443,8 @@ The data viewer offers stats about the previewed rows
 :::
 
 ![](assets/positron-preview-2.png){.absolute top="170" left="200" width="1200"}
+
+![](assets/positron.png){.absolute top="-20" left="1450" width="115"}
 
 ## [Works with Python!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
@@ -448,6 +454,8 @@ Connections Pane integrates Python via SQLAlchemy
 
 ![](assets/positron-python.png){.absolute top="200" left="400" width="900"}
 
+![](assets/positron.png){.absolute top="-20" left="1450" width="115"}
+
 ## [Works with Python!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
@@ -455,6 +463,18 @@ The `engine` object is recognize in Positron's **Variables** pane
 :::
 
 ![](assets/positron-engine.png){.absolute top="200" left="400" width="900"}
+
+![](assets/positron.png){.absolute top="-20" left="1450" width="115"}
+
+## [Works with Python!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+The `engine` object is recognize in Positron's **Variables** pane
+:::
+
+![](assets/positron-engine-2.png){.absolute top="200" left="400" width="900"}
+
+![](assets/positron.png){.absolute top="-20" left="1450" width="115"}
 
 ## [Works with Python!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
@@ -464,6 +484,8 @@ Clicking on the **engine** adds it to the **Connections Pane**
 
 ![](assets/positron-python-connection.png){.absolute top="200" left="400" width="900"}
 
+![](assets/positron.png){.absolute top="-20" left="1450" width="115"}
+
 ## [Works with Python!]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
@@ -472,6 +494,8 @@ New connection works the same as with an R connection
 
 ![](assets/positron-python-connection2.png){.absolute top="200" left="400" width="900"}
 
+![](assets/positron.png){.absolute top="-20" left="1450" width="115"}
+
 ## [Preview also works]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
 
 :::{.custom2}
@@ -479,6 +503,8 @@ Clicking on a particular table opens the same preview
 :::
 
 ![](assets/positron-python-preview.png){.absolute top="180" left="250" width="1100"}
+
+![](assets/positron.png){.absolute top="-20" left="1450" width="115"}
 
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
