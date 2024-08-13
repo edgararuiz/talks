@@ -356,6 +356,38 @@ con <- dbConnect(
 
 ![](assets/positron-connections.png){.absolute top="100" left="900" width="650"}
 
+## [RStudio data preview]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+When we click on a table, we can preview the top 1K rows
+:::
+
+![](assets/rstudio-connections-preview.png){.absolute top="200" left="200" width="1250"}
+
+## [RStudio data preview]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+When we click on a table, we can preview the top 1K rows
+:::
+
+![](assets/rstudio-preview.png){.absolute top="200" left="250" width="1100"}
+
+## [Positron data preview]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+Data preview is enhanced in Positron!
+:::
+
+![](assets/positron-connections-preview.png){.absolute top="200" left="240" width="1150"}
+
+## [Positron data preview]{style="color:#666;"} {background-image="assets/background/slide-light.svg" background-size="1700px" background-color="white"}
+
+:::{.custom2}
+The data viewer offers stats about the previewed rows
+:::
+
+![](assets/positron-preview-2.png){.absolute top="170" left="200" width="1200"}
+
 ## {background-image="assets/background/thank-you.svg" background-size="1700px" background-color="#2a7070"}
 
 
