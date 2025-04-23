@@ -52,7 +52,7 @@ library(sparklyr)
 library(dplyr)
 library(pins)
 
-sc <- spark_connect(method = "databricks_connect", version = "15.4")
+sc <- spark_connect(method = "databricks_connect")
 
 tbl_lending <- tbl(sc, I("sol_eng_demo_nickp.`end-to-end`.loans_full_schema"))
 
@@ -137,7 +137,11 @@ library(pins)
 
 sc <- spark_connect(method = "databricks_connect")
 
+tbl_lending <- tbl(sc, I("sol_eng_demo_nickp.ml.lending_club_featurized"))
+
 tbl_lending <- tbl(sc, I("sol_eng_demo_nickp.`end-to-end`.loans_full_schema"))
+
+
 
 board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
 
@@ -198,3 +202,65 @@ full_table |>
   
 
 
+# ----------------------- summarizations ---------------------------------
+
+
+library(tidymodels)
+library(sparklyr)
+library(dplyr)
+library(pins)
+
+sc <- spark_connect(method = "databricks_connect")
+
+tbl_lending <- tbl(sc, I("sol_eng_demo_nickp.`end-to-end`.loans_full_schema"))
+
+tbl_lending |> 
+  group_by(loan_purpose) |> 
+  summarise(
+    count = n(), 
+    loan_amount = sum(loan_amount, na.rm = TRUE)
+  )
+
+loan_purpose_bins <-  tbl_lending |> 
+  group_by(loan_purpose) |> 
+  dbplot::db_compute_bins(bins = 10, loan_amount)
+
+
+loan_purpose_bins |> 
+  filter(loan_purpose == "medical") |> 
+  ggplot() +
+  geom_col(aes(loan_amount, count))
+
+
+tbl_lending |> 
+  count(state) |> 
+  collect() |> 
+  nrow()
+
+
+library(pins)
+
+board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/my_volume")
+
+pin_list(board)
+pin_write(board, mtcars)
+
+pin_write(board, mtcars, "mtcars2", type = "arrow")
+
+pin_write(board, mtcars, "mtcars2", type = "arrow", metadata = list(team = "open source", section = "mlverse"))
+
+pin_write(board, data.frame( a= 1, b =2 ), "mtcars2", type = "arrow", metadata = list(team = "open source", section = "mlverse"))
+
+
+pin_write(board, mtcars, "mtcars2", type = "arrow", metadata = list(origin = "r", another_value = "b"))
+
+pin_meta(board, "mtcars2")
+
+my_list <- list(
+  a = "this is data", 
+  b = list(
+    ba = "one",
+    bb = "two"
+  )
+)
+pin_write(board, my_list)
