@@ -13,9 +13,6 @@ library(pins)
 ```
 
 ```{r}
-board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
-pin_write(board, lend_linear_fit, "lending-model-linear")
-
 lending_predict <- function(local_lending) {
   library(tidymodels)
   library(tidyverse)
@@ -33,8 +30,11 @@ lending_predict <- function(local_lending) {
     select(56, interest_rate, everything())
 }
 
+sc <- spark_connect(method = "databricks_connect")
+tbl_lending <- tbl(sc, I("sol_eng_demo_nickp.`end-to-end`.loans_full_schema"))
+
 with_preds <- tbl_lending |> 
-  spark_apply(lending_predict, columns = columns) |> 
+  spark_apply(lending_predict) |> 
   mutate(diff = interest_rate - `_pred`) |> 
   compute()
 
