@@ -4,7 +4,7 @@ subtitle: "Sample and train"
 format: html
 ---
 
-## Load data
+## Start Spark
 
 ```{r}
 #| include: false
@@ -27,6 +27,8 @@ tbl_lending <- tbl(sc, I("sol_eng_demo_nickp.`end-to-end`.loans_full_schema"))
 tbl_lending
 ```
 
+## Sample
+
 ```{r}
 local_lending <- tbl_lending |> 
   sample_n(1000) |> 
@@ -34,6 +36,8 @@ local_lending <- tbl_lending |>
 
 local_lending
 ```
+
+## Train model
 
 ```{r}
 library(tidymodels)
@@ -80,11 +84,15 @@ preds |>
   
 ```
 
+## Publish
+
 ```{r}
 library(pins)
 board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
 pin_write(board, lend_linear_fit, "lending-model-linear")
 ```
+
+## Predict
 
 ```{r}
 meta <- pin_meta(board, "lending-model-linear")
@@ -135,7 +143,6 @@ tbl_result |>
   filter(`_pred` - interest_rate  > 5)
 ```
 
-
 ```{r}
 with_preds <- tbl_lending |> 
   spark_apply(lending_predict, columns = columns) |> 
@@ -155,9 +162,3 @@ sd_diff
 with_preds |> 
   filter(diff > sd_diff)
 ```
-
-
-
-
-
-

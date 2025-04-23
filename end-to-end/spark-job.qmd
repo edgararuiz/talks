@@ -42,11 +42,12 @@ sd_diff <- with_preds |>
   summarise(x = sd(diff, na.rm = TRUE)) |> 
   pull()
 
+# Downloads results to R
 large_diffs <- with_preds |> 
   filter(diff > sd_diff) |> 
   collect()
 
+# New results uploaded to a different pin
 board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
 pin_write(board, large_diffs, "large_differences", type = "csv")
 ```
-
