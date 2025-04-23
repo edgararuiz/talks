@@ -1,7 +1,7 @@
 ---
 title: "Databricks and pins"
+subtitle: "Sample and train"
 format: html
-editor: visual
 ---
 
 ## Load data
@@ -13,13 +13,11 @@ library(tidyverse)
 library(sparklyr)
 ```
 
-
 ```{r}
 library(sparklyr)
 
 sc <- spark_connect(method = "databricks_connect")
 ```
-
 
 ```{r}
 library(tidyverse)
@@ -29,7 +27,6 @@ tbl_lending <- tbl(sc, I("sol_eng_demo_nickp.`end-to-end`.loans_full_schema"))
 tbl_lending
 ```
 
-
 ```{r}
 local_lending <- tbl_lending |> 
   sample_n(1000) |> 
@@ -37,7 +34,6 @@ local_lending <- tbl_lending |>
 
 local_lending
 ```
-
 
 ```{r}
 library(tidymodels)
@@ -90,7 +86,6 @@ board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
 pin_write(board, lend_linear_fit, "lending-model-linear")
 ```
 
-
 ```{r}
 meta <- pin_meta(board, "lending-model-linear")
 
@@ -98,6 +93,8 @@ url_pin <- paste(board$folder_url, "lending-model-linear", meta$local$version, m
 
 url_pin
 ```
+
+This function is what Spark will run in parallel for each partition. Known as User Defied Function, or UDF, Spark lets us run R code inside the Spark session. We use that to read the model, and run data transformation on the data
 
 ```{r}
 lending_predict <- function(local_lending) {
@@ -121,5 +118,24 @@ lending_predict <- function(local_lending) {
 ```{r}
 lending_predict(local_lending) 
 ```
+
+```{r}
+tbl_result <- tbl_lending |> 
+  head(100) |> 
+  spark_apply(lending_predict) |> 
+  collect()
+```
+
+
+```{r}
+tbl_result |> 
+  filter(`_pred` - interest_rate  >5)
+```
+
+
+
+
+
+
 
 
