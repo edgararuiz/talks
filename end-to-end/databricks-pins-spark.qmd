@@ -126,13 +126,35 @@ tbl_result <- tbl_lending |>
   collect()
 ```
 
+```{r}
+columns <- "_pred double, interest_rate double, emp_title string, emp_length string, state string, homeownership string, annual_income double, verified_income string, debt_to_income string, annual_income_joint string, verification_income_joint string, debt_to_income_joint string, delinq_2y double, months_since_last_delinq string, earliest_credit_line double, inquiries_last_12m double, total_credit_lines double, open_credit_lines double, total_credit_limit double, total_credit_utilized double, num_collections_last_12m double, num_historical_failed_to_pay double, months_since_90d_late string, current_accounts_delinq double, total_collection_amount_ever double, current_installment_accounts double, accounts_opened_24m double, months_since_last_credit_inquiry string, num_satisfactory_accounts double, num_accounts_120d_past_due string, num_accounts_30d_past_due double, num_active_debit_accounts double, total_debit_limit double, num_total_cc_accounts double, num_open_cc_accounts double, num_cc_carrying_balance double, num_mort_accounts double, account_never_delinq_percent double, tax_liens double, public_record_bankrupt double, loan_purpose string, application_type string, loan_amount double, term double, installment double, grade string, sub_grade string, issue_month string, loan_status string, initial_listing_status string, disbursement_method string, balance double, paid_total double, paid_principal double, paid_interest double, paid_late_fees double"
+```
 
 ```{r}
 tbl_result |> 
-  filter(`_pred` - interest_rate  >5)
+  filter(`_pred` - interest_rate  > 5)
 ```
 
 
+```{r}
+with_preds <- tbl_lending |> 
+  spark_apply(lending_predict, columns = columns) |> 
+  mutate(diff = interest_rate - `_pred`) |> 
+  compute()
+```
+
+```{r}
+sd_diff <- with_preds |> 
+  summarise(x = sd(diff, na.rm = TRUE)) |> 
+  pull()
+
+sd_diff
+```
+
+```{r}
+with_preds |> 
+  filter(diff > sd_diff)
+```
 
 
 
