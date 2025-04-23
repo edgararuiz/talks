@@ -1,0 +1,52 @@
+---
+title: "Databricks and pins"
+subtitle: "Scheduled job"
+format: html
+---
+
+```{r}
+#| include: false
+library(tidymodels)
+library(tidyverse)
+library(sparklyr)
+library(pins)
+```
+
+```{r}
+board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
+pin_write(board, lend_linear_fit, "lending-model-linear")
+
+lending_predict <- function(local_lending) {
+  library(tidymodels)
+  library(tidyverse)
+  library(pins)
+  url_pin <- "/Volumes/sol_eng_demo_nickp/end-to-end/r-models/lending-model-linear/20250421T150450Z-321f3/lending-model-linear.rds"
+  if(file.exists(url_pin)) {
+    model <- readRDS(url_pin)  
+  } else {
+    board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
+    model <- pin_read(board, "lending-model-linear")
+  }
+  preds <- predict(model, local_lending)
+  local_lending |> 
+    bind_cols(preds) |> 
+    select(56, interest_rate, everything())
+}
+
+with_preds <- tbl_lending |> 
+  spark_apply(lending_predict, columns = columns) |> 
+  mutate(diff = interest_rate - `_pred`) |> 
+  compute()
+
+sd_diff <- with_preds |> 
+  summarise(x = sd(diff, na.rm = TRUE)) |> 
+  pull()
+
+large_diffs <- with_preds |> 
+  filter(diff > sd_diff) |> 
+  collect()
+
+board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
+pin_write(board, large_diffs, "large_differences", type = "csv")
+```
+
