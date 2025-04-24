@@ -13,11 +13,15 @@ library(tidyverse)
 library(sparklyr)
 ```
 
+We start by connecting to a Databricks Cluster via [Databricks Connect](https://spark.posit.co/deployment/databricks-connect.html)
+
 ```{r}
 library(sparklyr)
 
 sc <- spark_connect(method = "databricks_connect")
 ```
+
+Now, we create a pointer to the `loans_full_schema` table
 
 ```{r}
 library(tidyverse)
@@ -29,9 +33,11 @@ tbl_lending
 
 ## Sample
 
+`sparklyr` allows surfaces the data sampling functionality from Spark. We'll use `slice_sample()` to get one thousand random records from the table
+
 ```{r}
 local_lending <- tbl_lending |> 
-  sample_n(1000) |> 
+  slice_sample(n = 1000) |> 
   collect()
 
 local_lending
@@ -39,10 +45,14 @@ local_lending
 
 ## Train model
 
+Using `tidymodels`, we'll create a `workflow`, which will comprise of a recipe and a model
+
 ```{r}
 library(tidymodels)
 
 set.seed(1234)
+
+# Select specific variables from the table
 
 clean_lending <- local_lending |> 
   select(
@@ -52,9 +62,13 @@ clean_lending <- local_lending |>
     current_accounts_delinq, current_installment_accounts
     ) 
 
+# Splitting data into train and test
+
 train_test_split <- initial_split(clean_lending)
 lend_train <- training(train_test_split)
 lend_test <- testing(train_test_split)
+
+# Creating the recipe which prepares the data from modeling
 
 red_rec_obj <- recipe(interest_rate ~ ., data = lend_train) |>
   step_zv(all_predictors()) |>   
@@ -62,11 +76,17 @@ red_rec_obj <- recipe(interest_rate ~ ., data = lend_train) |>
   step_normalize(all_numeric_predictors()) |>
   step_impute_mean(all_numeric_predictors())
 
+# Defines a linear regression model
+
 lend_linear <- linear_reg()
+
+# Creates the workflow
 
 lend_linear_wflow <- workflow() |>
   add_model(lend_linear) |>
   add_recipe(red_rec_obj)
+
+# Fits dhe model
 
 lend_linear_fit <- lend_linear_wflow |>
   fit(data = lend_train)
@@ -74,6 +94,8 @@ lend_linear_fit <- lend_linear_wflow |>
 lend_linear_fit
 
 ```
+
+Using the new model, we'll run predictions against the test sample
 
 ```{r}
 preds <- predict(lend_linear_fit, lend_test) 
@@ -86,13 +108,19 @@ preds |>
 
 ## Publish
 
+Using `pins` , we will now publish the new model to the `r-models` Databricks Volume
+
 ```{r}
 library(pins)
+
 board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
+
 pin_write(board, lend_linear_fit, "lending-model-linear")
 ```
 
 ## Predict
+
+Inside the Databricks Spark session, there is no need to call use `pins` to access the model. This avoids having to setup new credentials to access the same Databricks Workspace. You can copy the following code if you wish to build the path as it will be inside Databricks:
 
 ```{r}
 meta <- pin_meta(board, "lending-model-linear")
@@ -102,7 +130,9 @@ url_pin <- paste(board$folder_url, "lending-model-linear", meta$local$version, m
 url_pin
 ```
 
-This function is what Spark will run in parallel for each partition. Known as User Defied Function, or UDF, Spark lets us run R code inside the Spark session. We use that to read the model, and run data transformation on the data
+We can copy the path above in the function below as the `url_pin` variable value. This function is what Spark will run in parallel for each partition. Known as User Defied Function, or UDF, Spark lets us run R code inside the Spark session. We use that to read the model, and run data transformation on the data.
+
+It is always a good idea to test locally, so that it has a conditional that if it doesn't find the model's file in the Databricks' path, then it will use `pins` to pull it
 
 ```{r}
 lending_predict <- function(local_lending) {
@@ -123,16 +153,24 @@ lending_predict <- function(local_lending) {
 }
 ```
 
+Now, we test the function locally
+
 ```{r}
 lending_predict(local_lending) 
 ```
+
+To start small, we run the new function against the Spark connection, using `spark_apply()`. We start with 100 rows, and then collect the results to inspec
 
 ```{r}
 tbl_result <- tbl_lending |> 
   head(100) |> 
   spark_apply(lending_predict) |> 
   collect()
+
+tbl_result
 ```
+
+Spark **requires** that we pass a column spec in order to run UDFs. If none is passed, then `sparklyr` will try to determine and define one for you. It also returns a recommendation you can use for future runs. We will copy and paste that as the value of a new variable called `columns`
 
 ```{r}
 columns <- "_pred double, interest_rate double, emp_title string, emp_length string, state string, homeownership string, annual_income double, verified_income string, debt_to_income string, annual_income_joint string, verification_income_joint string, debt_to_income_joint string, delinq_2y double, months_since_last_delinq string, earliest_credit_line double, inquiries_last_12m double, total_credit_lines double, open_credit_lines double, total_credit_limit double, total_credit_utilized double, num_collections_last_12m double, num_historical_failed_to_pay double, months_since_90d_late string, current_accounts_delinq double, total_collection_amount_ever double, current_installment_accounts double, accounts_opened_24m double, months_since_last_credit_inquiry string, num_satisfactory_accounts double, num_accounts_120d_past_due string, num_accounts_30d_past_due double, num_active_debit_accounts double, total_debit_limit double, num_total_cc_accounts double, num_open_cc_accounts double, num_cc_carrying_balance double, num_mort_accounts double, account_never_delinq_percent double, tax_liens double, public_record_bankrupt double, loan_purpose string, application_type string, loan_amount double, term double, installment double, grade string, sub_grade string, issue_month string, loan_status string, initial_listing_status string, disbursement_method string, balance double, paid_total double, paid_principal double, paid_interest double, paid_late_fees double"
