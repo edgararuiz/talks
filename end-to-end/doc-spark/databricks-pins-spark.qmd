@@ -197,9 +197,29 @@ sd_diff <- with_preds |>
 sd_diff
 ```
 
-Now we determine if there are any loans that the model expected to be lower interest using the standard deviation defined above as the threshold
+Now we determine if there are any loans that the model expected to be lower interest using the three times the standard deviation defined above as the threshold
 
 ```{r}
-with_preds |> 
-  filter(diff > sd_diff)
+large_diffs <- with_preds |> 
+  filter(diff > sd_diff * 3) |> 
+  collect()
+
+large_diffs
+```
+
+We check how many records are returned
+
+```{r}
+nrow(large_diffs)
+```
+
+Now, we upload the filtered data set to a new pin
+
+```{r}
+board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
+pin_write(board, large_diffs, "large_differences", type = "csv")
+```
+
+```{r}
+spark_disconnect(sc)
 ```
