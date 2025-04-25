@@ -1,6 +1,7 @@
 library(tidymodels)
 library(tidyverse)
 library(shiny)
+library(httr2)
 library(pins)
 
 board <- board_databricks("/Volumes/sol_eng_demo_nickp/end-to-end/r-models")
@@ -20,7 +21,6 @@ ui <- fluidPage(
       textInput("curr_del", "Current Account Delinquent", 0)
     ),
 
-    # Show a plot of the generated distribution
     mainPanel(
       plotOutput("distPlot")
     )
