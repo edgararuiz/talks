@@ -5,3 +5,4 @@
 usando-big-data/datos
 usando-big-data/datos_arrow
 .DS_Store
+.env
