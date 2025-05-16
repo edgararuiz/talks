@@ -52,4 +52,13 @@ pipeline = Pipeline(
 pipeline.fit(pred_train, out_train)
 
 import orbitalml
+import orbitalml.types
 
+orbital_pipeline = orbitalml.parse_pipeline(pipeline, features={
+    "annual_income": orbitalml.types.DoubleColumnType(),
+    "debt_to_income": orbitalml.types.DoubleColumnType()
+})
+
+print(orbital_pipeline)
+
+orbitalml.export_sql("loans_full_schema", orbital_pipeline, dialect="databricks")
