@@ -23,7 +23,7 @@ df
 # Modeling
 
 
-col_names = ["interest_rate", "annual_income", "debt_to_income"]
+col_names = ["interest_rate", "annual_income", "total_credit_lines"]
 df = df[col_names]
 
 from sklearn.model_selection import train_test_split
@@ -56,9 +56,21 @@ import orbitalml.types
 
 orbital_pipeline = orbitalml.parse_pipeline(pipeline, features={
     "annual_income": orbitalml.types.DoubleColumnType(),
-    "debt_to_income": orbitalml.types.DoubleColumnType()
+    "total_credit_lines": orbitalml.types.DoubleColumnType()
 })
 
 print(orbital_pipeline)
 
-orbitalml.export_sql("loans_full_schema", orbital_pipeline, dialect="databricks")
+pred_sql = orbitalml.export_sql(
+    table_name="loans_full_schema", 
+    pipeline=orbital_pipeline, 
+    projection= orbitalml.ResultsProjection(["annual_income"]),
+    dialect="databricks"
+    )
+
+
+con_cursor = con.cursor()
+con_cursor.execute(f"{pred_sql} limit 10")
+res = con_cursor.fetchall()
+df = pd.DataFrame(res, columns=["annual_income", "variable"])
+df
