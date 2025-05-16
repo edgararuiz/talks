@@ -14,8 +14,9 @@ http_path = "/sql/1.0/warehouses/b71952ebceb705ce"
 
 con = sql.connect(host, http_path, token, catalog = catalog, schema = schema)
 con_cursor = con.cursor()
-con_cursor.execute("select * from loans_full_schema limit 10")
-column_names = [desc[0] for desc in con_cursor.description]
+con_cursor.execute("select * from loans_full_schema TABLESAMPLE (10 ROWS) REPEATABLE (999);")
+col_names = [desc[0] for desc in con_cursor.description]
 res = con_cursor.fetchall()
-df = pd.DataFrame(res, columns=column_names)
+df = pd.DataFrame(res, columns=col_names)
 df
+
