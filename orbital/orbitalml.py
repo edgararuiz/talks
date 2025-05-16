@@ -22,6 +22,10 @@ df
 
 # Modeling
 
+
+col_names = ["interest_rate", "annual_income", "debt_to_income"]
+df = df[col_names]
+
 from sklearn.model_selection import train_test_split
 
 outcome = df["interest_rate"]
@@ -31,12 +35,12 @@ pred_train, pred_test, out_train, out_test = train_test_split(
     predictors, outcome, test_size=20, random_state=999
 )
 
+col_names.remove("interest_rate")
+
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-
-col_names.remove("interest_rate")
 
 pipeline = Pipeline(
     [
@@ -46,4 +50,6 @@ pipeline = Pipeline(
     ]
 )
 pipeline.fit(pred_train, out_train)
+
+import orbitalml
 
