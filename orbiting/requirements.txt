@@ -3,3 +3,4 @@ onnx==1.17.0
 orbitalml>=0.1.0
 pandas>=2.2.3
 pip>=25.1.1
+databricks-sql-connector
