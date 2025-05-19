@@ -22,7 +22,7 @@ full_df = pd.DataFrame(res, columns=col_names)
 # Modeling
 
 
-use_col_names = ["interest_rate", "annual_income", "total_credit_lines"]
+use_col_names = ["interest_rate", "annual_income", "total_credit_lines", "loan_amount", "term"]
 df = full_df[use_col_names]
 
 from sklearn.model_selection import train_test_split
@@ -55,9 +55,15 @@ import orbitalml.types
 
 orbital_pipeline = orbitalml.parse_pipeline(pipeline, features={
     "annual_income": orbitalml.types.DoubleColumnType(),
-    "interest_rate": orbitalml.types.DoubleColumnType(),
     "total_credit_lines": orbitalml.types.DoubleColumnType(),
-    "loan_id": orbitalml.types.Int32ColumnType()
+    "loan_amount": orbitalml.types.DoubleColumnType(),    
+    "term": orbitalml.types.DoubleColumnType(),
+    "loan_id": orbitalml.types.Int32ColumnType(),
+    "emp_title": orbitalml.types.StringColumnType(),
+    "loan_amount": orbitalml.types.DoubleColumnType(),
+    "balance": orbitalml.types.DoubleColumnType(),
+    "application_type": orbitalml.types.StringColumnType(),
+    "interest_rate": orbitalml.types.DoubleColumnType()
 })
 
 print(orbital_pipeline)
@@ -65,13 +71,14 @@ print(orbital_pipeline)
 pred_sql = orbitalml.export_sql(
     table_name="loans_full_schema", 
     pipeline=orbital_pipeline, 
-    #projection= orbitalml.ResultsProjection(["annual_income"]),
+    projection= orbitalml.ResultsProjection(["loan_amount", "term"]),
     dialect="databricks"
     )
 
 
 con_cursor = con.cursor()
-con_cursor.execute(f"select * from ({pred_sql}) where interest_rate > variable limit 10")
+con_cursor.execute(f"select * from ({pred_sql}) where interest_rate - variable > 15 and variable > 0")
+col_names = [desc[0] for desc in con_cursor.description]
 res = con_cursor.fetchall()
-df = pd.DataFrame(res, columns=["interest_rate", "loan_id", "variable"])
+df = pd.DataFrame(res, columns=col_names)
 df
