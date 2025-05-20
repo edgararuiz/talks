@@ -1,5 +1,5 @@
 ---
-title: "Scikit Learn + Orbital"
+title: Databricks + Scikit Learn + Orbital
 subtitle: Simple use case example
 author: Edgar Ruiz - Posit
 date: 2025-05-20
@@ -11,13 +11,20 @@ execute:
 
 ## Use case
 
-Using loan data, we want to use a model that estimates an appropriate interest rate, and then use that model to find out if the interest rate for a given loan may have been too high.
+Using loan data, we want to use a model that estimates an appropriate interest 
+rate, and then use that model to find out if the interest rate for a given loan
+may have been too high. The loan data is in a table located in Databricks. 
 
 ## Approach
 
 *"Fit small, predict big"*
 
-To make it as close to a 'real-life' scenario, we will download a sample of the table into our Python session, fit a model using a Scikit Learn pipeline, and then use Orbital to translate the steps and estimates into a SQL statement. Finally, we will use that SQL statement as the base to compare the current interest against the prediction, and download the loans that had a large difference. See @fig-diagram.
+To make it as close to a 'real-life' scenario, we will download a sample of the 
+table into our Python session, fit a model using a Scikit Learn pipeline, and
+then use Orbital to translate the steps and estimates into a SQL statement. 
+Finally, we will use that SQL statement as the base to compare the current 
+interest against the prediction, and download the loans that had a large 
+difference. See @fig-diagram.
 
 ::: {#fig-diagram}
 ```{mermaid}
@@ -33,7 +40,8 @@ Diagram of the approach used for this use case
 
 ## Download sample
 
-1.  Load necessary libraries. Make sure to have `databricks-sql-connector` installed in your environment, that is the source of `databricks`.
+1.  Load necessary libraries. Make sure to have `databricks-sql-connector`
+installed in your environment, that is the source of `databricks`.
 
     ```{python}
     from dotenv import load_dotenv
