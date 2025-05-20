@@ -150,47 +150,70 @@ called `pred_names`.
 
 ## Convert to SQL using Orbital
 
-```{python}
+1.  Import Orbital
+    ```{python}
+    import orbitalml
+    import orbitalml.types
+    ```
 
-import orbitalml
-import orbitalml.types
+2.  Parse the pipeline with Orbital. At this stage, you can define the predictor's
+field and types, as well as any other fields that need to be included in the
+final result set.
+    
+    ```{python}
+    orbital_pipeline = orbitalml.parse_pipeline(
+      pipeline, 
+      features={
+        "annual_income": orbitalml.types.DoubleColumnType(),
+        "total_credit_lines": orbitalml.types.DoubleColumnType(),
+        "loan_amount": orbitalml.types.DoubleColumnType(),    
+        "term": orbitalml.types.DoubleColumnType(),
+        "loan_id": orbitalml.types.Int32ColumnType(),
+        "emp_title": orbitalml.types.StringColumnType(),
+        "loan_amount": orbitalml.types.DoubleColumnType(),
+        "balance": orbitalml.types.DoubleColumnType(),
+        "application_type": orbitalml.types.StringColumnType(),
+        "interest_rate": orbitalml.types.DoubleColumnType()
+        })
+    ```
 
-orbital_pipeline = orbitalml.parse_pipeline(pipeline, features={
-    "annual_income": orbitalml.types.DoubleColumnType(),
-    "total_credit_lines": orbitalml.types.DoubleColumnType(),
-    "loan_amount": orbitalml.types.DoubleColumnType(),    
-    "term": orbitalml.types.DoubleColumnType(),
-    "loan_id": orbitalml.types.Int32ColumnType(),
-    "emp_title": orbitalml.types.StringColumnType(),
-    "loan_amount": orbitalml.types.DoubleColumnType(),
-    "balance": orbitalml.types.DoubleColumnType(),
-    "application_type": orbitalml.types.StringColumnType(),
-    "interest_rate": orbitalml.types.DoubleColumnType()
-})
+2.  Convert the pipeline to SQL. By default, Orbital will exclude the predictor
+fields from the finalized SQL statement, so `ResultsProjection()` is used to
+force the loan amount and loan term to be included in the statement.
 
-orbital_pipeline
-```
-
-```{python}
-
-pred_sql = orbitalml.export_sql(
-    table_name="loans_full_schema", 
-    pipeline=orbital_pipeline, 
-    projection= orbitalml.ResultsProjection(["loan_amount", "term"]),
-    dialect="databricks"
-    )
-
-pred_sql
-```
+    ```{python}
+    pred_sql = orbitalml.export_sql(
+        table_name="loans_full_schema", 
+        pipeline=orbital_pipeline, 
+        projection= orbitalml.ResultsProjection(["loan_amount", "term"]),
+        dialect="databricks"
+        )
+    ```
+    
+3.  Preview the resulting SQL statment    
+    
+    ```{python}    
+    pred_sql
+    ```
 
 ## Predict against full table
 
-```{python}
+1.  Use the new SQL statement as the source to filter for any rate that is 15 
+points above the prediction
 
-con_cursor = con.cursor()
-con_cursor.execute(f"select * from ({pred_sql}) where interest_rate - variable > 15 and variable > 0")
-pred_cols = [desc[0] for desc in con_cursor.description]
-res = con_cursor.fetchall()
-pred_df = pd.DataFrame(res, columns=pred_cols)
-pred_df
-```
+    ```{python}
+    final_sql = f"select * from ({pred_sql}) where interest_rate - variable > 15 and variable > 0"
+    
+    final_sql
+    ```
+
+2.  Execute the finalized SQL statement, and return it as a Pandas data frame
+
+    ```{python}
+    con_cursor = con.cursor()
+    con_cursor.execute(final_sql)
+    pred_cols = [desc[0] for desc in con_cursor.description]
+    res = con_cursor.fetchall()
+    pred_df = pd.DataFrame(res, columns=pred_cols)
+    pred_df
+    ```
