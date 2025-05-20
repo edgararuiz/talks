@@ -1,5 +1,12 @@
-#pip install databricks-sql-connector
+---
+title: "orbital_sklearn"
+format: html
+editor: visual
+---
 
+## Download sample
+
+```{python}
 import os
 from dotenv import load_dotenv
 from databricks import sql
@@ -19,8 +26,12 @@ col_names = [desc[0] for desc in con_cursor.description]
 res = con_cursor.fetchall()
 full_df = pd.DataFrame(res, columns=col_names)
 
-# Modeling
+full_df
+```
 
+## Fit locally
+
+```{python}
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
@@ -47,6 +58,11 @@ pipeline = Pipeline(
 )
 
 pipeline.fit(pred_train, out_train)
+```
+
+## Setup Orbital
+
+```{python}
 
 import orbitalml
 import orbitalml.types
@@ -64,8 +80,10 @@ orbital_pipeline = orbitalml.parse_pipeline(pipeline, features={
     "interest_rate": orbitalml.types.DoubleColumnType()
 })
 
-print(orbital_pipeline)
+orbital_pipeline
+```
 
+```{python}
 pred_sql = orbitalml.export_sql(
     table_name="loans_full_schema", 
     pipeline=orbital_pipeline, 
@@ -73,10 +91,16 @@ pred_sql = orbitalml.export_sql(
     dialect="databricks"
     )
 
+pred_sql
+```
 
+## Predict against entire table
+
+```{python}
 con_cursor = con.cursor()
 con_cursor.execute(f"select * from ({pred_sql}) where interest_rate - variable > 15 and variable > 0")
-col_names = [desc[0] for desc in con_cursor.description]
+pred_cols = [desc[0] for desc in con_cursor.description]
 res = con_cursor.fetchall()
-df = pd.DataFrame(res, columns=col_names)
-df
+pred_df = pd.DataFrame(res, columns=pred_cols)
+pred_df
+```
