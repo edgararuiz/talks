@@ -7,16 +7,17 @@ format: html
 editor: visual
 ---
 
-## Use case 
+## Use case
 
 Using loan data, we want to use a model that estimates an appropriate interest rate, and then use that model to find out if the interest rate for a given loan may have been too high.
 
 ## Approach
 
-*Fit small, predict big*
+*"Fit small, predict big"*
 
-To make it as close to a 'real-life' scenario, we will download a sample of the source database table into our Python session.
+To make it as close to a 'real-life' scenario, we will download a sample of the table into our Python session, fit a model using a Scikit Learn pipeline, and then use Orbital to translate the steps and estimates into a SQL statement. Finally, we will use that SQL statement as the base to compare the current interest against the prediction, and download the loans that had a large difference. See @fig-diagram.
 
+::: {#fig-diagram}
 ```{mermaid}
 flowchart LR
   A[1-Full Table] --Download--> B(2-Sample) 
@@ -24,6 +25,9 @@ flowchart LR
   C--Orbital parse-->D(4-SQL)
   D--Predict-->A
 ```
+
+Diagram of the approach used for this use case
+:::
 
 ## Download sample
 
@@ -83,7 +87,7 @@ pipeline = Pipeline(
 pipeline.fit(pred_train, out_train)
 ```
 
-## Setup Orbital
+## Convert to SQL  using Orbital
 
 ```{python}
 #| eval: false
@@ -118,7 +122,7 @@ pred_sql = orbitalml.export_sql(
 pred_sql
 ```
 
-## Predict against entire table
+## Predict against full table
 
 ```{python}
 #| eval: false
