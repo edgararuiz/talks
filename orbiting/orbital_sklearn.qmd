@@ -5,6 +5,8 @@ author: Edgar Ruiz - Posit
 date: 2025-05-20
 format: html
 editor: visual
+execute:
+  eval: false
 ---
 
 ## Use case
@@ -31,34 +33,70 @@ Diagram of the approach used for this use case
 
 ## Download sample
 
-```{python}
-#| eval: false
-import os
-from dotenv import load_dotenv
-from databricks import sql
-import pandas as pd
-load_dotenv()
+1.  Load necessary libraries. Make sure to have `databricks-sql-connector` installed in your environment, that is the source of `databricks`.
 
-host = os.getenv("DATABRICKS_HOST")
-token = os.getenv("DATABRICKS_TOKEN")
-schema = "end-to-end"
-catalog = "sol_eng_demo_nickp"
-http_path = "/sql/1.0/warehouses/b71952ebceb705ce"
+    ```{python}
+    from dotenv import load_dotenv
+    from databricks import sql
+    import pandas as pd
+    import os
+    ```
 
-con = sql.connect(host, http_path, token, catalog = catalog, schema = schema)
-con_cursor = con.cursor()
-con_cursor.execute("select * from loans_full_schema TABLESAMPLE (100 ROWS) REPEATABLE (999);")
-col_names = [desc[0] for desc in con_cursor.description]
-res = con_cursor.fetchall()
-full_df = pd.DataFrame(res, columns=col_names)
+2.  Load the credentials to be used via their respective environment variables.
 
-full_df
-```
+    ```{python}
+    load_dotenv()
+    host = os.getenv("DATABRICKS_HOST")
+    token = os.getenv("DATABRICKS_TOKEN")
+    ```
+
+3.  For simplicity's sake, the table's catalog, schema and HTTP path into variables.
+
+    ```{python}
+    schema = "end-to-end"
+    catalog = "sol_eng_demo_nickp"
+    http_path = "/sql/1.0/warehouses/b71952ebceb705ce""
+    ```
+
+4.  Establish the database connection using the defined variables 
+
+    ```{python}
+    con = sql.connect(host, http_path, token, catalog = catalog, schema = schema)
+    ```
+
+5.  Using `TABLESAMPLE`, download 100 rows. `REPEATABLE` is used for purposes
+of reproducibility.
+
+    ```{python}
+    con_cursor = con.cursor()
+    con_cursor.execute(
+      "select * from loans_full_schema TABLESAMPLE (100 ROWS) REPEATABLE (999);"
+      )
+    ```
+
+6.  Iterate through the field descriptions to extract their respective names
+
+    ```{python}
+    col_names = [desc[0] for desc in con_cursor.description]
+    ```
+
+7.  Convert the downloaded data into Pandas
+
+    ```{python}
+    res = con_cursor.fetchall()
+    full_df = pd.DataFrame(res, columns=col_names)
+    ```
+
+8.  Preview the data
+
+    ```{python}
+    full_df.head(10)
+    ```
 
 ## Fit locally
 
 ```{python}
-#| eval: false
+
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
@@ -87,10 +125,10 @@ pipeline = Pipeline(
 pipeline.fit(pred_train, out_train)
 ```
 
-## Convert to SQL  using Orbital
+## Convert to SQL using Orbital
 
 ```{python}
-#| eval: false
+
 import orbitalml
 import orbitalml.types
 
@@ -111,7 +149,7 @@ orbital_pipeline
 ```
 
 ```{python}
-#| eval: false
+
 pred_sql = orbitalml.export_sql(
     table_name="loans_full_schema", 
     pipeline=orbital_pipeline, 
@@ -125,7 +163,7 @@ pred_sql
 ## Predict against full table
 
 ```{python}
-#| eval: false
+
 con_cursor = con.cursor()
 con_cursor.execute(f"select * from ({pred_sql}) where interest_rate - variable > 15 and variable > 0")
 pred_cols = [desc[0] for desc in con_cursor.description]
