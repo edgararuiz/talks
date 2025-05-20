@@ -1,12 +1,34 @@
 ---
-title: "orbital_sklearn"
+title: "Scikit Learn + Orbital"
+subtitle: Simple use case example
+author: Edgar Ruiz - Posit
+date: 2025-05-20
 format: html
 editor: visual
 ---
 
+## Use case 
+
+Using loan data, we want to use a model that estimates an appropriate interest rate, and then use that model to find out if the interest rate for a given loan may have been too high.
+
+## Approach
+
+*Fit small, predict big*
+
+To make it as close to a 'real-life' scenario, we will download a sample of the source database table into our Python session.
+
+```{mermaid}
+flowchart LR
+  A[1-Full Table] --Download--> B(2-Sample) 
+  B--Scikit Learn fit-->C(3-Model)
+  C--Orbital parse-->D(4-SQL)
+  D--Predict-->A
+```
+
 ## Download sample
 
 ```{python}
+#| eval: false
 import os
 from dotenv import load_dotenv
 from databricks import sql
@@ -32,6 +54,7 @@ full_df
 ## Fit locally
 
 ```{python}
+#| eval: false
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
@@ -63,7 +86,7 @@ pipeline.fit(pred_train, out_train)
 ## Setup Orbital
 
 ```{python}
-
+#| eval: false
 import orbitalml
 import orbitalml.types
 
@@ -84,6 +107,7 @@ orbital_pipeline
 ```
 
 ```{python}
+#| eval: false
 pred_sql = orbitalml.export_sql(
     table_name="loans_full_schema", 
     pipeline=orbital_pipeline, 
@@ -97,6 +121,7 @@ pred_sql
 ## Predict against entire table
 
 ```{python}
+#| eval: false
 con_cursor = con.cursor()
 con_cursor.execute(f"select * from ({pred_sql}) where interest_rate - variable > 15 and variable > 0")
 pred_cols = [desc[0] for desc in con_cursor.description]
