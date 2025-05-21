@@ -82,28 +82,50 @@ df = pd.DataFrame(res, columns=col_names)
 df
 
 
+schema = "end-to-end"
+catalog = "sol_eng_demo_nickp"
+
 from databricks.sdk import WorkspaceClient
-from databricks.sdk.service import sql
+from databricks.sdk.service import sql as sdk_sql
 
 w = WorkspaceClient()
 
 srcs = w.data_sources.list()
+warehouse_id = srcs[0].warehouse_id
 
-schema = "end-to-end"
-catalog = "sol_eng_demo_nickp"
-
-
-query = w.queries.create(
-    query=sql.CreateQueryRequestQuery(
-        display_name=f"simple-query",
-        warehouse_id=srcs[0].warehouse_id,
-        description="Find differences in interest rate",
-        query_text="SELECT loans_full_schema limit 10",
+new_query = w.queries.create(
+    query=sdk_sql.CreateQueryRequestQuery(
+        query_text="SELECT * from loans_full_schema limit 10",
+        catalog=catalog, 
+        schema=schema,
+        display_name=f"Interest rate differences",
+        warehouse_id=warehouse_id,
+        description="Find differences in interest rate",        
     )
 )
 
+from databricks.sdk.service import jobs  as sdk_jobs
+
+db_sql_task = sdk_jobs.SqlTaskQuery(
+    query_id=new_query.id 
+    )
+
+db_task = sdk_jobs.Task(
+    sql_task=db_sql_task,
+    description="Int rate diffs", 
+    task_key="run_sql"
+    )
+
+# https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html
+
+db_schedule = sdk_jobs.CronSchedule(
+    quartz_cron_expression="0 0 12 * * ?",
+    timezone_id="CST"
+    )
 
 
-for query in queries:
-    print(query.id)
-
+new_job = w.jobs.create(
+    name="Daiily check interest differences",
+    tasks=[db_task],    
+    schedule=db_schedule
+    )
