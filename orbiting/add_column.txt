@@ -1,5 +1,5 @@
 
-### Create loan_id
+### Create `loan_id`
 
 ALTER TABLE sol_eng_demo_nickp.`end-to-end`.loans_full_schema 
 ADD COLUMN loan_id BIGINT;

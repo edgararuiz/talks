@@ -6,7 +6,9 @@ date: 2025-05-20
 format: html
 editor: visual
 execute:
-  eval: false
+  eval: true
+toc: true  
+toc-expand: true
 ---
 
 ## Use case
@@ -225,3 +227,131 @@ points above the prediction
     pred_df = pd.DataFrame(res, columns=pred_cols)
     pred_df
     ```
+
+## Appendix
+
+### Data in example
+
+The data used for this example was downloaded from OpenIntro. The page containing
+the description of the data and the download link are available here: 
+[loans_full_schema](https://www.openintro.org/data/index.php?data=loans_full_schema).
+The CSV file was manually [uploaded to the Databricks Unity Catalog](https://docs.databricks.com/aws/en/ingestion/file-upload/upload-to-volume).
+
+The `loan_id` field is not included in the data file. That was created using the
+following two SQL commands. This one to create the field:
+
+```sql
+ALTER TABLE sol_eng_demo_nickp.`end-to-end`.loans_full_schema 
+ADD COLUMN loan_id BIGINT;
+```
+
+This is the SQL command to populate the table with a sequential number:
+
+```sql
+WITH cte AS (
+  SELECT
+    loan_id,
+    ROW_NUMBER() OVER (ORDER BY debt_to_income) AS new_loan_id
+  FROM
+    sol_eng_demo_nickp.`end-to-end`.loans_full_schema
+)
+MERGE INTO sol_eng_demo_nickp.`end-to-end`.loans_full_schema AS target
+USING cte
+ON target.debt_to_income = cte.debt_to_income
+WHEN MATCHED THEN
+  UPDATE SET target.loan_id = cte.new_loan_id;
+```
+
+### Python environment
+
+The following library requirements were used to run the example:
+
+```bash
+dotenv>=0.9.9
+onnx==1.17.0
+orbitalml>=0.1.0
+pandas>=2.2.3
+databricks-sql-connector
+```
+
+The version for `onnx` was fixed to 1.7.0 because the current version, 
+1.8.0, has a [bug](https://github.com/onnx/onnx/issues/6962) that 
+prevents `orbital` from working. The bug has been fixed in the development
+version, so if you the next release should be fine to use.
+
+
+### Full code
+
+```{python}
+#| eval: false
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from dotenv import load_dotenv
+from databricks import sql
+import orbitalml.types
+import pandas as pd
+import orbitalml
+import os
+
+load_dotenv()
+host = os.getenv("DATABRICKS_HOST")
+token = os.getenv("DATABRICKS_TOKEN")
+schema = "end-to-end"
+catalog = "sol_eng_demo_nickp"
+http_path = "/sql/1.0/warehouses/b71952ebceb705ce"
+con = sql.connect(host, http_path, token, catalog = catalog, schema = schema)
+con_cursor = con.cursor()
+con_cursor.execute(
+  "select * from loans_full_schema TABLESAMPLE (100 ROWS) REPEATABLE (999);"
+  )
+col_names = [desc[0] for desc in con_cursor.description]
+res = con_cursor.fetchall()
+full_df = pd.DataFrame(res, columns=col_names)
+
+pred_names = ["annual_income", "total_credit_lines", "loan_amount",  "term"]
+predictors = full_df[pred_names]
+outcome = full_df["interest_rate"]
+pred_train, pred_test, out_train, out_test = train_test_split(
+    predictors, outcome, test_size=20, random_state=999
+)
+pipeline = Pipeline(
+    [("preprocess", 
+      ColumnTransformer(
+        [("scaler", StandardScaler(with_std=False), pred_names)],
+        remainder="passthrough")
+        ),
+    ("linear_regression", LinearRegression())]
+)
+pipeline.fit(pred_train, out_train)
+
+orbital_pipeline = orbitalml.parse_pipeline(
+  pipeline, 
+  features={
+    "annual_income": orbitalml.types.DoubleColumnType(),
+    "total_credit_lines": orbitalml.types.DoubleColumnType(),
+    "loan_amount": orbitalml.types.DoubleColumnType(),    
+    "term": orbitalml.types.DoubleColumnType(),
+    "loan_id": orbitalml.types.Int32ColumnType(),
+    "emp_title": orbitalml.types.StringColumnType(),
+    "loan_amount": orbitalml.types.DoubleColumnType(),
+    "balance": orbitalml.types.DoubleColumnType(),
+    "application_type": orbitalml.types.StringColumnType(),
+    "interest_rate": orbitalml.types.DoubleColumnType()
+    })
+pred_sql = orbitalml.export_sql(
+    table_name="loans_full_schema", 
+    pipeline=orbital_pipeline, 
+    projection= orbitalml.ResultsProjection(["loan_amount", "term"]),
+    dialect="databricks"
+    )
+
+final_sql = f"select * from ({pred_sql}) where interest_rate - variable > 15 and variable > 0"
+con_cursor.execute(final_sql)
+pred_cols = [desc[0] for desc in con_cursor.description]
+res = con_cursor.fetchall()
+pred_df = pd.DataFrame(res, columns=pred_cols)
+pred_df
+```
