@@ -268,17 +268,14 @@ The following library requirements were used to run the example:
 
 ```bash
 dotenv>=0.9.9
-onnx==1.17.0
-orbitalml>=0.1.0
+orbitalml>=0.2.0
 pandas>=2.2.3
+pip>=25.1.1
 databricks-sql-connector
 ```
 
-The version for `onnx` was fixed to 1.7.0 because the current version, 
-1.8.0, has a [bug](https://github.com/onnx/onnx/issues/6962) that 
-prevents `orbital` from working. The bug has been fixed in the development
-version, so if you the next release should be fine to use.
-
+There is an issue with the `onnx` binary for Python 3.13, so for the example
+Python 3.12 was used.
 
 ### Full code
 
