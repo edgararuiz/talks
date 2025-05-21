@@ -106,8 +106,13 @@ new_query = w.queries.create(
 
 from databricks.sdk.service import jobs  as sdk_jobs
 
-db_sql_task = sdk_jobs.SqlTaskQuery(
-    query_id=new_query.id 
+db_sql_task_query = sdk_jobs.SqlTaskQuery(
+    query_id = new_query.id
+    )
+
+db_sql_task = sdk_jobs.SqlTask(
+    query=db_sql_task_query, 
+    warehouse_id=warehouse_id
     )
 
 db_task = sdk_jobs.Task(
