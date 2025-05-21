@@ -6,7 +6,7 @@ date: 2025-05-20
 format: html
 editor: visual
 execute:
-  eval: false
+  eval: true
 toc: true  
 toc-expand: true
 ---
@@ -28,7 +28,9 @@ table into our Python session, fit a model using a Scikit Learn pipeline, and
 then use Orbital to translate the steps and estimates into a SQL statement. 
 Finally, we will use that SQL statement as the base to compare the current 
 interest against the prediction, and download the loans that had a large 
-difference. See @fig-diagram.
+difference. Thanks to the integrated environment in Databricks, the resulting
+SQL statement will be saved in the Databricks Workspace, and used to run
+on a schedule via a [Databricks Job](https://docs.databricks.com/aws/en/jobs/).
 
 ::: {#fig-diagram}
 ```{mermaid}
@@ -36,7 +38,8 @@ flowchart LR
   A[1-Full Table] --Download--> B(2-Sample) 
   B--Scikit Learn fit-->C(3-Model)
   C--Orbital parse-->D(4-SQL)
-  D--Predict-->A
+  D--Automate-->E(5-Job)
+  E--Predict-->A
 ```
 
 Diagram of the approach used for this use case
@@ -208,9 +211,8 @@ force the loan amount and loan term to be included in the statement.
     pred_sql
     ```
 
-## Predict against full table
 
-1.  Use the new SQL statement as the source to filter for any rate that is 15 
+4.  Use the new SQL statement as the source to filter for any rate that is 15 
 points above the prediction
 
     ```{python}
@@ -219,7 +221,7 @@ points above the prediction
     final_sql
     ```
 
-2.  Execute the finalized SQL statement, and return it as a Pandas data frame
+5.  Execute the finalized SQL statement, and return it as a Pandas data frame
 
     ```{python}
     con_cursor = con.cursor()
@@ -231,11 +233,6 @@ points above the prediction
     ```
 
 ## Automate in Databricks
-
-The [Databricks SDK](https://docs.databricks.com/aws/en/dev-tools/sdk-python) 
-allows us to programmatically create a new [Databricks Job](https://docs.databricks.com/aws/en/jobs/)
-that runs the query on a daily basis to get the current list of loans that
-may have a problem. 
 
 1.  `WorkspaceClient` is the main way to create and manage objects 
     ```{python}
@@ -321,7 +318,8 @@ the resulting task in the Databricks UI can be named and described
     ```
     
 8.  For this example, the Job needs to have a schedule defined. And to do this,
-a `CronSchedule` object is needed.
+a `CronSchedule` object is needed. To define the schedule use a 
+[CRON expression](https://www.quartz-scheduler.org/documentation/).
     
     ```{python}
     #| eval: false
