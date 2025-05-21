@@ -85,16 +85,16 @@ df
 schema = "end-to-end"
 catalog = "sol_eng_demo_nickp"
 
-from databricks.sdk import WorkspaceClient
-from databricks.sdk.service import sql as sdk_sql
 
+from databricks.sdk import WorkspaceClient
 w = WorkspaceClient()
 
 srcs = w.data_sources.list()
 warehouse_id = srcs[0].warehouse_id
 
-new_query = w.queries.create(
-    query=sdk_sql.CreateQueryRequestQuery(
+from databricks.sdk.service import sql as sdk_sql
+
+db_request_query = sdk_sql.CreateQueryRequestQuery(
         query_text="SELECT * from loans_full_schema limit 10",
         catalog=catalog, 
         schema=schema,
@@ -102,7 +102,8 @@ new_query = w.queries.create(
         warehouse_id=warehouse_id,
         description="Find differences in interest rate",        
     )
-)
+
+new_query = w.queries.create(query=db_request_query)
 
 from databricks.sdk.service import jobs  as sdk_jobs
 
@@ -128,9 +129,8 @@ db_schedule = sdk_jobs.CronSchedule(
     timezone_id="CST"
     )
 
-
 new_job = w.jobs.create(
-    name="Daiily check interest differences",
+    name="Daily check interest differences",
     tasks=[db_task],    
     schedule=db_schedule
     )
