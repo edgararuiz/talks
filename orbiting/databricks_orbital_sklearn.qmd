@@ -237,6 +237,7 @@ may have a problem.
 
 1.  `WorkspaceClient` is the main way to create and manage objects 
     ```{python}
+    #| eval: false
     from databricks.sdk import WorkspaceClient
     
     w = WorkspaceClient()
@@ -246,6 +247,7 @@ may have a problem.
 warehouse returned by the function that lists all of the sources. 
 
     ```{python}
+    #| eval: false
     srcs = w.data_sources.list()
     warehouse_id = srcs[0].warehouse_id
     ```
@@ -256,6 +258,7 @@ is created in the Databricks Workspace. To start, the query object is built usin
 Additionally, the catalog and schema are also defined via their respective arguments.
 
     ```{python}
+    #| eval: false
     from databricks.sdk.service import sql as sdk_sql
     
     db_request_query = sdk_sql.CreateQueryRequestQuery(
@@ -273,6 +276,7 @@ query. After executing the command, a new query named *"Interest rate difference
 will appear in the Queries secion of the Databricks Web UI. 
 
     ```{python}
+    #| eval: false
     new_query = w.queries.create(query=db_request_query)
     ```
     
@@ -283,6 +287,7 @@ following starts building the SQL task. It uses the `new_query`'s ID to tie
 it to the query created in the previous step.
 
     ```{python}
+    #| eval: false
     from databricks.sdk.service import jobs  as sdk_jobs
     
     db_sql_task_query = sdk_jobs.SqlTaskQuery(
@@ -290,8 +295,53 @@ it to the query created in the previous step.
         )
     ```    
 
+6.  To finish defining the SQL task object, `db_sql_task_query` is passed
+to SqlTask()
 
+    ```{python}
+    #| eval: false
+    db_sql_task = sdk_jobs.SqlTask(
+        query=db_sql_task_query, 
+        warehouse_id=warehouse_id
+        )
+    ```
 
+7.  The SQL task object is used to create a formal Task. This is the point where
+the resulting task in the Databricks UI can be named and described
+
+    ```{python}
+    #| eval: false
+    db_task = sdk_jobs.Task(
+        sql_task=db_sql_task,
+        description="Int rate diffs", 
+        task_key="run_sql"
+        )
+    ```
+    
+8.  For this example, the Job needs to have a schedule defined. And to do this,
+a `CronSchedule` object is needed.
+    
+    ```{python}
+    #| eval: false
+    db_schedule = sdk_jobs.CronSchedule(
+        quartz_cron_expression="0 0 12 * * ?",
+        timezone_id="CST"
+        )
+    ```
+    
+9.  Finally, the Job is created using the task and schedule objects. After 
+running the following command, a new Job named *"Daily check interest differences"*
+will appear in the Jobs section of the Databricks Web UI.
+
+    ```{python}
+    #| eval: false
+    new_job = w.jobs.create(
+        name="Daily check interest differences",
+        tasks=[db_task],    
+        schedule=db_schedule
+        )
+    ```
+    
 ## Appendix
 
 ### Data in example
