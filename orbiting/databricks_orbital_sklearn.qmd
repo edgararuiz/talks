@@ -15,7 +15,9 @@ toc-expand: true
 
 Using loan data, we want to use a model that estimates an appropriate interest 
 rate, and then use that model to find out if the interest rate for a given loan
-may have been too high. The loan data is in a table located in Databricks. 
+may have been too high. The loan data is in a table located in the Databricks 
+Unity Catalog. The ultimate objective of the project, is to have it check on 
+a daily basis to see what loans may an issue. 
 
 ## Approach
 
