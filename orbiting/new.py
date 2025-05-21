@@ -80,3 +80,30 @@ col_names = [desc[0] for desc in con_cursor.description]
 res = con_cursor.fetchall()
 df = pd.DataFrame(res, columns=col_names)
 df
+
+
+from databricks.sdk import WorkspaceClient
+from databricks.sdk.service import sql
+
+w = WorkspaceClient()
+
+srcs = w.data_sources.list()
+
+schema = "end-to-end"
+catalog = "sol_eng_demo_nickp"
+
+
+query = w.queries.create(
+    query=sql.CreateQueryRequestQuery(
+        display_name=f"simple-query",
+        warehouse_id=srcs[0].warehouse_id,
+        description="Find differences in interest rate",
+        query_text="SELECT loans_full_schema limit 10",
+    )
+)
+
+
+
+for query in queries:
+    print(query.id)
+
