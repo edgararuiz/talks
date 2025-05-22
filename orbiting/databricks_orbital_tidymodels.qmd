@@ -130,22 +130,50 @@ wf_fit
 ```{r}
 library(orbital)
 
-lending_orbital <-  orbital(wf_fit)
+lending_orbital <-  orbital(wf_fit, prefix = "pred")
 
 lending_orbital
 ```
+```{r}
+library(dplyr)
+library(dbplyr)
+
+tbl_lending <- tbl(con, I(glue("{catalog}.`{schema}`.{table}")))
+
+tbl_lending
+```
+
+
 
 ```{r}
-lending_sql <- orbital_sql(lending_orbital, con)
+tbl_prep <- tbl_lending |> 
+  mutate(o_annual_income = annual_income, 
+         o_total_credit_lines = total_credit_lines,
+         o_loan_amount = loan_amount, 
+         o_term = term
+         ) |> 
+  mutate(!!! orbital_inline(lending_orbital)) |> 
+  select(
+    pred, interest_rate, emp_title, balance, application_type,
+    o_annual_income, o_total_credit_lines, o_loan_amount, o_term
+  ) 
 
-lending_sql
+tbl_prep |> 
+  head()
 ```
 
 ```{r}
-	
-lending_sql |> 
-  imap(\(x,y) glue("{x} AS {y}")) |> 
-  glue_sql_collapse(sep = ", ")
-    
+tbl_final <- tbl_prep |> 
+  filter(interest_rate - pred > 15)
+```
+
+```{r}
+tbl_final
+```
+
+
+```{r}
+tbl_final |> 
+  show_query()
 ```
 
