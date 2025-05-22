@@ -1,12 +1,12 @@
 ---
-title: Databricks + Scikit Learn + Orbital
+title: Databricks + Tididymodels + Orbital
 subtitle: Simple use case example
 author: Edgar Ruiz - Posit
-date: 2025-05-20
+date: 2025-05-22
 format: html
 editor: visual
 execute:
-  eval: false
+  eval: true
 toc: true  
 toc-expand: true
 ---
@@ -15,31 +15,10 @@ toc-expand: true
 #| include: false
 library(tidymodels)
 library(tidyverse)
-
+library(dbplyr)
 options("odbc.no_config_override"=FALSE)
 ```
 
-
-## Use case
-
-Using loan data, we want to use a model that estimates an appropriate interest 
-rate, and then use that model to find out if the interest rate for a given loan
-may have been too high. The loan data is in a table located in the Databricks 
-Unity Catalog. The ultimate objective of the project, is to have it check on 
-a daily basis to see what loans may an issue. 
-
-## Approach
-
-*"Fit small, predict big"*
-
-To make it as close to a 'real-life' scenario, we will download a sample of the 
-table into our Python session, fit a model using a Scikit Learn pipeline, and
-then use Orbital to translate the steps and estimates into a SQL statement. 
-Finally, we will use that SQL statement as the base to compare the current 
-interest against the prediction, and download the loans that had a large 
-difference. Thanks to the integrated environment in Databricks, the resulting
-SQL statement will be saved in the Databricks Workspace, and used to run
-on a schedule via a [Databricks Job](https://docs.databricks.com/aws/en/jobs/).
 
 
 ## Download sample
@@ -83,9 +62,6 @@ sample_lending <- dbGetQuery(
   )
 ```
 
-```{r}
-head(sample_lending)
-```
 
 
 ## Fit locally
@@ -134,6 +110,8 @@ lending_orbital <-  orbital(wf_fit, prefix = "pred")
 
 lending_orbital
 ```
+## Build report 
+
 ```{r}
 library(dplyr)
 library(dbplyr)
@@ -175,5 +153,15 @@ tbl_final
 ```{r}
 tbl_final |> 
   show_query()
+```
+
+```{r}
+final_sql <- remote_query(tbl_final)
+
+final_sql
+```
+
+```{r}
+dbGetQuery(con, final_sql)
 ```
 
