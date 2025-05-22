@@ -1,0 +1,521 @@
+---
+title: Databricks + Scikit Learn + Orbital
+subtitle: Simple use case example
+author: Edgar Ruiz - Posit
+date: 2025-05-20
+format: html
+editor: visual
+execute:
+  eval: false
+toc: true  
+toc-expand: true
+---
+
+```{r}
+#| include: false
+library(tidymodels)
+
+options("odbc.no_config_override"=FALSE)
+```
+
+
+## Use case
+
+Using loan data, we want to use a model that estimates an appropriate interest 
+rate, and then use that model to find out if the interest rate for a given loan
+may have been too high. The loan data is in a table located in the Databricks 
+Unity Catalog. The ultimate objective of the project, is to have it check on 
+a daily basis to see what loans may an issue. 
+
+## Approach
+
+*"Fit small, predict big"*
+
+To make it as close to a 'real-life' scenario, we will download a sample of the 
+table into our Python session, fit a model using a Scikit Learn pipeline, and
+then use Orbital to translate the steps and estimates into a SQL statement. 
+Finally, we will use that SQL statement as the base to compare the current 
+interest against the prediction, and download the loans that had a large 
+difference. Thanks to the integrated environment in Databricks, the resulting
+SQL statement will be saved in the Databricks Workspace, and used to run
+on a schedule via a [Databricks Job](https://docs.databricks.com/aws/en/jobs/).
+
+::: {#fig-diagram}
+```{mermaid}
+flowchart LR
+  A[1-Full Table] --Download--> B(2-Sample) 
+  B--Scikit Learn fit-->C(3-Model)
+  C--Orbital parse-->D(4-SQL)
+  D--Automate-->E(5-Job)
+  E--Predict-->A
+```
+
+Diagram of the approach used for this use case
+:::
+
+## Download sample
+
+```{r}
+library(DBI)
+
+con <- dbConnect(
+  drv = odbc::databricks(), 
+  httpPath = "/sql/1.0/warehouses/b71952ebceb705ce"
+  )
+```
+
+
+```{r}
+schema <- "end-to-end"
+catalog <- "sol_eng_demo_nickp"
+table <- "loans_full_schema"
+```
+
+
+```{r}
+library(glue)
+
+sample_sql <- glue_sql(
+  "SELECT * ", 
+  "FROM ",
+  "{`catalog`}.{`schema`}.{`table`}",
+  "TABLESAMPLE (100 ROWS) REPEATABLE (999)",
+  .con = con
+  )
+
+sample_sql
+```
+
+
+```{r}
+sample_lending <- dbGetQuery(
+  conn = con, 
+  statement = sample_sql
+  )
+```
+
+```{r}
+head(sample_lending)
+```
+
+
+1.  Load necessary libraries. Make sure to have `databricks-sql-connector`
+installed in your environment, that is the source of `databricks`.
+
+    ```{python}
+    from dotenv import load_dotenv
+    from databricks import sql
+    import pandas as pd
+    import os
+    ```
+
+2.  Load the credentials to be used via their respective environment variables.
+
+    ```{python}
+    load_dotenv()
+    host = os.getenv("DATABRICKS_HOST")
+    token = os.getenv("DATABRICKS_TOKEN")
+    ```
+
+3.  For simplicity's sake, the table's catalog, schema and HTTP path into variables.
+
+    ```{python}
+    schema = "end-to-end"
+    catalog = "sol_eng_demo_nickp"
+    http_path = "/sql/1.0/warehouses/b71952ebceb705ce"
+    ```
+
+4.  Establish the database connection using the defined variables 
+
+    ```{python}
+    con = sql.connect(host, http_path, token, catalog = catalog, schema = schema)
+    ```
+
+5.  Using `TABLESAMPLE`, download 100 rows. `REPEATABLE` is used for purposes
+of reproducibility.
+
+    ```{python}
+    con_cursor = con.cursor()
+    con_cursor.execute(
+      "select * from loans_full_schema TABLESAMPLE (100 ROWS) REPEATABLE (999);"
+      )
+    ```
+
+6.  Iterate through the field descriptions to extract their respective names
+
+    ```{python}
+    col_names = [desc[0] for desc in con_cursor.description]
+    ```
+
+7.  Convert the downloaded data into Pandas
+
+    ```{python}
+    res = con_cursor.fetchall()
+    full_df = pd.DataFrame(res, columns=col_names)
+    ```
+
+
+## Fit locally
+
+1.  Load the appropiate Scikit Learn modules
+    
+    ```{python}
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LinearRegression
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.compose import ColumnTransformer
+    from sklearn.pipeline import Pipeline
+    ```
+
+2.  Select the fields that will be used for predictors, and add them to a list 
+called `pred_names`. 
+
+    ```{python}
+    pred_names = ["annual_income", "total_credit_lines", "loan_amount",  "term"]
+    ```
+
+3.  Subset the data into a new variable (`predictors`)
+
+    ```{python}
+    predictors = full_df[pred_names]
+    ```
+    
+4.  Pull the interest rate field from the data into a new variable (`outcome`)
+    
+    ```{python}
+    outcome = full_df["interest_rate"]
+    ```
+
+5.  Split the rows into train and test
+
+    ```{python}
+    pred_train, pred_test, out_train, out_test = train_test_split(
+        predictors, outcome, test_size=20, random_state=999
+    )
+    ```
+
+6.  Create the pipeline. Use `pre_names` to define the fields to run the scaler
+    against
+    
+    ```{python}
+    pipeline = Pipeline(
+        [("preprocess", 
+          ColumnTransformer(
+            [("scaler", StandardScaler(with_std=False), pred_names)],
+            remainder="passthrough")
+            ),
+        ("linear_regression", LinearRegression())]
+    )
+    ```
+
+7.  Fit the pipeline
+
+    ```{python}
+    pipeline.fit(pred_train, out_train)
+    ```
+
+
+## Convert to SQL using Orbital
+
+1.  Import Orbital
+    ```{python}
+    import orbitalml
+    import orbitalml.types
+    ```
+
+2.  Parse the pipeline with Orbital. At this stage, you can define the predictor's
+field and types, as well as any other fields that need to be included in the
+final result set.
+    
+    ```{python}
+    orbital_pipeline = orbitalml.parse_pipeline(
+      pipeline, 
+      features={
+        "annual_income": orbitalml.types.DoubleColumnType(),
+        "total_credit_lines": orbitalml.types.DoubleColumnType(),
+        "loan_amount": orbitalml.types.DoubleColumnType(),    
+        "term": orbitalml.types.DoubleColumnType(),
+        "loan_id": orbitalml.types.Int32ColumnType(),
+        "emp_title": orbitalml.types.StringColumnType(),
+        "loan_amount": orbitalml.types.DoubleColumnType(),
+        "balance": orbitalml.types.DoubleColumnType(),
+        "application_type": orbitalml.types.StringColumnType(),
+        "interest_rate": orbitalml.types.DoubleColumnType()
+        })
+    ```
+
+2.  Convert the pipeline to SQL. By default, Orbital will exclude the predictor
+fields from the finalized SQL statement, so `ResultsProjection()` is used to
+force the loan amount and loan term to be included in the statement.
+
+    ```{python}
+    pred_sql = orbitalml.export_sql(
+        table_name="loans_full_schema", 
+        pipeline=orbital_pipeline, 
+        projection= orbitalml.ResultsProjection(["loan_amount", "term"]),
+        dialect="databricks"
+        )
+    ```
+    
+3.  Preview the resulting SQL statment    
+    
+    ```{python}    
+    pred_sql
+    ```
+
+
+4.  Use the new SQL statement as the source to filter for any rate that is 15 
+points above the prediction
+
+    ```{python}
+    final_sql = f"select * from ({pred_sql}) where interest_rate - variable > 15 and variable > 0"
+    
+    final_sql
+    ```
+
+5.  Execute the finalized SQL statement, and return it as a Pandas data frame
+
+    ```{python}
+    con_cursor = con.cursor()
+    con_cursor.execute(final_sql)
+    pred_cols = [desc[0] for desc in con_cursor.description]
+    res = con_cursor.fetchall()
+    pred_df = pd.DataFrame(res, columns=pred_cols)
+    pred_df
+    ```
+
+## Automate in Databricks
+
+1.  `WorkspaceClient` is the main way to create and manage objects 
+    ```{python}
+    #| eval: false
+    from databricks.sdk import WorkspaceClient
+    
+    w = WorkspaceClient()
+    ```
+
+2.  The SQL tasks require a warehouse ID. This code pull the ID from the first
+warehouse returned by the function that lists all of the sources. 
+
+    ```{python}
+    #| eval: false
+    srcs = w.data_sources.list()
+    warehouse_id = srcs[0].warehouse_id
+    ```
+
+3.  To start, a new [Query](https://docs.databricks.com/aws/en/sql/user/queries/)
+is created in the Databricks Workspace. To start, the query object is built using
+`CreateQueryRequestQuery()`.  This is where the `final_sql` value is passed. 
+Additionally, the catalog and schema are also defined via their respective arguments.
+
+    ```{python}
+    #| eval: false
+    from databricks.sdk.service import sql as sdk_sql
+    
+    db_request_query = sdk_sql.CreateQueryRequestQuery(
+            query_text=final_sql,
+            catalog=catalog, 
+            schema=schema,
+            display_name="Interest rate differences",
+            warehouse_id=warehouse_id,
+            description="Find differences in interest rate",        
+        )
+    ```
+
+4.  `w.queries.create()` takes the request query object to create the new
+query. After executing the command, a new query named *"Interest rate differences"* 
+will appear in the Queries secion of the Databricks Web UI. 
+
+    ```{python}
+    #| eval: false
+    new_query = w.queries.create(query=db_request_query)
+    ```
+    
+5.  A Databricks Job can be used to orquestrate multiple taks. The job being
+created for this example requires a single task. Tasks could be a variety of
+kinds such as a Notebook, Python script, SQL Queries and many others. The 
+following starts building the SQL task. It uses the `new_query`'s ID to tie
+it to the query created in the previous step.
+
+    ```{python}
+    #| eval: false
+    from databricks.sdk.service import jobs  as sdk_jobs
+    
+    db_sql_task_query = sdk_jobs.SqlTaskQuery(
+        query_id = new_query.id
+        )
+    ```    
+
+6.  To finish defining the SQL task object, `db_sql_task_query` is passed
+to SqlTask()
+
+    ```{python}
+    #| eval: false
+    db_sql_task = sdk_jobs.SqlTask(
+        query=db_sql_task_query, 
+        warehouse_id=warehouse_id
+        )
+    ```
+
+7.  The SQL task object is used to create a formal Task. This is the point where
+the resulting task in the Databricks UI can be named and described
+
+    ```{python}
+    #| eval: false
+    db_task = sdk_jobs.Task(
+        sql_task=db_sql_task,
+        description="Int rate diffs", 
+        task_key="run_sql"
+        )
+    ```
+    
+8.  For this example, the Job needs to have a schedule defined. And to do this,
+a `CronSchedule` object is needed. To define the schedule use a 
+[CRON expression](https://www.quartz-scheduler.org/documentation/).
+    
+    ```{python}
+    #| eval: false
+    db_schedule = sdk_jobs.CronSchedule(
+        quartz_cron_expression="0 0 12 * * ?",
+        timezone_id="CST"
+        )
+    ```
+    
+9.  Finally, the Job is created using the task and schedule objects. After 
+running the following command, a new Job named *"Daily check interest differences"*
+will appear in the Jobs section of the Databricks Web UI.
+
+    ```{python}
+    #| eval: false
+    new_job = w.jobs.create(
+        name="Daily check interest differences",
+        tasks=[db_task],    
+        schedule=db_schedule
+        )
+    ```
+    
+## Appendix
+
+### Data in example
+
+The data used for this example was downloaded from OpenIntro. The page containing
+the description of the data and the download link are available here: 
+[loans_full_schema](https://www.openintro.org/data/index.php?data=loans_full_schema).
+The CSV file was manually [uploaded to the Databricks Unity Catalog](https://docs.databricks.com/aws/en/ingestion/file-upload/upload-to-volume).
+
+The `loan_id` field is not included in the data file. That was created using the
+following two SQL commands. This one to create the field:
+
+```sql
+ALTER TABLE sol_eng_demo_nickp.`end-to-end`.loans_full_schema 
+ADD COLUMN loan_id BIGINT;
+```
+
+This is the SQL command to populate the table with a sequential number:
+
+```sql
+WITH cte AS (
+  SELECT
+    loan_id,
+    ROW_NUMBER() OVER (ORDER BY debt_to_income) AS new_loan_id
+  FROM
+    sol_eng_demo_nickp.`end-to-end`.loans_full_schema
+)
+MERGE INTO sol_eng_demo_nickp.`end-to-end`.loans_full_schema AS target
+USING cte
+ON target.debt_to_income = cte.debt_to_income
+WHEN MATCHED THEN
+  UPDATE SET target.loan_id = cte.new_loan_id;
+```
+
+### Python environment
+
+The following library requirements were used to run the example:
+
+```bash
+dotenv>=0.9.9
+orbitalml>=0.2.0
+pandas>=2.2.3
+pip>=25.1.1
+databricks-sql-connector
+pyarrow
+```
+
+There is an issue with the `onnx` binary for Python 3.13, so for the example
+Python 3.12 was used.
+
+### Full code
+
+```{python}
+#| eval: false
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from dotenv import load_dotenv
+from databricks import sql
+import orbitalml.types
+import pandas as pd
+import orbitalml
+import os
+
+load_dotenv()
+host = os.getenv("DATABRICKS_HOST")
+token = os.getenv("DATABRICKS_TOKEN")
+schema = "end-to-end"
+catalog = "sol_eng_demo_nickp"
+http_path = "/sql/1.0/warehouses/b71952ebceb705ce"
+con = sql.connect(host, http_path, token, catalog = catalog, schema = schema)
+con_cursor = con.cursor()
+con_cursor.execute(
+  "select * from loans_full_schema TABLESAMPLE (100 ROWS) REPEATABLE (999);"
+  )
+col_names = [desc[0] for desc in con_cursor.description]
+res = con_cursor.fetchall()
+full_df = pd.DataFrame(res, columns=col_names)
+
+pred_names = ["annual_income", "total_credit_lines", "loan_amount",  "term"]
+predictors = full_df[pred_names]
+outcome = full_df["interest_rate"]
+pred_train, pred_test, out_train, out_test = train_test_split(
+    predictors, outcome, test_size=20, random_state=999
+)
+pipeline = Pipeline(
+    [("preprocess", 
+      ColumnTransformer(
+        [("scaler", StandardScaler(with_std=False), pred_names)],
+        remainder="passthrough")
+        ),
+    ("linear_regression", LinearRegression())]
+)
+pipeline.fit(pred_train, out_train)
+
+orbital_pipeline = orbitalml.parse_pipeline(
+  pipeline, 
+  features={
+    "annual_income": orbitalml.types.DoubleColumnType(),
+    "total_credit_lines": orbitalml.types.DoubleColumnType(),
+    "loan_amount": orbitalml.types.DoubleColumnType(),    
+    "term": orbitalml.types.DoubleColumnType(),
+    "loan_id": orbitalml.types.Int32ColumnType(),
+    "emp_title": orbitalml.types.StringColumnType(),
+    "loan_amount": orbitalml.types.DoubleColumnType(),
+    "balance": orbitalml.types.DoubleColumnType(),
+    "application_type": orbitalml.types.StringColumnType(),
+    "interest_rate": orbitalml.types.DoubleColumnType()
+    })
+pred_sql = orbitalml.export_sql(
+    table_name="loans_full_schema", 
+    pipeline=orbital_pipeline, 
+    projection= orbitalml.ResultsProjection(["loan_amount", "term"]),
+    dialect="databricks"
+    )
+
+final_sql = f"select * from ({pred_sql}) where interest_rate - variable > 15 and variable > 0"
+con_cursor.execute(final_sql)
+pred_cols = [desc[0] for desc in con_cursor.description]
+res = con_cursor.fetchall()
+pred_df = pd.DataFrame(res, columns=pred_cols)
+pred_df
+```
