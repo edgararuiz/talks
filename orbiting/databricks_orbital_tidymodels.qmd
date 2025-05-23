@@ -32,7 +32,7 @@ a daily basis to see what loans may an issue.
 *"Fit small, predict big"*
 
 To make it as close to a 'real-life' scenario, we will download a sample of the 
-table into our Python session, fit a model using a Scikit Learn pipeline, and
+table into our R session, fit a model using a Tidymodels, and
 then use Orbital to translate the steps and estimates into a SQL statement. 
 Finally, we will use that SQL statement as the base to compare the current 
 interest against the prediction, and download the loans that had a large 
@@ -44,7 +44,7 @@ on a schedule via a [Databricks Job](https://docs.databricks.com/aws/en/jobs/).
 ```{mermaid}
 flowchart LR
   A[1-Full Table] --Download--> B(2-Sample) 
-  B--Scikit Learn fit-->C(3-Model)
+  B--Tidymodels fit-->C(3-Model)
   C--Orbital parse-->D(4-SQL)
   D--Automate-->E(5-Job)
   E--Predict-->A
@@ -175,64 +175,91 @@ a normalization step. For this example, we will use the `annual_income`,
 
 ## Convert to SQL using Orbital
 
-```{r}
-library(orbital)
+1.  Load and use `orbital` to read the fitted workflow. In Databricks, names
+with dots (".") are not acceptable, and `.pred` is the default name that 
+`orbital` gives the prediction. To fix, use the `prefix` to override. 
 
-lending_orbital <-  orbital(wf_fit, prefix = "pred")
+    ```{r}
+    library(orbital)
+    
+    lending_orbital <-  orbital(wf_fit, prefix = "pred")
+    
+    lending_orbital
+    ```
 
-lending_orbital
-```
+2.  Load `dbplyr`, and use `tbl` to create a reference to the lending table
+in the R session. To pass the fully qualified name, we can use `glue` and `I()`.
 
-```{r}
-library(dplyr)
-library(dbplyr)
+    ```{r}
+    library(dbplyr)
+    
+    tbl_lending <- tbl(con, I(glue("{catalog}.`{schema}`.{table}")))
+    
+    tbl_lending
+    ```
 
-tbl_lending <- tbl(con, I(glue("{catalog}.`{schema}`.{table}")))
+3.  In order to make the predictions part of a larger set of fields returned 
+by the final query, the `orbital_inline()` function is used. This allows for
+it to be passed inside a `dplyr` `mutate()` call. `orbital_inline()` will
+modify the predictor fields based on the steps from the recipe, which in the example's
+case, is the normalization step. A quick way to retain the original values, if they
+are to be part of the final result, is to simply create copies of them via 
+`mutate()`. Finally, since it is not necessary to return all of the fields,
+we reduce them via a `select()` call. 
 
-tbl_lending
-```
+    ```{r}
+    tbl_prep <- tbl_lending |> 
+      mutate(o_annual_income = annual_income, 
+             o_total_credit_lines = total_credit_lines,
+             o_loan_amount = loan_amount, 
+             o_term = term
+             ) |> 
+      mutate(!!! orbital_inline(lending_orbital)) |> 
+      select(
+        pred, interest_rate, emp_title, balance, application_type,
+        o_annual_income, o_total_credit_lines, o_loan_amount, o_term
+      )
+    ```
 
+4.  Preview the top rows from the initial transformations.
 
+    ```{r}
+    tbl_prep |> 
+      head()
+    ```
 
-```{r}
-tbl_prep <- tbl_lending |> 
-  mutate(o_annual_income = annual_income, 
-         o_total_credit_lines = total_credit_lines,
-         o_loan_amount = loan_amount, 
-         o_term = term
-         ) |> 
-  mutate(!!! orbital_inline(lending_orbital)) |> 
-  select(
-    pred, interest_rate, emp_title, balance, application_type,
-    o_annual_income, o_total_credit_lines, o_loan_amount, o_term
-  ) 
+5.  An additional step is added to only keep the rows that have an current
+interest rate is 15 points higher than the prediction.
+    
+    ```{r}
+    tbl_final <- tbl_prep |> 
+      filter(interest_rate - pred > 15, pred > 0)
+    ```
 
-tbl_prep |> 
-  head()
-```
+6.  Preview the results
+    
+    ```{r}
+    tbl_final
+    ```
 
-```{r}
-tbl_final <- tbl_prep |> 
-  filter(interest_rate - pred > 15)
-```
+7.  Preview the actual SQL that will be sent using `show_query()`.
 
-```{r}
-tbl_final
-```
+    ```{r}
+    tbl_final |> 
+      show_query()
+    ```
 
+8.  `show_query()` is mostly geared towards having a nice output to the R 
+console. To capture the SQL in a variable, use `remote_query()`.
 
-```{r}
-tbl_final |> 
-  show_query()
-```
+    ```{r}
+    final_sql <- remote_query(tbl_final)
+    ```
 
-```{r}
-final_sql <- remote_query(tbl_final)
-
-final_sql
-```
-
-```{r}
-dbGetQuery(con, final_sql)
-```
+9.  As a way to confirm that the SQL will run as returned by `remote_query`,
+use `dbQuery()` to run the statement against the database.
+    
+    ```{r}
+    dbGetQuery(con, final_sql)
+    ```
 
