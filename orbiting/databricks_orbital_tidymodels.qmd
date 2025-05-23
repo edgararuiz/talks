@@ -6,7 +6,7 @@ date: 2025-05-22
 format: html
 editor: visual
 execute:
-  eval: true
+  eval: false
 toc: true  
 toc-expand: true
 ---
@@ -263,4 +263,39 @@ use `dbQuery()` to run the statement against the database.
     res <- dbGetQuery(con, final_sql)
     head(res)
     ```
+    
+    
+```{r}
+library(reticulate)
+
+
+py_require("databricks.sdk")
+
+db_sdk <- import("databricks.sdk")
+
+w <- db_sdk$WorkspaceClient()
+
+srcs <- w$data_sources$list()
+
+warehouse_id <- srcs[[1]]$warehouse_id
+
+db_request_query <- db_sdk$service$sql$CreateQueryRequestQuery(
+  query_text = final_sql,
+  catalog = catalog,
+  schema = schema,
+  display_name = "Interest rate differences",
+  warehouse_id = warehouse_id,
+  description = "Find differences in interest rate"
+)
+
+new_query <- w$queries$create(query = db_request_query)
+
+
+```
+
+
+
+
+
+    
 
