@@ -6,7 +6,7 @@ date: 2025-05-22
 format: html
 editor: visual
 execute:
-  eval: true
+  eval: false
 toc: true  
 toc-expand: true
 ---
@@ -19,48 +19,91 @@ library(dbplyr)
 options("odbc.no_config_override"=FALSE)
 ```
 
+## Use case
 
+Using loan data, we want to use a model that estimates an appropriate interest 
+rate, and then use that model to find out if the interest rate for a given loan
+may have been too high. The loan data is in a table located in the Databricks 
+Unity Catalog. The ultimate objective of the project, is to have it check on 
+a daily basis to see what loans may an issue. 
+
+## Approach
+
+*"Fit small, predict big"*
+
+To make it as close to a 'real-life' scenario, we will download a sample of the 
+table into our Python session, fit a model using a Scikit Learn pipeline, and
+then use Orbital to translate the steps and estimates into a SQL statement. 
+Finally, we will use that SQL statement as the base to compare the current 
+interest against the prediction, and download the loans that had a large 
+difference. Thanks to the integrated environment in Databricks, the resulting
+SQL statement will be saved in the Databricks Workspace, and used to run
+on a schedule via a [Databricks Job](https://docs.databricks.com/aws/en/jobs/).
+
+::: {#fig-diagram}
+```{mermaid}
+flowchart LR
+  A[1-Full Table] --Download--> B(2-Sample) 
+  B--Scikit Learn fit-->C(3-Model)
+  C--Orbital parse-->D(4-SQL)
+  D--Automate-->E(5-Job)
+  E--Predict-->A
+```
+
+Diagram of the approach used for this use case
+:::
 
 ## Download sample
 
-```{r}
-library(DBI)
+1.  The [`odbc::databricks()`](https://odbc.r-dbi.org/reference/databricks.html) 
+function provides lots of convenient features that handle essentially everything
+needed to establish a connection to Databricks. The only thing to provide is 
+the `httpPath` in order to succeed. The connection is established via `DBI`.
 
-con <- dbConnect(
-  drv = odbc::databricks(), 
-  httpPath = "/sql/1.0/warehouses/b71952ebceb705ce"
-  )
-```
+    ```{r}
+    library(DBI)
+    
+    con <- dbConnect(
+      drv = odbc::databricks(), 
+      httpPath = "/sql/1.0/warehouses/b71952ebceb705ce"
+      )
+    ```
 
+2.  Because they will be used in multiple locations in this example, the `catalog`,
+`schema`, and `table` name are loaded to variables
 
-```{r}
-schema <- "end-to-end"
-catalog <- "sol_eng_demo_nickp"
-table <- "loans_full_schema"
-```
+    ```{r}
+    catalog <- "sol_eng_demo_nickp"
+    schema <- "end-to-end"
+    table <- "loans_full_schema"
+    ```
 
+3.  Sample the database table using the `TABLESAMPLE` SQL function. `REPEATABLE` 
+is used to aid with reproducibility.  The `glue_sql()` function is used to 
+compile the SQL statement.
 
-```{r}
-library(glue)
+    ```{r}
+    library(glue)
+    
+    sample_sql <- glue_sql(
+      "SELECT * ", 
+      "FROM ",
+      "{`catalog`}.{`schema`}.{`table`}",
+      "TABLESAMPLE (100 ROWS) REPEATABLE (999)",
+      .con = con
+      )
+    
+    sample_sql
+    ```
 
-sample_sql <- glue_sql(
-  "SELECT * ", 
-  "FROM ",
-  "{`catalog`}.{`schema`}.{`table`}",
-  "TABLESAMPLE (100 ROWS) REPEATABLE (999)",
-  .con = con
-  )
-
-sample_sql
-```
-
-
-```{r}
-sample_lending <- dbGetQuery(
-  conn = con, 
-  statement = sample_sql
-  )
-```
+4.  The sample is downloaded by executing the SQL statement via `dbGetQuery()`.
+    
+    ```{r}
+    sample_lending <- dbGetQuery(
+      conn = con, 
+      statement = sample_sql
+      )
+    ```
 
 
 
