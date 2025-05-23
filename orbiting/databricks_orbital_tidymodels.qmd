@@ -106,42 +106,71 @@ compile the SQL statement.
     ```
 
 
-
 ## Fit locally
 
-```{r}
-set.seed(999)
-library(tidymodels)
+1.  Load `tidymodels` and set the seed
 
-sample_lending <- sample_lending |> 
-  mutate(
-    total_credit_lines = as.double(total_credit_lines),
-    loan_amount = as.double(loan_amount),
-    term = as.double(term)
-    )
+    ```{r}
+    library(tidymodels)
+    set.seed(999)
+    ```
 
-split_lending <- initial_split(sample_lending)
+2.  Currently, **certain fields are downloaded from Databricks as Integer 64 type.
+These are not supported by R in general**. The easiest solution is to convert them
+to double. This needs to only be done in the local copy, since goal is to have
+a SQL statement that will run inside Databricks. To make the data transformation
+easy, we will use `dplyr`.
+    
+    ```{r}
+    library(dplyr)
+    
+    sample_lending <- sample_lending |> 
+      mutate(
+        total_credit_lines = as.double(total_credit_lines),
+        loan_amount = as.double(loan_amount),
+        term = as.double(term)
+        )
+    ```
 
-lending_training <- training(split_lending)
+3.  Split the data into training and testing. 
 
-train_lend <- lending_training[, c("annual_income", "total_credit_lines", "loan_amount",  "term", "interest_rate")]
-rec_lending <- recipe(
-  interest_rate ~ annual_income + total_credit_lines + loan_amount + term, 
-  data = lending_training
-  ) |> 
-  step_normalize(all_numeric_predictors())
+    ```{r}
+    split_lending <- initial_split(sample_lending)
+    
+    lending_training <- training(split_lending)
+    ```
 
+4.  Create a `recipe` that defines the predictors and outcome fields, and includes
+a normalization step. For this example, we will use the `annual_income`, 
+`total_credit_lines`, `loan_amount` and `term` fields for predictors.
 
-lm_spec <- linear_reg()
+    ```{r}
+    rec_lending <- recipe(
+      interest_rate ~ annual_income + total_credit_lines + loan_amount + term, 
+      data = lending_training
+      ) |> 
+      step_normalize(all_numeric_predictors())
+    ```
 
-wf_spec <- workflow(rec_lending, lm_spec)
+5.  Define a linear regression model spec.
 
-wf_fit <- fit(wf_spec, lending_training)
+    ```{r}
+    lm_spec <- linear_reg()
+    ```
 
-wf_fit
-```
+6.  Create the workflow by combining the recipe and the defined model spec.
 
+    ```{r}
+    wf_spec <- workflow(rec_lending, lm_spec)
+    ```
 
+7.  Fit the workflow using the training data, and preview
+    
+    ```{r}
+    wf_fit <- fit(wf_spec, lending_training)
+    
+    wf_fit
+    ```
 
 
 ## Convert to SQL using Orbital
@@ -153,7 +182,6 @@ lending_orbital <-  orbital(wf_fit, prefix = "pred")
 
 lending_orbital
 ```
-## Build report 
 
 ```{r}
 library(dplyr)
