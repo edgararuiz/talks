@@ -105,7 +105,7 @@ of reproducibility.
 
 ## Fit locally
 
-1.  Load the appropiate Scikit Learn modules
+1.  Load the appropriate Scikit Learn modules
     
     ```{python}
     from sklearn.model_selection import train_test_split
@@ -205,7 +205,7 @@ force the loan amount and loan term to be included in the statement.
         )
     ```
     
-3.  Preview the resulting SQL statment    
+3.  Preview the resulting SQL statement    
     
     ```{python}    
     pred_sql
@@ -272,14 +272,14 @@ Additionally, the catalog and schema are also defined via their respective argum
 
 4.  `w.queries.create()` takes the request query object to create the new
 query. After executing the command, a new query named *"Interest rate differences"* 
-will appear in the Queries secion of the Databricks Web UI. 
+will appear in the Queries section of the Databricks Web UI. 
 
     ```{python}
     #| eval: false
     new_query = w.queries.create(query=db_request_query)
     ```
     
-5.  A Databricks Job can be used to orquestrate multiple taks. The job being
+5.  A Databricks Job can be used to orchestrate multiple tasks. The job being
 created for this example requires a single task. Tasks could be a variety of
 kinds such as a Notebook, Python script, SQL Queries and many others. The 
 following starts building the SQL task. It uses the `new_query`'s ID to tie

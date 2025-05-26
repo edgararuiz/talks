@@ -6,7 +6,7 @@ date: 2025-05-22
 format: html
 editor: visual
 execute:
-  eval: false
+  eval: true
 toc: true  
 toc-expand: true
 ---
@@ -21,24 +21,13 @@ options("odbc.no_config_override"=FALSE)
 
 ## Use case
 
-Using loan data, we want to use a model that estimates an appropriate interest 
-rate, and then use that model to find out if the interest rate for a given loan
-may have been too high. The loan data is in a table located in the Databricks 
-Unity Catalog. The ultimate objective of the project, is to have it check on 
-a daily basis to see what loans may an issue. 
+Using loan data, we want to use a model that estimates an appropriate interest rate, and then use that model to find out if the interest rate for a given loan may have been too high. The loan data is in a table located in the Databricks Unity Catalog. The ultimate objective of the project, is to have it check on a daily basis to see what loans may an issue.
 
 ## Approach
 
 *"Fit small, predict big"*
 
-To make it as close to a 'real-life' scenario, we will download a sample of the 
-table into our R session, fit a model using a Tidymodels, and
-then use Orbital to translate the steps and estimates into a SQL statement. 
-Finally, we will use that SQL statement as the base to compare the current 
-interest against the prediction, and download the loans that had a large 
-difference. Thanks to the integrated environment in Databricks, the resulting
-SQL statement will be saved in the Databricks Workspace, and used to run
-on a schedule via a [Databricks Job](https://docs.databricks.com/aws/en/jobs/).
+To make it as close to a 'real-life' scenario, we will download a sample of the table into our R session, fit a model using a Tidymodels, and then use Orbital to translate the steps and estimates into a SQL statement. Finally, we will use that SQL statement as the base to compare the current interest against the prediction, and download the loans that had a large difference. Thanks to the integrated environment in Databricks, the resulting SQL statement will be saved in the Databricks Workspace, and used to run on a schedule via a [Databricks Job](https://docs.databricks.com/aws/en/jobs/).
 
 ::: {#fig-diagram}
 ```{mermaid}
@@ -55,22 +44,18 @@ Diagram of the approach used for this use case
 
 ## Download sample
 
-1.  The [`odbc::databricks()`](https://odbc.r-dbi.org/reference/databricks.html) 
-function provides lots of convenient features that handle essentially everything
-needed to establish a connection to Databricks. The only thing to provide is 
-the `httpPath` in order to succeed. The connection is established via `DBI`.
+1.  The [`odbc::databricks()`](https://odbc.r-dbi.org/reference/databricks.html) function provides lots of convenient features that handle essentially everything needed to establish a connection to Databricks. The only thing to provide is the `httpPath` in order to succeed. The connection is established via `DBI`.
 
     ```{r}
     library(DBI)
-    
+
     con <- dbConnect(
       drv = odbc::databricks(), 
       httpPath = "/sql/1.0/warehouses/b71952ebceb705ce"
       )
     ```
 
-2.  Because they will be used in multiple locations in this example, the `catalog`,
-`schema`, and `table` name are loaded to variables
+2.  Because they will be used in multiple locations in this example, the `catalog`, `schema`, and `table` name are loaded to variables
 
     ```{r}
     catalog <- "sol_eng_demo_nickp"
@@ -78,13 +63,11 @@ the `httpPath` in order to succeed. The connection is established via `DBI`.
     table <- "loans_full_schema"
     ```
 
-3.  Sample the database table using the `TABLESAMPLE` SQL function. `REPEATABLE` 
-is used to aid with reproducibility.  The `glue_sql()` function is used to 
-compile the SQL statement.
+3.  Sample the database table using the `TABLESAMPLE` SQL function. `REPEATABLE` is used to aid with reproducibility. The `glue_sql()` function is used to compile the SQL statement.
 
     ```{r}
     library(glue)
-    
+
     sample_sql <- glue_sql(
       "SELECT * ", 
       "FROM ",
@@ -92,19 +75,18 @@ compile the SQL statement.
       "TABLESAMPLE (100 ROWS) REPEATABLE (999)",
       .con = con
       )
-    
+
     sample_sql
     ```
 
 4.  The sample is downloaded by executing the SQL statement via `dbGetQuery()`.
-    
+
     ```{r}
     sample_lending <- dbGetQuery(
       conn = con, 
       statement = sample_sql
       )
     ```
-
 
 ## Fit locally
 
@@ -115,15 +97,11 @@ compile the SQL statement.
     set.seed(999)
     ```
 
-2.  Currently, **certain fields are downloaded from Databricks as Integer 64 type.
-These are not supported by R in general**. The easiest solution is to convert them
-to double. This needs to only be done in the local copy, since goal is to have
-a SQL statement that will run inside Databricks. To make the data transformation
-easy, we will use `dplyr`.
-    
+2.  Currently, **certain fields are downloaded from Databricks as Integer 64 type. These are not supported by R in general**. The easiest solution is to convert them to double. This needs to only be done in the local copy, since goal is to have a SQL statement that will run inside Databricks. To make the data transformation easy, we will use `dplyr`.
+
     ```{r}
     library(dplyr)
-    
+
     sample_lending <- sample_lending |> 
       mutate(
         total_credit_lines = as.double(total_credit_lines),
@@ -132,17 +110,15 @@ easy, we will use `dplyr`.
         )
     ```
 
-3.  Split the data into training and testing. 
+3.  Split the data into training and testing.
 
     ```{r}
     split_lending <- initial_split(sample_lending)
-    
+
     lending_training <- training(split_lending)
     ```
 
-4.  Create a `recipe` that defines the predictors and outcome fields, and includes
-a normalization step. For this example, we will use the `annual_income`, 
-`total_credit_lines`, `loan_amount` and `term` fields for predictors.
+4.  Create a `recipe` that defines the predictors and outcome fields, and includes a normalization step. For this example, we will use the `annual_income`, `total_credit_lines`, `loan_amount` and `term` fields for predictors.
 
     ```{r}
     rec_lending <- recipe(
@@ -165,47 +141,36 @@ a normalization step. For this example, we will use the `annual_income`,
     ```
 
 7.  Fit the workflow using the training data, and preview
-    
+
     ```{r}
     wf_fit <- fit(wf_spec, lending_training)
-    
+
     wf_fit
     ```
 
-
 ## Convert to SQL using Orbital
 
-1.  Load and use `orbital` to read the fitted workflow. In Databricks, names
-with dots (".") are not acceptable, and `.pred` is the default name that 
-`orbital` gives the prediction. To fix, use the `prefix` to override. 
+1.  Load and use `orbital` to read the fitted workflow. In Databricks, names with dots (".") are not acceptable, and `.pred` is the default name that `orbital` gives the prediction. To fix, use the `prefix` to override.
 
     ```{r}
     library(orbital)
-    
+
     lending_orbital <-  orbital(wf_fit, prefix = "pred")
-    
+
     lending_orbital
     ```
 
-2.  Load `dbplyr`, and use `tbl` to create a reference to the lending table
-in the R session. To pass the fully qualified name, we can use `glue` and `I()`.
+2.  Load `dbplyr`, and use `tbl` to create a reference to the lending table in the R session. To pass the fully qualified name, we can use `glue` and `I()`.
 
     ```{r}
     library(dbplyr)
-    
+
     tbl_lending <- tbl(con, I(glue("{catalog}.`{schema}`.{table}")))
-    
+
     tbl_lending
     ```
 
-3.  In order to make the predictions part of a larger set of fields returned 
-by the final query, the `orbital_inline()` function is used. This allows for
-it to be passed inside a `dplyr` `mutate()` call. `orbital_inline()` will
-modify the predictor fields based on the steps from the recipe, which in the example's
-case, is the normalization step. A quick way to retain the original values, if they
-are to be part of the final result, is to simply create copies of them via 
-`mutate()`. Finally, since it is not necessary to return all of the fields,
-we reduce them via a `select()` call. 
+3.  In order to make the predictions part of a larger set of fields returned by the final query, the `orbital_inline()` function is used. This allows for it to be passed inside a `dplyr` `mutate()` call. `orbital_inline()` will modify the predictor fields based on the steps from the recipe, which in the example's case, is the normalization step. A quick way to retain the original values, if they are to be part of the final result, is to simply create copies of them via `mutate()`. Finally, since it is not necessary to return all of the fields, we reduce them via a `select()` call.
 
     ```{r}
     tbl_prep <- tbl_lending |> 
@@ -228,16 +193,15 @@ we reduce them via a `select()` call.
       head()
     ```
 
-5.  An additional step is added to only keep the rows that have an current
-interest rate is 15 points higher than the prediction.
-    
+5.  An additional step is added to only keep the rows that have an current interest rate is 15 points higher than the prediction.
+
     ```{r}
     tbl_final <- tbl_prep |> 
       filter(interest_rate - pred > 15, pred > 0)
     ```
 
 6.  Preview the results
-    
+
     ```{r}
     tbl_final
     ```
@@ -249,53 +213,135 @@ interest rate is 15 points higher than the prediction.
       show_query()
     ```
 
-8.  `show_query()` is mostly geared towards having a nice output to the R 
-console. To capture the SQL in a variable, use `remote_query()`.
+8.  `show_query()` is mostly geared towards having a nice output to the R console. To capture the SQL in a variable, use `remote_query()`.
 
     ```{r}
     final_sql <- remote_query(tbl_final)
     ```
 
-9.  As a way to confirm that the SQL will run as returned by `remote_query`,
-use `dbQuery()` to run the statement against the database.
-    
+9.  As a way to confirm that the SQL will run as returned by `remote_query`, use `dbQuery()` to run the statement against the database.
+
     ```{r}
     res <- dbGetQuery(con, final_sql)
     head(res)
     ```
-    
-    
-```{r}
-library(reticulate)
 
+## Automate in Databricks
 
-py_require("databricks.sdk")
+1.  The easiest to create the new task is via the Databricks Python SDK, and the easiest way to access Python components in R is via `reticulate`. Using `py_require()` allow for `reticulate`, via [`uv`](https://docs.astral.sh/uv/), to install Python (if needed) and the needed `databricks.sdk` library.
 
-db_sdk <- import("databricks.sdk")
+    ```{r}
+    library(reticulate)
+    py_require("databricks.sdk")
+    ```
 
-w <- db_sdk$WorkspaceClient()
+2.  `WorkspaceClient` is the main way to create and manage objects
 
-srcs <- w$data_sources$list()
+    ```{r}
+    db_sdk <- import("databricks.sdk")
+    w <- db_sdk$WorkspaceClient()
+    ```
 
-warehouse_id <- srcs[[1]]$warehouse_id
+3.  The SQL tasks require a warehouse ID. This code pull the ID from the first warehouse returned by the function that lists all of the sources.
 
-db_request_query <- db_sdk$service$sql$CreateQueryRequestQuery(
-  query_text = final_sql,
-  catalog = catalog,
-  schema = schema,
-  display_name = "Interest rate differences",
-  warehouse_id = warehouse_id,
-  description = "Find differences in interest rate"
-)
+    ```{r}
+    srcs <- w$data_sources$list()
+    warehouse_id <- srcs[[1]]$warehouse_id
+    ```
 
-new_query <- w$queries$create(query = db_request_query)
+4.  To start, a new [Query](https://docs.databricks.com/aws/en/sql/user/queries/) is created in the Databricks Workspace. To start, the query object is built using `CreateQueryRequestQuery()`. This is where the `final_sql` value is passed. Additionally, the catalog and schema are also defined via their respective arguments.
 
+    ```{r}
+    db_request_query <- db_sdk$service$sql$CreateQueryRequestQuery(
+      query_text = final_sql,
+      catalog = catalog,
+      schema = schema,
+      display_name = "Interest rate differences",
+      warehouse_id = warehouse_id,
+      description = "Find differences in interest rate"
+    )
+    ```
 
+5.  `w$queries$create()` takes the request query object to create the new query. After executing the command, a new query named *"Interest rate differences"* will appear in the Queries section of the Databricks Web UI.
+
+    ```{r}
+    new_query <- w$queries$create(query = db_request_query)
+    ```
+
+6.  A Databricks Job can be used to orchestrate multiple tasks. The job being created for this example requires a single task. Tasks could be a variety of kinds such as a Notebook, Python script, SQL Queries and many others. The following starts building the SQL task. It uses the `new_query`'s ID to tie it to the query created in the previous step.
+
+    ```{r}
+    sdk_jobs <- db_sdk$service$jobs
+
+    db_sql_task_query <- sdk_jobs$SqlTaskQuery(
+        query_id = new_query$id
+        )
+    ```
+
+7.  To finish defining the SQL task object, `db_sql_task_query` is passed to SqlTask()
+
+    ```{r}
+    db_sql_task <- sdk_jobs$SqlTask(
+        query = db_sql_task_query, 
+        warehouse_id = warehouse_id
+        )
+    ```
+
+8.  The SQL task object is used to create a formal Task. This is the point where the resulting task in the Databricks UI can be named and described
+
+    ```{r}
+    db_task <- sdk_jobs$Task(
+        sql_task = db_sql_task,
+        description = "Int rate diffs", 
+        task_key = "run_sql"
+        )
+    ```
+
+9.  For this example, the Job needs to have a schedule defined. And to do this, a `CronSchedule` object is needed. To define the schedule use a [CRON expression](https://www.quartz-scheduler.org/documentation/).
+
+    ```{r}
+    db_schedule = sdk_jobs$CronSchedule(
+        quartz_cron_expression = "0 0 12 * * ?",
+        timezone_id = "CST"
+        )
+    ```
+
+10. Finally, the Job is created using the task and schedule objects. After running the following command, a new Job named *"Daily check interest differences"* will appear in the Jobs section of the Databricks Web UI.
+
+    ```{r}
+    new_job <- w$jobs$create(
+        name = "Daily check interest differences",
+        tasks = list(db_task),    
+        schedule = db_schedule
+        )
+    ```
+
+## Appendix
+
+### Data in example
+
+The data used for this example was downloaded from OpenIntro. The page containing the description of the data and the download link are available here: [loans_full_schema](https://www.openintro.org/data/index.php?data=loans_full_schema). The CSV file was manually [uploaded to the Databricks Unity Catalog](https://docs.databricks.com/aws/en/ingestion/file-upload/upload-to-volume).
+
+The `loan_id` field is not included in the data file. That was created using the following two SQL commands. This one to create the field:
+
+``` sql
+ALTER TABLE sol_eng_demo_nickp.`end-to-end`.loans_full_schema 
+ADD COLUMN loan_id BIGINT;
 ```
 
+This is the SQL command to populate the table with a sequential number:
 
-
-
-
-    
-
+``` sql
+WITH cte AS (
+  SELECT
+    loan_id,
+    ROW_NUMBER() OVER (ORDER BY debt_to_income) AS new_loan_id
+  FROM
+    sol_eng_demo_nickp.`end-to-end`.loans_full_schema
+)
+MERGE INTO sol_eng_demo_nickp.`end-to-end`.loans_full_schema AS target
+USING cte
+ON target.debt_to_income = cte.debt_to_income
+WHEN MATCHED THEN
+  UPDATE SET target.loan_id = cte.new_loan_id;
+```
