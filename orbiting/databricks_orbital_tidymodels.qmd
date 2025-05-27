@@ -1,5 +1,5 @@
 ---
-title: Databricks + Tididymodels + Orbital
+title: Databricks + Tidymodels + Orbital
 subtitle: Simple use case example
 author: Edgar Ruiz - Posit
 date: 2025-05-22
