@@ -1,0 +1,65 @@
+/*-- scss:defaults --*/
+
+// Mall site colors
+$mall-wine:   #5b2942;
+$mall-mauve:  #cb99b3;
+$mall-accent: #c27ba0;
+$mall-light:  #f5eef1;
+
+// Base
+$body-bg:    #ffffff;
+$body-color: #333333;
+$link-color: $mall-accent;
+
+// Headings
+$presentation-heading-color: $mall-wine;
+$presentation-heading-font-weight: 600;
+
+// Code
+$code-block-bg:            #eeeeee;
+$code-block-border-color:  $mall-mauve;
+$code-color:               $mall-wine;
+
+/*-- scss:rules --*/
+
+// Slide headings
+.reveal h2 {
+  color: $mall-wine;
+  border-bottom: 3px solid $mall-mauve;
+  padding-bottom: 0.15em;
+}
+
+// Inline code
+.reveal p code,
+.reveal li code,
+.reveal td code {
+  color: $mall-wine;
+  background-color: $mall-light;
+  border-radius: 3px;
+  padding: 0 3px;
+}
+
+// Links
+.reveal a {
+  color: $mall-accent;
+}
+
+.reveal a:hover {
+  color: $mall-wine;
+}
+
+// Table header row
+.reveal table thead tr {
+  background-color: $mall-mauve;
+  color: white;
+}
+
+.reveal table tbody tr:nth-child(even) {
+  background-color: $mall-light;
+}
+
+// Blockquote / fragment callout text
+.reveal blockquote {
+  border-left: 4px solid $mall-mauve;
+  color: #555;
+}
