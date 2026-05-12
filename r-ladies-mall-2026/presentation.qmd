@@ -13,7 +13,7 @@ format:
 title-slide-attributes:
   data-background-image: images/mall.png
   data-background-size: 200px
-  data-background-position: 92% 50%
+  data-background-position: 92% 85%
 engine: knitr
 execute:
   eval: false
@@ -41,6 +41,7 @@ execute:
 ![](images/mall.png){.absolute top="10" right="10" width="90"}
 ![](images/dplyr.png){.absolute top="110" right="10" width="90"}
 
+:::{style="padding-right: 120px;"}
 `mall` lets you apply **LLMs as a function** across every row of your data
 
 . . .
@@ -53,10 +54,13 @@ execute:
 ```r
 library(mall)
 ```
+:::
 
 ---
 
 ## How it works
+
+The LLM reads each row and returns a structured result, **no training required**.
 
 ```{r}
 #| eval: false
@@ -75,11 +79,9 @@ reviews |>
 ```
 :::
 
-The LLM reads each row and returns a structured result — **no training required**.
-
 ---
 
-## Setting up — local models
+## Setting up: Local Models
 
 Use [Ollama](https://ollama.com) to run models privately on your machine
 
@@ -105,7 +107,7 @@ Your data **never leaves your machine** ✓
 
 ---
 
-## Setting up — remote APIs
+## Setting up: Remote APIs
 
 ![](images/ellmer.png){.absolute top="10" right="10" width="90"}
 
@@ -244,7 +246,7 @@ reviews |>
 
 ## `llm_verify()`
 
-Ask a yes/no question about each row — returns **1** or **0**
+Ask a yes/no question about each row, returns **1** or **0**
 
 ```{r}
 reviews |>
@@ -264,7 +266,7 @@ reviews |>
 
 ## `llm_translate()`
 
-Translate text into any language — **no language-specific model needed**
+Translate text into any language, **no language-specific model needed**
 
 ```{r}
 reviews |>
@@ -322,7 +324,7 @@ Full flexibility when you need it.
 
 ## Caching results
 
-Results are cached automatically in `_mall_cache/` — **re-running is free**
+Results are cached automatically in `_mall_cache/`, **re-running is free**
 
 ```{r}
 # Default: caches in _mall_cache/
@@ -358,15 +360,15 @@ llm_vec_extract("Call me at 555-1234", "phone number")
 
 ---
 
-## Local vs. remote — when to use which
+## Local vs. Remote
 
 |                  | Local (Ollama) | Remote (ellmer) |
 |------------------|:--------------:|:---------------:|
-| Data privacy     | ✓              | depends on provider |
-| Speed            | slower         | faster          |
-| Cost             | free           | per API call    |
-| Model quality    | good           | great           |
-| Setup            | install app    | API key         |
+| Data privacy     | ✓              | Depends on provider |
+| Speed            | Slower         | Faster          |
+| Cost             | Free           | Per API call    |
+| Model quality    | Good           | Great           |
+| Setup            | Install app    | API key         |
 
 . . .
 
@@ -379,14 +381,14 @@ Start local, scale to remote when needed.
 ![](images/mall.png){.absolute top="10" right="10" width="90"}
 ![](images/dplyr.png){.absolute top="110" right="10" width="90"}
 
-- `llm_use()` — set up your LLM (local or remote)
-- `llm_sentiment()` — positive / negative / neutral
-- `llm_summarize()` — condense to N words
-- `llm_classify()` — assign to your categories
-- `llm_extract()` — pull out entities
-- `llm_verify()` — yes / no questions
-- `llm_translate()` — any language
-- `llm_custom()` — your own prompt
+- `llm_use()`:Set up your LLM (local or remote)
+- `llm_sentiment()`:Positive / Negative / Neutral
+- `llm_summarize()`:Condense to N words
+- `llm_classify()`:Assign to your categories
+- `llm_extract()`:Pull out entities
+- `llm_verify()`:Yes / No questions
+- `llm_translate()`:Any language
+- `llm_custom()`:Your own prompt
 
 . . .
 
@@ -398,18 +400,53 @@ All return a new column and work in any `dplyr` pipeline.
 
 ![](images/mall.png){.absolute top="10" right="10" width="90"}
 
+:::{style="padding-right: 120px;"}
 ```r
 install.packages("mall")
 ```
+:::
 
-Docs & examples: [mlverse.github.io/mall](https://mlverse.github.io/mall/)
+:::{.columns}
+:::{.column width="50%"}
+[![](images/mall-website.png)](https://mlverse.github.io/mall/)
 
-. . .
+::: {style="text-align: center; font-size: 0.6em;"}
+[mlverse.github.io/mall](https://mlverse.github.io/mall/)
+:::
+:::
+:::{.column width="50%"}
+[![](images/mall-cheatsheet.png)](https://opensource.posit.co/resources/cheatsheets/nlp-with-llms/nlp-with-llms.pdf)
+
+::: {style="text-align: center; font-size: 0.6em;"}
+[opensource.posit.co/resources/cheatsheets/nlp-with-llms](https://opensource.posit.co/resources/cheatsheets/nlp-with-llms/nlp-with-llms.pdf)
+:::
+:::
+:::
+
+---
+
+## Thank you!
+
+:::{.columns}
+:::{.column width="70%"}
+`r fontawesome::fa("github")` edgararuiz
+
+`r fontawesome::fa("linkedin")` edgararuiz
+
+`r fontawesome::fa("bluesky")` theotheredgar
 
 <br/>
 
-**Thank you!**
-
-`r fontawesome::fa("github")` edgararuiz &nbsp;&nbsp;
-`r fontawesome::fa("linkedin")` edgararuiz &nbsp;&nbsp;
-`r fontawesome::fa("bluesky")` theotheredgar
+Slides & code: [github.com/edgararuiz/talks](https://github.com/edgararuiz/talks/tree/main/r-ladies-mall-2026)
+:::
+:::{.column width="30%"}
+```{r}
+#| eval: true
+#| echo: false
+#| fig-width: 2.5
+#| fig-height: 2.5
+library(qrcode)
+qr_code("https://github.com/edgararuiz/talks/tree/main/r-ladies-mall-2026") |> plot()
+```
+:::
+:::
