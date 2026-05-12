@@ -1,0 +1,415 @@
+---
+title: "Automatic NLP with LLMs Using {mall}"
+subtitle: ""
+author: "Edgar Ruiz"
+format:
+  revealjs:
+    theme: simple
+    code-line-numbers: false
+    smaller: false
+    transition: fade
+    background-transition: fade
+    highlight-style: github
+title-slide-attributes:
+  data-background-image: images/mall.png
+  data-background-size: 200px
+  data-background-position: 92% 50%
+engine: knitr
+execute:
+  eval: false
+  echo: true
+---
+
+## The NLP grind
+
+:::{.incremental}
+- Collect and **label** training data
+- Choose and **fit** a model
+- Tune, validate, tune again
+- Repeat for every new language or task
+- Maintain it all as the world changes
+:::
+
+. . .
+
+*What if we could skip all of that?*
+
+---
+
+## What is `mall`?
+
+![](images/mall.png){.absolute top="10" right="10" width="90"}
+![](images/dplyr.png){.absolute top="110" right="10" width="90"}
+
+`mall` lets you apply **LLMs as a function** across every row of your data
+
+. . .
+
+- No model training
+- No labeling pipeline
+- Works with any language
+- Familiar `dplyr`-style syntax
+
+```r
+library(mall)
+```
+
+---
+
+## How it works
+
+```{r}
+#| eval: false
+reviews |>
+  llm_sentiment(review)
+```
+
+::: {.fragment}
+```
+# A tibble: 3 × 2
+  review                                      .sentiment
+  <chr>                                       <chr>
+1 This product is amazing!                    positive
+2 Arrived broken, very disappointed           negative
+3 It works, nothing special                   neutral
+```
+:::
+
+The LLM reads each row and returns a structured result — **no training required**.
+
+---
+
+## Setting up — local models
+
+Use [Ollama](https://ollama.com) to run models privately on your machine
+
+```r
+install.packages("mall")
+```
+
+Pull a model (in your terminal):
+```bash
+ollama pull llama3.2
+```
+
+Then in R:
+```{r}
+library(mall)
+
+llm_use("ollama", "llama3.2")
+```
+
+. . .
+
+Your data **never leaves your machine** ✓
+
+---
+
+## Setting up — remote APIs
+
+![](images/ellmer.png){.absolute top="10" right="10" width="90"}
+
+Use `ellmer` to connect to OpenAI, Anthropic, Google Gemini, and more
+
+```r
+install.packages("ellmer")
+```
+
+```{r}
+library(mall)
+library(ellmer)
+
+chat <- chat_openai(model = "gpt-4o")
+llm_use(chat)
+```
+
+. . .
+
+Or set a default in your `.Rprofile`:
+```{r}
+options(.mall_chat = ellmer::chat_openai(model = "gpt-4o"))
+```
+
+---
+
+## The `reviews` dataset
+
+`mall` ships with a small built-in dataset to explore all functions
+
+```{r}
+library(mall)
+
+reviews
+```
+
+```
+# A tibble: 9 × 1
+  review
+  <chr>
+1 This has been the best TV I have ever used. Great screen...
+2 I regret buying this laptop. It is too slow and the batt...
+3 Not sure how to feel about my new washing machine. It is...
+...
+```
+
+---
+
+## `llm_sentiment()`
+
+Classify text as **positive**, **negative**, or **neutral**
+
+```{r}
+reviews |>
+  llm_sentiment(review)
+```
+
+```
+# A tibble: 9 × 2
+  review                                          .sentiment
+  <chr>                                           <chr>
+1 This has been the best TV I have ever used...   positive
+2 I regret buying this laptop...                  negative
+3 Not sure how to feel about my new washing...    neutral
+```
+
+. . .
+
+Use custom labels:
+```{r}
+reviews |>
+  llm_sentiment(review, options = c("happy", "sad", "meh"))
+```
+
+---
+
+## `llm_summarize()`
+
+Condense long text into a short summary
+
+```{r}
+reviews |>
+  llm_summarize(review, max_words = 5)
+```
+
+```
+# A tibble: 9 × 2
+  review                                         .summary
+  <chr>                                          <chr>
+1 This has been the best TV I have ever used...  best tv ever used
+2 I regret buying this laptop...                 regrets buying slow laptop
+3 Not sure how to feel about my new washing...   mixed feelings washing machine
+```
+
+---
+
+## `llm_classify()`
+
+Assign each row to one of your **predefined categories**
+
+```{r}
+reviews |>
+  llm_classify(review, labels = c("appliance", "computer", "tv"))
+```
+
+```
+# A tibble: 9 × 2
+  review                                         .classify
+  <chr>                                          <chr>
+1 This has been the best TV I have ever used...  tv
+2 I regret buying this laptop...                 computer
+3 Not sure how to feel about my new washing...   appliance
+```
+
+---
+
+## `llm_extract()`
+
+Pull out specific **entities** mentioned in the text
+
+```{r}
+reviews |>
+  llm_extract(review, "product name")
+```
+
+```
+# A tibble: 9 × 2
+  review                                         .extract
+  <chr>                                          <chr>
+1 This has been the best TV I have ever used...  TV
+2 I regret buying this laptop...                 laptop
+3 Not sure how to feel about my new washing...   washing machine
+```
+
+---
+
+## `llm_verify()`
+
+Ask a yes/no question about each row — returns **1** or **0**
+
+```{r}
+reviews |>
+  llm_verify(review, "The customer would recommend this product")
+```
+
+```
+# A tibble: 9 × 2
+  review                                         .verify
+  <chr>                                            <int>
+1 This has been the best TV I have ever used...        1
+2 I regret buying this laptop...                       0
+3 Not sure how to feel about my new washing...         0
+```
+
+---
+
+## `llm_translate()`
+
+Translate text into any language — **no language-specific model needed**
+
+```{r}
+reviews |>
+  llm_translate(review, "spanish")
+```
+
+```
+# A tibble: 9 × 2
+  review                                         .translation
+  <chr>                                          <chr>
+1 This has been the best TV I have ever used...  Esta ha sido la mejor televi...
+2 I regret buying this laptop...                 Me arrepiento de haber compra...
+```
+
+. . .
+
+Works for detecting language too:
+```{r}
+reviews |>
+  llm_extract(review, "language (e.g. english, spanish, french)")
+```
+
+---
+
+## Multilingual workflows
+
+Detect → Filter → Translate → Analyze
+
+```{r}
+reviews |>
+  llm_extract(review, "language") |>
+  filter(.extract != "english") |>
+  llm_translate(review, "english") |>
+  llm_sentiment(.translation)
+```
+
+One pipeline handles **any language** your users write in.
+
+---
+
+## `llm_custom()`
+
+Write your own prompt for anything that doesn't fit a built-in function
+
+```{r}
+my_prompt <- "Reply with only 'yes' or 'no': Does this review mention a specific feature?"
+
+reviews |>
+  llm_custom(review, my_prompt)
+```
+
+Full flexibility when you need it.
+
+---
+
+## Caching results
+
+Results are cached automatically in `_mall_cache/` — **re-running is free**
+
+```{r}
+# Default: caches in _mall_cache/
+llm_use("ollama", "llama3.2")
+
+# Custom folder
+llm_use(.cache = "_my_cache")
+
+# Disable caching
+llm_use(.cache = "")
+```
+
+. . .
+
+Critical for iterative development and reproducibility.
+
+---
+
+## Vector functions
+
+All functions have a `_vec` variant for working outside a data frame
+
+```{r}
+llm_vec_sentiment("I absolutely love this!")
+#> [1] "positive"
+
+llm_vec_translate("Buenos días a todos", "english")
+#> [1] "Good morning everyone"
+
+llm_vec_extract("Call me at 555-1234", "phone number")
+#> [1] "555-1234"
+```
+
+---
+
+## Local vs. remote — when to use which
+
+|                  | Local (Ollama) | Remote (ellmer) |
+|------------------|:--------------:|:---------------:|
+| Data privacy     | ✓              | depends on provider |
+| Speed            | slower         | faster          |
+| Cost             | free           | per API call    |
+| Model quality    | good           | great           |
+| Setup            | install app    | API key         |
+
+. . .
+
+Start local, scale to remote when needed.
+
+---
+
+## Recap
+
+![](images/mall.png){.absolute top="10" right="10" width="90"}
+![](images/dplyr.png){.absolute top="110" right="10" width="90"}
+
+- `llm_use()` — set up your LLM (local or remote)
+- `llm_sentiment()` — positive / negative / neutral
+- `llm_summarize()` — condense to N words
+- `llm_classify()` — assign to your categories
+- `llm_extract()` — pull out entities
+- `llm_verify()` — yes / no questions
+- `llm_translate()` — any language
+- `llm_custom()` — your own prompt
+
+. . .
+
+All return a new column and work in any `dplyr` pipeline.
+
+---
+
+## Get started
+
+![](images/mall.png){.absolute top="10" right="10" width="90"}
+
+```r
+install.packages("mall")
+```
+
+Docs & examples: [mlverse.github.io/mall](https://mlverse.github.io/mall/)
+
+. . .
+
+<br/>
+
+**Thank you!**
+
+`r fontawesome::fa("github")` edgararuiz &nbsp;&nbsp;
+`r fontawesome::fa("linkedin")` edgararuiz &nbsp;&nbsp;
+`r fontawesome::fa("bluesky")` theotheredgar

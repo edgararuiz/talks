@@ -1,0 +1,295 @@
+---
+title: "mall — live examples"
+subtitle: "Automatic NLP with LLMs Using {mall}"
+format: html
+toc: true
+toc-depth: 2
+engine: knitr
+execute:
+  eval: true
+  echo: true
+---
+
+## Setup
+
+```{r}
+#| label: setup
+library(mall)
+library(dplyr)
+```
+
+### Local model via Ollama
+
+```{r}
+#| label: llm-use-local
+llm_use("ollama", "llama3.2", seed = 100, .cache = "_mall_cache")
+```
+
+### Remote model via ellmer (alternative)
+
+To use a remote model instead, swap the `llm_use()` call above for one of these:
+
+```{r}
+#| eval: false
+library(ellmer)
+
+# OpenAI
+llm_use(chat_openai(model = "gpt-4o"))
+
+# Anthropic
+llm_use(chat_anthropic(model = "claude-haiku-4-5-20251001"))
+
+# Google Gemini
+llm_use(chat_google_gemini())
+```
+
+---
+
+## The `reviews` dataset
+
+`mall` ships with a small built-in dataset — 9 product reviews.
+
+```{r}
+#| label: reviews-data
+data(reviews)
+reviews
+```
+
+---
+
+## Sentiment analysis
+
+`llm_sentiment()` classifies each row as **positive**, **negative**, or **neutral**.
+
+```{r}
+#| label: sentiment-default
+reviews |>
+  llm_sentiment(review)
+```
+
+You can specify your own labels:
+
+```{r}
+#| label: sentiment-custom-labels
+reviews |>
+  llm_sentiment(review, options = c("happy", "sad", "meh"))
+```
+
+---
+
+## Summarize
+
+`llm_summarize()` condenses each review to a target number of words.
+
+```{r}
+#| label: summarize
+reviews |>
+  llm_summarize(review, max_words = 5)
+```
+
+---
+
+## Classify
+
+`llm_classify()` assigns each row to one of your predefined categories.
+
+```{r}
+#| label: classify
+reviews |>
+  llm_classify(review, labels = c("appliance", "computer", "tv"))
+```
+
+---
+
+## Extract entities
+
+`llm_extract()` pulls a specific piece of information from each row.
+
+```{r}
+#| label: extract-product
+reviews |>
+  llm_extract(review, "product name")
+```
+
+Extract multiple things by calling `llm_extract()` more than once:
+
+```{r}
+#| label: extract-multiple
+reviews |>
+  llm_extract(review, "product name") |>
+  llm_extract(review, "main complaint or compliment")
+```
+
+---
+
+## Verify
+
+`llm_verify()` answers a yes/no question about each row — returns **1** (yes) or **0** (no).
+
+```{r}
+#| label: verify
+reviews |>
+  llm_verify(review, "The customer would recommend this product")
+```
+
+Combine with `filter()` to find rows that match a condition:
+
+```{r}
+#| label: verify-filter
+reviews |>
+  llm_verify(review, "The customer would recommend this product") |>
+  filter(.verify == 1)
+```
+
+---
+
+## Translate
+
+`llm_translate()` translates each row into any target language — no language-specific
+model required.
+
+```{r}
+#| label: translate-to-spanish
+reviews |>
+  llm_translate(review, "spanish")
+```
+
+---
+
+## Multilingual workflow
+
+A realistic end-to-end example: detect the language, keep non-English rows,
+translate them to English, then run sentiment analysis.
+
+For this demo we'll build a small mixed-language dataset:
+
+```{r}
+#| label: multilingual-data
+multilingual <- tibble(
+  review = c(
+    "This product is amazing, I love it!",
+    "Este producto es terrible, muy decepcionante.",
+    "Je suis très satisfait de cet achat, excellent rapport qualité-prix.",
+    "Das Produkt ist okay, aber nichts Besonderes.",
+    "Worst purchase I have ever made, do not buy this."
+  )
+)
+
+multilingual
+```
+
+Step 1 — detect language:
+
+```{r}
+#| label: multilingual-detect
+multilingual |>
+  llm_extract(review, "language (e.g. english, spanish, french, german)")
+```
+
+Step 2 — full pipeline (detect → filter non-English → translate → sentiment):
+
+```{r}
+#| label: multilingual-pipeline
+multilingual |>
+  llm_extract(review, "language") |>
+  filter(.extract != "english") |>
+  llm_translate(review, "english") |>
+  llm_sentiment(.translation)
+```
+
+---
+
+## Custom prompts
+
+`llm_custom()` lets you write any prompt. Use it for tasks that don't fit the
+built-in functions.
+
+```{r}
+#| label: custom-feature-mention
+reviews |>
+  llm_custom(
+    review,
+    "Reply with only 'yes' or 'no': Does this review mention a specific product feature?"
+  )
+```
+
+```{r}
+#| label: custom-score
+reviews |>
+  llm_custom(
+    review,
+    "Rate the urgency of this customer feedback from 1 (low) to 5 (high). Reply with the number only."
+  )
+```
+
+---
+
+## Vector functions
+
+Every `llm_*()` function has an `llm_vec_*()` counterpart for working on a single string.
+
+```{r}
+#| label: vec-sentiment
+llm_vec_sentiment("I absolutely love this product!")
+```
+
+```{r}
+#| label: vec-translate
+llm_vec_translate("Buenos días a todas", "english")
+```
+
+```{r}
+#| label: vec-extract
+llm_vec_extract("Please call me back at 555-1234 before noon.", "phone number")
+```
+
+```{r}
+#| label: vec-summarize
+llm_vec_summarize(
+  "The battery life on this phone is outstanding. I charged it on Monday and it is now Thursday and I still have 40% remaining. Highly recommend.",
+  max_words = 8
+)
+```
+
+---
+
+## Chaining everything together
+
+A single pipeline combining multiple `mall` functions:
+
+```{r}
+#| label: full-pipeline
+reviews |>
+  llm_classify(review, labels = c("appliance", "computer", "tv")) |>
+  llm_sentiment(review) |>
+  llm_summarize(review, max_words = 6) |>
+  select(review, .classify, .sentiment, .summary)
+```
+
+---
+
+## Caching
+
+Results are cached by default in `_mall_cache/`. Re-running the same text
+with the same model returns the cached result instantly — no API call needed.
+
+```{r}
+#| eval: false
+# Use a custom cache folder
+llm_use(.cache = "_my_cache")
+
+# Disable caching entirely
+llm_use(.cache = "")
+
+# Re-enable with default folder
+llm_use(.cache = "_mall_cache")
+```
+
+---
+
+## Session info
+
+```{r}
+#| label: session-info
+sessionInfo()
+```
