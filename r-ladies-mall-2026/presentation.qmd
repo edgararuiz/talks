@@ -361,6 +361,39 @@ llm_vec_extract("Call me at 555-1234", "phone number")
 
 ---
 
+## Use case: Climate policy research
+
+:::{.columns}
+:::{.column width="65%"}
+:::{style="font-size: 0.75em;"}
+Researchers used `mall` to analyze **COP climate negotiation reports** from 1995 to 2023
+
+:::{style="padding-left: 1em;"}
+- Dense documents with specialized language
+- Tracked how "energy transition" evolved over nearly 3 decades
+:::
+
+Functions used:
+
+:::{style="padding-left: 1em;"}
+- `llm_summarize()` — condense each report
+- `llm_extract()` — pull out key entities
+- `llm_custom()` — ask domain-specific questions
+:::
+:::
+
+:::
+:::{.column width="35%"}
+[![](images/article-screenshot.png)](https://posit.co/blog/mall-ai-powered-text-analysis)
+
+::: {style="text-align: center; font-size: 0.6em;"}
+[posit.co/blog/mall-ai-powered-text-analysis](https://posit.co/blog/mall-ai-powered-text-analysis)
+:::
+:::
+:::
+
+---
+
 ## Resources
 
 <br/>
