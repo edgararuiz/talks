@@ -1,6 +1,5 @@
-
-title: "malllive examples"
-subtitle: "Automatic NLP with LLMs Using {mall}"
+---
+title: "Automatic NLP with LLMs Using `mall`"
 format: html
 toc: true
 toc-depth: 2
@@ -8,12 +7,11 @@ engine: knitr
 execute:
   eval: true
   echo: true
-
+---
 
 ## Setup
 
 ```{r}
-#| label: setup
 library(mall)
 library(dplyr)
 ```
@@ -21,7 +19,6 @@ library(dplyr)
 ### Local model via Ollama
 
 ```{r}
-#| label: llm-use-local
 llm_use("ollama", "llama3.2")
 ```
 
@@ -36,10 +33,9 @@ llm_use("ollama", "llama3.2", .cache = "_mall_cache", seed = 100)
 
 ## The `reviews` dataset
 
-`mall` ships with a small built-in dataset9 product reviews.
+`mall` ships with a small built-in dataset with 9 product reviews.
 
 ```{r}
-#| label: reviews-data
 data(reviews)
 reviews
 ```
@@ -50,7 +46,6 @@ reviews
 `llm_sentiment()` classifies each row as **positive**, **negative**, or **neutral**.
 
 ```{r}
-#| label: sentiment-default
 reviews |>
   llm_sentiment(review)
 ```
@@ -58,11 +53,9 @@ reviews |>
 You can specify your own labels:
 
 ```{r}
-#| label: sentiment-custom-labels
 reviews |>
   llm_sentiment(review, options = c("happy", "sad", "meh"))
 ```
-
 
 
 ## Summarize
@@ -70,7 +63,6 @@ reviews |>
 `llm_summarize()` condenses each review to a target number of words.
 
 ```{r}
-#| label: summarize
 reviews |>
   llm_summarize(review, max_words = 5)
 ```
@@ -82,7 +74,6 @@ reviews |>
 `llm_classify()` assigns each row to one of your predefined categories.
 
 ```{r}
-#| label: classify
 reviews |>
   llm_classify(review, labels = c("appliance", "computer", "tv"))
 ```
@@ -94,7 +85,6 @@ reviews |>
 `llm_extract()` pulls a specific piece of information from each row.
 
 ```{r}
-#| label: extract-product
 reviews |>
   llm_extract(review, "product name")
 ```
@@ -102,10 +92,9 @@ reviews |>
 Extract multiple things by calling `llm_extract()` more than once:
 
 ```{r}
-#| label: extract-multiple
 reviews |>
-  llm_extract(review, "product name") |>
-  llm_extract(review, "main complaint or compliment")
+  llm_extract(review, "product name", pred_name = "product_name") |>
+  llm_extract(review, "main complaint or compliment", pred_name = "reason")
 ```
 
 
@@ -115,7 +104,6 @@ reviews |>
 `llm_verify()` answers a yes/no question about each row returns **1** (yes) or **0** (no).
 
 ```{r}
-#| label: verify
 reviews |>
   llm_verify(review, "The customer would recommend this product")
 ```
@@ -123,7 +111,6 @@ reviews |>
 Combine with `filter()` to find rows that match a condition:
 
 ```{r}
-#| label: verify-filter
 reviews |>
   llm_verify(review, "The customer would recommend this product") |>
   filter(.verify == 1)
@@ -133,16 +120,18 @@ reviews |>
 
 ## Translate
 
-`llm_translate()` translates each row into any target languageno language-specific
-model required.
+`llm_translate()` translates each row into any target language that the LLM 
+can understand
 
 ```{r}
-#| label: translate-to-spanish
 reviews |>
   llm_translate(review, "spanish")
 ```
 
-
+```{r}
+reviews |>
+  llm_translate(review, "french")
+```
 
 ## Multilingual workflow
 
@@ -152,7 +141,6 @@ translate them to English, then run sentiment analysis.
 For this demo we'll build a small mixed-language dataset:
 
 ```{r}
-#| label: multilingual-data
 multilingual <- tibble(
   review = c(
     "This product is amazing, I love it!",
@@ -169,15 +157,13 @@ multilingual
 Step 1detect language:
 
 ```{r}
-#| label: multilingual-detect
 multilingual |>
   llm_extract(review, "language (e.g. english, spanish, french, german)")
 ```
 
-Step 2full pipeline (detect → filter non-English → translate → sentiment):
+Step 2, full pipeline (detect → filter non-English → translate → sentiment):
 
 ```{r}
-#| label: multilingual-pipeline
 multilingual |>
   llm_extract(review, "language") |>
   filter(.extract != "english") |>
@@ -189,50 +175,49 @@ multilingual |>
 
 ## Custom prompts
 
-`llm_custom()` lets you write any prompt. Use it for tasks that don't fit the
+`llm_custom()` lets you write any prompt. Use it for tasks that don't fit the 
 built-in functions.
 
-```{r}
-#| label: custom-feature-mention
-reviews |>
-  llm_custom(
-    review,
-    "Reply with only 'yes' or 'no': Does this review mention a specific product feature?"
-  )
-```
+Not documented, use `{x}` to place the current row's data.
 
 ```{r}
-#| label: custom-score
+my_prompt <- paste(
+  "Answer a question.",
+  "Return only the answer, no explanation.",
+  "Choose the best answer between: yes or no",
+  "Answer this about the following text, is this a happy customer?: {x}"
+)
+
 reviews |>
-  llm_custom(
-    review,
-    "Rate the urgency of this customer feedback from 1 (low) to 5 (high). Reply with the number only."
-  )
+  llm_custom(review, my_prompt)
+
 ```
 
 
+If you need to ensure the reponses are within a specified set
+
+```{r}
+reviews |>
+  llm_custom(review, my_prompt, valid_resps = c("Yes", "Maybe"))
+```
 
 ## Vector functions
 
 Every `llm_*()` function has an `llm_vec_*()` counterpart for working on a single string.
 
 ```{r}
-#| label: vec-sentiment
 llm_vec_sentiment("I absolutely love this product!")
 ```
 
 ```{r}
-#| label: vec-translate
 llm_vec_translate("Buenos días a todas", "english")
 ```
 
 ```{r}
-#| label: vec-extract
 llm_vec_extract("Please call me back at 555-1234 before noon.", "phone number")
 ```
 
 ```{r}
-#| label: vec-summarize
 llm_vec_summarize(
   "The battery life on this phone is outstanding. I charged it on Monday and it is now Thursday and I still have 40% remaining. Highly recommend.",
   max_words = 8
@@ -240,44 +225,3 @@ llm_vec_summarize(
 ```
 
 
-
-## Chaining everything together
-
-A single pipeline combining multiple `mall` functions:
-
-```{r}
-#| label: full-pipeline
-reviews |>
-  llm_classify(review, labels = c("appliance", "computer", "tv")) |>
-  llm_sentiment(review) |>
-  llm_summarize(review, max_words = 6) |>
-  select(review, .classify, .sentiment, .summary)
-```
-
-
-
-## Caching
-
-Results are cached by default in `_mall_cache/`. Re-running the same text
-with the same model returns the cached result instantlyno API call needed.
-
-```{r}
-#| eval: false
-# Use a custom cache folder
-llm_use(.cache = "_my_cache")
-
-# Disable caching entirely
-llm_use(.cache = "")
-
-# Re-enable with default folder
-llm_use(.cache = "_mall_cache")
-```
-
-
-
-## Session info
-
-```{r}
-#| label: session-info
-sessionInfo()
-```
