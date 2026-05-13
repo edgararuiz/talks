@@ -22,23 +22,15 @@ $code-color:               $mall-wine;
 
 /*-- scss:rules --*/
 
-// Title slide — inverted colors
+// Title slide — push content below the centered logo, white text on wine bg
 .reveal .slides section.title-slide {
   padding-top: 180px;
-  background-color: $mall-wine;
-  color: #ffffff;
 }
 
 .reveal .slides section.title-slide h1,
 .reveal .slides section.title-slide h2,
-.reveal .slides section.title-slide p,
-.reveal .slides section.title-slide .author,
-.reveal .slides section.title-slide .date {
+.reveal .slides section.title-slide p {
   color: #ffffff;
-}
-
-.reveal .slides section.title-slide a {
-  color: $mall-mauve;
 }
 
 // Slide headings
@@ -46,6 +38,17 @@ $code-color:               $mall-wine;
   color: $mall-wine;
   border-bottom: 3px solid $mall-mauve;
   padding-bottom: 0.15em;
+}
+
+// Section divider slides with wine background
+.reveal section[data-background-color="#5b2942"] h2 {
+  color: #ffffff;
+  border-bottom: none;
+  font-size: 2.5em;
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
 }
 
 // Inline code

@@ -14,6 +14,7 @@ title-slide-attributes:
   data-background-image: images/mall.png
   data-background-size: 160px
   data-background-position: 50% 6%
+  data-background-color: "#5b2942"
 engine: knitr
 execute:
   eval: false
@@ -31,7 +32,10 @@ execute:
 
 . . .
 
+:::{.incremental style="padding-left: 6em;"}
+
 *What if we could skip all of that?*
+:::
 
 ---
 
@@ -99,6 +103,10 @@ For providers without system prompt support, instructions and data are concatena
 You are a helpful sentiment engine. Return only one of the following answers: positive, negative, neutral. No capitalization. No explanations. The answer is based on the following text:\
 This product is amazing!
 :::
+
+---
+
+## Setup {background-color="#5b2942" style="text-align: right;"}
 
 ---
 
@@ -194,6 +202,10 @@ options(.mall_chat = ellmer::chat_ollama(model = "llama3.2"))
 | Cost             | Free           | Per API call    |
 | Model quality    | Good           | Great           |
 | Setup            | Install app    | API key         |
+
+---
+
+## Available functions {background-color="#5b2942" style="text-align: right;"}
 
 ---
 
@@ -385,6 +397,10 @@ llm_vec_translate("Buenos días a todos", "english")
 llm_vec_extract("Call me at 555-1234", "phone number")
 #> [1] "555-1234"
 ```
+
+---
+
+## Demo {background-color="#5b2942" style="text-align: right;"}
 
 ---
 
