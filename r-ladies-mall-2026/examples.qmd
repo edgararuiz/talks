@@ -1,5 +1,5 @@
----
-title: "mall — live examples"
+
+title: "malllive examples"
 subtitle: "Automatic NLP with LLMs Using {mall}"
 format: html
 toc: true
@@ -8,7 +8,7 @@ engine: knitr
 execute:
   eval: true
   echo: true
----
+
 
 ## Setup
 
@@ -22,32 +22,21 @@ library(dplyr)
 
 ```{r}
 #| label: llm-use-local
-llm_use("ollama", "llama3.2", seed = 100, .cache = "_mall_cache")
+llm_use("ollama", "llama3.2")
 ```
-
-### Remote model via ellmer (alternative)
-
-To use a remote model instead, swap the `llm_use()` call above for one of these:
 
 ```{r}
-#| eval: false
-library(ellmer)
-
-# OpenAI
-llm_use(chat_openai(model = "gpt-4o"))
-
-# Anthropic
-llm_use(chat_anthropic(model = "claude-haiku-4-5-20251001"))
-
-# Google Gemini
-llm_use(chat_google_gemini())
+llm_use("ollama", "llama3.2", .cache = "_mall_cache")
 ```
 
----
+```{r}
+llm_use("ollama", "llama3.2", .cache = "_mall_cache", seed = 100)
+```
+
 
 ## The `reviews` dataset
 
-`mall` ships with a small built-in dataset — 9 product reviews.
+`mall` ships with a small built-in dataset9 product reviews.
 
 ```{r}
 #| label: reviews-data
@@ -55,7 +44,6 @@ data(reviews)
 reviews
 ```
 
----
 
 ## Sentiment analysis
 
@@ -75,7 +63,7 @@ reviews |>
   llm_sentiment(review, options = c("happy", "sad", "meh"))
 ```
 
----
+
 
 ## Summarize
 
@@ -87,7 +75,7 @@ reviews |>
   llm_summarize(review, max_words = 5)
 ```
 
----
+
 
 ## Classify
 
@@ -99,7 +87,7 @@ reviews |>
   llm_classify(review, labels = c("appliance", "computer", "tv"))
 ```
 
----
+
 
 ## Extract entities
 
@@ -120,11 +108,11 @@ reviews |>
   llm_extract(review, "main complaint or compliment")
 ```
 
----
+
 
 ## Verify
 
-`llm_verify()` answers a yes/no question about each row — returns **1** (yes) or **0** (no).
+`llm_verify()` answers a yes/no question about each row returns **1** (yes) or **0** (no).
 
 ```{r}
 #| label: verify
@@ -141,11 +129,11 @@ reviews |>
   filter(.verify == 1)
 ```
 
----
+
 
 ## Translate
 
-`llm_translate()` translates each row into any target language — no language-specific
+`llm_translate()` translates each row into any target languageno language-specific
 model required.
 
 ```{r}
@@ -154,7 +142,7 @@ reviews |>
   llm_translate(review, "spanish")
 ```
 
----
+
 
 ## Multilingual workflow
 
@@ -178,7 +166,7 @@ multilingual <- tibble(
 multilingual
 ```
 
-Step 1 — detect language:
+Step 1detect language:
 
 ```{r}
 #| label: multilingual-detect
@@ -186,7 +174,7 @@ multilingual |>
   llm_extract(review, "language (e.g. english, spanish, french, german)")
 ```
 
-Step 2 — full pipeline (detect → filter non-English → translate → sentiment):
+Step 2full pipeline (detect → filter non-English → translate → sentiment):
 
 ```{r}
 #| label: multilingual-pipeline
@@ -197,7 +185,7 @@ multilingual |>
   llm_sentiment(.translation)
 ```
 
----
+
 
 ## Custom prompts
 
@@ -222,7 +210,7 @@ reviews |>
   )
 ```
 
----
+
 
 ## Vector functions
 
@@ -251,7 +239,7 @@ llm_vec_summarize(
 )
 ```
 
----
+
 
 ## Chaining everything together
 
@@ -266,12 +254,12 @@ reviews |>
   select(review, .classify, .sentiment, .summary)
 ```
 
----
+
 
 ## Caching
 
 Results are cached by default in `_mall_cache/`. Re-running the same text
-with the same model returns the cached result instantly — no API call needed.
+with the same model returns the cached result instantlyno API call needed.
 
 ```{r}
 #| eval: false
@@ -285,7 +273,7 @@ llm_use(.cache = "")
 llm_use(.cache = "_mall_cache")
 ```
 
----
+
 
 ## Session info
 
