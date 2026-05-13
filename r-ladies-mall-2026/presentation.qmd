@@ -12,8 +12,8 @@ format:
     highlight-style: github
 title-slide-attributes:
   data-background-image: images/mall.png
-  data-background-size: 200px
-  data-background-position: 92% 85%
+  data-background-size: 160px
+  data-background-position: 50% 6%
 engine: knitr
 execute:
   eval: false
@@ -73,6 +73,32 @@ reviews |>
 #> 2 Arrived broken, very disappointed           negative
 #> 3 It works, nothing special                   neutral
 ```
+
+---
+
+## How it works: System prompt
+
+For providers that support it, instructions are passed as the system prompt and the row data as the user message:
+
+::: {style="background-color: #f5eef1; border-left: 4px solid #5b2942; padding: 0.6em 0.8em; font-size: 0.8em; font-family: monospace; border-radius: 4px; margin-top: 0.5em;"}
+**System:** You are a helpful sentiment engine. Return only one of the following answers: positive, negative, neutral. No capitalization. No explanations.
+:::
+
+::: {style="background-color: #eee; border-left: 4px solid #c27ba0; padding: 0.6em 0.8em; font-size: 0.8em; font-family: monospace; border-radius: 4px; margin-top: 0.5em;"}
+**User:** The answer is based on the following text:\
+This product is amazing!
+:::
+
+---
+
+## How it works: Single-shot prompt
+
+For providers without system prompt support, instructions and data are concatenated into one message:
+
+::: {style="background-color: #f5eef1; border-left: 4px solid #5b2942; padding: 0.6em 0.8em; font-size: 0.8em; font-family: monospace; border-radius: 4px; margin-top: 0.5em;"}
+You are a helpful sentiment engine. Return only one of the following answers: positive, negative, neutral. No capitalization. No explanations. The answer is based on the following text:\
+This product is amazing!
+:::
 
 ---
 
@@ -156,6 +182,18 @@ options(.mall_chat = ellmer::chat_ollama(model = "llama3.2"))
 ```
 :::
 :::
+
+---
+
+## Local vs. Remote
+
+|                  | Local (Ollama) | Remote (`ellmer`) |
+|------------------|:--------------:|:---------------:|
+| Data privacy     | ✓              | Depends on provider |
+| Speed            | Slower         | Faster          |
+| Cost             | Free           | Per API call    |
+| Model quality    | Good           | Great           |
+| Setup            | Install app    | API key         |
 
 ---
 
@@ -347,19 +385,6 @@ llm_vec_translate("Buenos días a todos", "english")
 llm_vec_extract("Call me at 555-1234", "phone number")
 #> [1] "555-1234"
 ```
-
----
-
-## Local vs. Remote
-
-|                  | Local (Ollama) | Remote (`ellmer`) |
-|------------------|:--------------:|:---------------:|
-| Data privacy     | ✓              | Depends on provider |
-| Speed            | Slower         | Faster          |
-| Cost             | Free           | Per API call    |
-| Model quality    | Good           | Great           |
-| Setup            | Install app    | API key         |
-
 
 ---
 
