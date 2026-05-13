@@ -14,12 +14,10 @@ This talk introduces [`mall`](https://mlverse.github.io/mall/), an R package tha
 .
 ├── presentation/
 │   ├── automatic-nlp-with-mall.qmd   # Quarto RevealJS slide deck (source)
-│   ├── automatic-nlp-with-mall.html  # Rendered slides
-│   └── theme.scss                    # Custom reveal.js theme
-├── demo/
-│   ├── automatic-nlp-with-mall-demo.qmd   # Live-demo notebook (source)
-│   └── automatic-nlp-with-mall-demo.html  # Rendered notebook
-└── examples.rmarkdown   # Additional R Markdown examples
+│   ├── theme.scss                    # Custom reveal.js theme
+│   └── images/                       # Slide images and QR code
+└── demo/
+    └── automatic-nlp-with-mall-demo.qmd   # Live-demo notebook (source)
 ```
 
 ## Topics covered
