@@ -11,15 +11,28 @@ format:
     background-transition: fade
     highlight-style: github
 title-slide-attributes:
-  data-background-image: images/mall.png
-  data-background-size: 160px
-  data-background-position: 50% 6%
+  data-background-image: "images/mall.png, images/qr-cloud.png"
+  data-background-size: "160px, 130px"
+  data-background-position: "50% 6%, 50% 95%"
+  data-background-repeat: "no-repeat, no-repeat"
   data-background-color: "#5b2942"
 engine: knitr
 execute:
   eval: false
   echo: true
 ---
+
+```{r}
+#| label: setup-qr
+#| eval: true
+#| echo: false
+#| include: false
+library(qrcode)
+qr <- qr_code("https://edgararuiz-automatic-nlp-mall-presentation.share.connect.posit.cloud/")
+png("images/qr-cloud.png", width = 300, height = 300)
+plot(qr)
+dev.off()
+```
 
 ## Typical NLP project
 
@@ -521,7 +534,7 @@ Slides & code: [github.com/edgararuiz/talks](https://github.com/edgararuiz/talks
 #| fig-width: 2.5
 #| fig-height: 2.5
 library(qrcode)
-qr_code("https://github.com/edgararuiz/talks/tree/main/r-ladies-mall-2026") |> plot()
+qr_code("https://edgararuiz-automatic-nlp-mall-presentation.share.connect.posit.cloud/") |> plot()
 ```
 :::
 :::
