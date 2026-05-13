@@ -1823,7 +1823,7 @@
   },
   "files": {
     "automatic-nlp-with-mall_files/figure-revealjs/unnamed-chunk-20-1.png": {
-      "checksum": "c7bd5510ec0e997022fd16b89e4186b1"
+      "checksum": "5a4e35cf043db1b61d5c51b432027f2c"
     },
     "automatic-nlp-with-mall_files/libs/clipboard/clipboard.min.js": {
       "checksum": "15f52a1ee547f2bdd46e56747332ca2d"
@@ -2036,10 +2036,10 @@
       "checksum": "9c28a4d1f1502771665328f6abb091c0"
     },
     "automatic-nlp-with-mall.html": {
-      "checksum": "09c11d8430ef5b91597584a4a865f716"
+      "checksum": "04d16e6f7d0c250171395137927645cb"
     },
     "automatic-nlp-with-mall.qmd": {
-      "checksum": "e4495d2193e0d5323143ebdd009dabd8"
+      "checksum": "33934898589c38743d0b3f92530395f4"
     },
     "images/article-screenshot.png": {
       "checksum": "8a93dfcbff6b0b531f44148cb33a8e70"
@@ -2061,6 +2061,9 @@
     },
     "images/ollama.png": {
       "checksum": "255a0192cc7bcb4cbcb9dfa667937675"
+    },
+    "images/qr-cloud.png": {
+      "checksum": "964b505f578d046a0e3a84503f67bebc"
     },
     "theme.scss": {
       "checksum": "1bac8622a94f158a937b53454250ac7c"
