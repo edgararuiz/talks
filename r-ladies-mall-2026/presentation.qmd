@@ -400,6 +400,22 @@ llm_vec_extract("Call me at 555-1234", "phone number")
 
 ---
 
+## Preview mode
+
+Use `preview = TRUE` to inspect the exact call sent to the backend, without running it:
+
+```{r}
+llm_vec_translate("Buenos días a todos", "english", preview = TRUE)
+#> [[1]]
+#> ollamar::chat(messages = list(list(role = "user", content = "You are a helpful
+#>     translation engine. You will return only the translation text, no
+#>     explanations. The target language to translate to is: english. The answer
+#>     is based on the following text:\nBuenos días a todos")),
+#>     output = "text", model = "llama3.2")
+```
+
+---
+
 ## Demo {background-color="#5b2942" style="text-align: right;"}
 
 ---
