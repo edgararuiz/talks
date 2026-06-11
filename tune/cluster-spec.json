@@ -1,0 +1,23 @@
+{
+  "data_security_mode": "DATA_SECURITY_MODE_DEDICATED",
+  "single_user_name": "edgar@posit.co",
+  "cluster_name": "Edgar's Cluster 2026-06-10 16:56:17",
+  "custom_tags": {
+    "rsowner": "edgar@posit.co"
+  },
+  "kind": "CLASSIC_PREVIEW",
+  "azure_attributes": {
+    "availability": "SPOT_WITH_FALLBACK_AZURE"
+  },
+  "runtime_engine": "PHOTON",
+  "spark_version": "17.3.x-scala2.13",
+  "node_type_id": "Standard_D8pds_v6",
+  "autotermination_minutes": 120,
+  "use_ml_runtime": false,
+  "is_single_node": false,
+  "autoscale": {
+    "min_workers": 4,
+    "max_workers": 4
+  },
+  "cluster_id": "0610-210321-nnvxwjl0"
+}
