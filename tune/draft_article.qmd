@@ -11,7 +11,7 @@ library(tictoc)
 library(future)
 plan(multisession)
 
-set.seed(1)
+set.seed(231)
 readmission_splits <- initial_split(readmission, strata = readmitted)
 
 readmission_folds <- vfold_cv(training(readmission_splits), strata = readmitted)
@@ -42,7 +42,7 @@ bt_grid <- grid_space_filling(
   min_n(),
   learn_rate(),
   tree_depth(),
-  size = 400
+  size = 100
 )
 ```
 
@@ -55,17 +55,12 @@ local_results <- tune_grid(
   preprocessor = recipe_basic,
   resamples = readmission_folds,
   grid = bt_grid,
-  control = control_grid(verbose = TRUE, parallel_over = "everything")
+  control = control_grid()
 )
 toc()
-
-saveRDS(local_results, "tune/results/local_results.rds")
 ```
 
-Timing: 2007.381 sec elapsed
-Apple M3, 8 cores (4 performance + 4 efficiency), 24 GB RAM. 
 
-2007.381  -- 33 mins
 
 
 ```{r}
@@ -111,8 +106,9 @@ spark_results <- tune_grid_spark(
 )
 toc()
 
-saveRDS(spark_results, "tune/resultsspark_results.rds")
 ```
+
+At 400 combinations:
 
 Timing: 1242.861 sec elapsed
 
@@ -124,14 +120,18 @@ Node specs:  32 GB Memory, 8 Cores
 In Workbench:
 
 22535.651 sec elapsed
+6hours 15 minutes
 
 8 cores
 x86_64
-6hours 15 minutes
 AMD EPYC 7571
 2.1 GHz
 
 
+Timing: 2007.381 sec elapsed
+Apple M3, 8 cores (4 performance + 4 efficiency), 24 GB RAM. 
+
+2007.381  -- 33 mins
 
 
 
