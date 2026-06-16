@@ -121,4 +121,17 @@ Timing: 1242.861 sec elapsed
 
 Node specs:  32 GB Memory, 8 Cores
 
+In Workbench:
+
+22535.651 sec elapsed
+
+8 cores
+x86_64
+6hours 15 minutes
+AMD EPYC 7571
+2.1 GHz
+
+
+
+
 
