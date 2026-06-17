@@ -66,7 +66,9 @@ toc()
 ```{r}
 
 cluster_id <- "0610-210321-nnvxwjl0"
+```
 
+```{r}
 repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
 
 r_libs <- libraries(
@@ -102,11 +104,31 @@ spark_results <- tune_grid_spark(
   preprocessor = recipe_basic,
   resamples = readmission_folds,
   grid = bt_grid,
-  control = control_grid(verbose = TRUE, parallel_over = "everything")
+  control = control_grid(verbose = TRUE)
 )
 toc()
 
 ```
+
+At 100 combinations:
+
+Spark cluster 
+
+166.472 sec / 2.8 minutes
+
+M3
+
+662 sec / 11.033 minutes
+
+Workbench
+
+5043 sec / 90 minutes
+
+Windows
+
+3710 sec / 61 minutes
+
+
 
 At 400 combinations:
 
