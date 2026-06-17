@@ -114,7 +114,9 @@ At 100 combinations:
 
 Spark cluster 
 
-166.472 sec / 2.8 minutes
+166.472 sec / 2.8 minutes (32 concurrent)
+
+302.427 sec / 5 mins (10 concurrent)
 
 M3
 
