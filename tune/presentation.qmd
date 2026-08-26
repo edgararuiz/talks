@@ -1,71 +1,99 @@
 ---
-title: "Tune tidymodels in Databricks"
 format: 
   revealjs:
-    width: 1255
-    height: 740
+    width: 1280
+    height: 720
     max-scale: 1
     min-scale: 1
-    smaller: true
+    center: false
     transition: fade
     background-transition: fade
     theme: [default, theme.scss]
     code-line-numbers: false
     menu: false
+    slide-number: false
+    progress: false
+    include-in-header:
+      text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 execute: 
   echo: false
 engine: knitr
 ---
 
-# Tuning tidymodels in Databricks {background-image="assets/title-slide-white.png" background-size="1500px" background-color="white"}
+# {.title-block background-image="assets/title-slide-white.png" background-size="cover" background-color="white"}
 
-90 minutes to 3, with one new argument
+```{=html}
+<div class="title-block-inner">
+  <h1>Tuning tidymodels<br>in Databricks</h1>
+  <p class="tagline">90 minutes of grid search, cut to three</p>
+  <p class="byline">Edgar Ruiz / Posit</p>
+</div>
+```
 
-Edgar Ruiz \@ Posit
+# The problem {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
 
-[linkedin.com/in/edgararuiz](https://www.linkedin.com/in/edgararuiz/)
+```{=html}
+<div class="eyebrow">Grid search</div>
+```
 
-# The problem {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+- Tuning is embarrassingly parallel, and embarrassingly slow
 
-:::{.dark-slide}
-Grid search is slow, and it is slow on your laptop
-:::
+- The hardware you tune on is rarely the hardware you have
 
-## Grid search does a lot of fitting {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## A small grid is a lot of fitting {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
-- Tuning a boosted tree with four parameters: `mtry`, `min_n`, `learn_rate`, `tree_depth`
+```{=html}
+<div class="eyebrow">Grid search</div>
+```
+
+- A boosted tree with four tuning parameters: `mtry`, `min_n`, `learn_rate`, `tree_depth`
 
 - A space filling grid of **100 combinations**
 
 - 10 fold cross validation
 
-:::{.big-number}
-1,000 model fits
+:::{.stat}
+1,000
 :::
 
-:::{.big-number-sub}
-for one call to `tune_grid()`
+:::{.stat-sub}
+model fits for one call to `tune_grid()`
 :::
 
-## The usual answers are not enough {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## The usual answers fall short {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
-- Run it in parallel on your laptop, and you are still bound by the cores you own
+```{=html}
+<div class="eyebrow">Grid search</div>
+```
+
+- Run it in parallel on your laptop, and you are bound by the cores you own
 
 - Move it to a server, and the server is often *slower* than the laptop
 
 - Rewrite the model in Spark ML, and you leave tidymodels behind
 
-- Meanwhile, the Databricks cluster your data already lives in sits idle
+- Meanwhile the Databricks cluster your data already lives in sits idle
 
-# The example {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+# The example {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
 
-:::{.dark-slide}
-Hospital readmissions, a plain tidymodels workflow
-:::
+```{=html}
+<div class="eyebrow">The example</div>
+```
 
-## The setup {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+- Hospital readmissions, a plain tidymodels workflow
 
-:::{.sample-medium}
+- Nothing in it is written for Spark
+
+## Splits and recipe {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The example</div>
+```
+
+:::{.sample-small}
 ```r
 library(tidymodels)
 library(readmission)
@@ -89,9 +117,13 @@ recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
 ```
 :::
 
-## The model and the grid {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Model and grid {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
-:::{.sample-medium}
+```{=html}
+<div class="eyebrow">The example</div>
+```
+
+:::{.sample-small}
 ```r
 spec_bt <- boost_tree(
   mode = "classification",
@@ -112,9 +144,13 @@ bt_grid <- grid_space_filling(
 ```
 :::
 
-## Tuning locally {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## Tuning locally {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
-:::{.sample-medium}
+```{=html}
+<div class="eyebrow">The example</div>
+```
+
+:::{.sample-small}
 ```r
 library(future)
 plan(multisession)
@@ -130,18 +166,26 @@ local_results <- tune_grid(
 :::
 
 :::{.fragment .fade-in}
-On an M3 laptop this takes **11 minutes**. On a Windows machine, **61 minutes**.
+An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
 :::
 
-# The feature {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+# tune_grid_spark() {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
 
-:::{.dark-slide}
-`tune_grid_spark()`
-:::
+```{=html}
+<div class="eyebrow">The feature</div>
+```
 
-## One new argument {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+- Same tidymodels objects, fitted on Databricks workers
 
-:::{.sample-medium}
+- One extra argument, and nothing else changes
+
+## One new argument {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The feature</div>
+```
+
+:::{.sample-small}
 ```r
 library(sparklyr)
 
@@ -151,7 +195,7 @@ sc <- spark_connect(
 )
 
 spark_results <- tune_grid_spark(
-  sc = sc,                          # <- the only addition
+  sc = sc,                          # the only addition
   object = spec_bt,
   preprocessor = recipe_basic,
   resamples = readmission_folds,
@@ -161,41 +205,38 @@ spark_results <- tune_grid_spark(
 ```
 :::
 
-- Same model spec, same recipe, same resamples, same grid
+- It returns a regular `tune_results` object, so `collect_metrics()` and `select_best()` work as usual
 
-- Returns a regular `tune_results` object, so `collect_metrics()` and `select_best()` work as usual
+## What happens under the hood {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
-## What happens under the hood {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
-
-- **Upload** - the resamples, model specification and preprocessing steps are serialized and sent to Databricks
-
-- **Process** - each parameter combination is fitted on a worker, running real R through `reticulate` and `rpy2`
-
-- **Collect** - the metrics come back and are assembled into a `tune_results` object
-
-```{mermaid}
-flowchart LR
-  subgraph lp[Your machine]
-    tm[tidymodels]
-  end
-  subgraph db[Databricks cluster]
-    w1[R worker]
-    w2[R worker]
-    w3[R worker]
-  end
-  tm <-. objects / metrics .-> db
-
-  style lp  fill:#fff,stroke:#666
-  style db  fill:#f4c430,stroke:#666
-  style tm  fill:#eff,stroke:#666
-  style w1  fill:#fff,stroke:#666
-  style w2  fill:#fff,stroke:#666
-  style w3  fill:#fff,stroke:#666
+```{=html}
+<div class="eyebrow">The feature</div>
 ```
 
-## Preparing the cluster, once {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+```{=html}
+<div class="cards">
+  <div class="card">
+    <h3>Upload</h3>
+    <p>The resamples, the model specification and the preprocessing steps are serialized and sent to Databricks.</p>
+  </div>
+  <div class="card">
+    <h3>Process</h3>
+    <p>Each parameter combination is fitted on a worker, running real R through <code>reticulate</code> and <code>rpy2</code>.</p>
+  </div>
+  <div class="card">
+    <h3>Collect</h3>
+    <p>The metrics come back and are assembled into a <code>tune_results</code> object.</p>
+  </div>
+</div>
+```
 
-:::{.sample-medium}
+## Preparing the cluster, once {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The feature</div>
+```
+
+:::{.sample-small}
 ```r
 repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
 
@@ -219,13 +260,19 @@ wait_for_lib_installs(cluster_id)
 
 - Scripted with `brickster`, or done by hand in the cluster's Libraries tab
 
-# The payoff {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+# The payoff {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
 
-:::{.dark-slide}
-Same 100 combinations, five places to run them
-:::
+```{=html}
+<div class="eyebrow">The payoff</div>
+```
 
-## Time to tune 100 combinations {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+- The same 100 combinations, run in five places
+
+## Time to tune 100 combinations {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The payoff</div>
+```
 
 ```{=html}
 <div class="bench">
@@ -237,42 +284,56 @@ Same 100 combinations, five places to run them
 </div>
 ```
 
-## What the numbers say {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+## What the numbers say {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The payoff</div>
+```
 
 - **32x faster** than the same job on Posit Workbench, **4x faster** than the best laptop
 
-- The cluster turns an overnight job, or a coffee break job, into a job you wait for
-
 - Concurrency is a dial: 10 workers gave 5 minutes, 32 gave 2.8
+
+- An overnight job becomes a job you wait for
 
 - Faster tuning means larger grids, which means better models
 
-# Knowing the limits {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+# Knowing the limits {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
 
-:::{.dark-slide}
-What this is, and what it is not
-:::
+```{=html}
+<div class="eyebrow">Limits</div>
+```
 
-## Limitations {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+- What this is, and what it is not
 
-- The goal is to **speed up the search**, not to process big data. The data still has to fit in memory
+## Limitations {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Limits</div>
+```
+
+- The goal is to speed up the **search**, not to process big data. The data still has to fit in memory
 
 - Results can differ slightly from local runs, because the OS, the R version and the package versions differ
 
 - Downloading predictions roughly doubles the data moved across the wire
 
-- If your data is larger than local memory, use Spark ML instead
+- If your data is larger than local memory, reach for Spark ML instead
 
-## Links {background-image="assets/slide-frame.png" background-size="1500px" background-color="#fff"}
+## Where to read more {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
-- Article - [https://spark.posit.co/deployment/databricks_tune_tidymodels.html](https://spark.posit.co/deployment/databricks_tune_tidymodels.html)
+```{=html}
+<div class="eyebrow">Links</div>
+```
 
-- `sparklyr` - [https://spark.posit.co](https://spark.posit.co)
+- Article - [spark.posit.co/deployment/databricks_tune_tidymodels.html](https://spark.posit.co/deployment/databricks_tune_tidymodels.html)
 
-- `brickster` - [https://posit-dev.github.io/brickster/](https://posit-dev.github.io/brickster/)
+- `sparklyr` - [spark.posit.co](https://spark.posit.co)
 
-- tidymodels - [https://www.tidymodels.org](https://www.tidymodels.org)
+- `brickster` - [posit-dev.github.io/brickster](https://posit-dev.github.io/brickster/)
 
-- Talk repo - [https://github.com/edgararuiz/talks/tree/main/tune](https://github.com/edgararuiz/talks/tree/main/tune)
+- tidymodels - [tidymodels.org](https://www.tidymodels.org)
 
-## {background-image="assets/thank-you.png" background-size="1500px" background-color="black"}
+- Talk repo - [github.com/edgararuiz/talks/tree/main/tune](https://github.com/edgararuiz/talks/tree/main/tune)
+
+## Thank you {.thanks background-image="assets/thank-you.png" background-size="cover" background-color="white"}
