@@ -27,7 +27,7 @@ engine: knitr
 
 ```{=html}
 <div class="title-block-inner">
-  <h1>Tuning tidymodels<br>in Databricks</h1>
+  <h1>Tuning<br>tidymodels in<br>Databricks</h1>
   <p class="tagline">90 minutes of grid search, cut to three</p>
   <p class="byline">Edgar Ruiz / Posit</p>
 </div>
@@ -185,6 +185,10 @@ An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
 <div class="eyebrow">The feature</div>
 ```
 
+:::{.lead}
+Adding `sc` is the only change, and the result is a regular `tune_results` object.
+:::
+
 :::{.sample-small}
 ```r
 library(sparklyr)
@@ -193,7 +197,6 @@ sc <- spark_connect(
   method = "databricks_connect",
   cluster_id = cluster_id
 )
-
 spark_results <- tune_grid_spark(
   sc = sc,                          # the only addition
   object = spec_bt,
@@ -204,8 +207,6 @@ spark_results <- tune_grid_spark(
 )
 ```
 :::
-
-- It returns a regular `tune_results` object, so `collect_metrics()` and `select_best()` work as usual
 
 ## What happens under the hood {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
@@ -236,6 +237,10 @@ spark_results <- tune_grid_spark(
 <div class="eyebrow">The feature</div>
 ```
 
+:::{.lead}
+Scripted with `brickster`, or done by hand in the cluster's Libraries tab.
+:::
+
 :::{.sample-small}
 ```r
 repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
@@ -246,19 +251,15 @@ r_libs <- libraries(
   lib_cran("xgboost", repo = repo),
   lib_cran("readmission", repo = repo)
 )
-
 db_libs_install(cluster_id, r_libs)
 
 py_lib <- lib_pypi("rpy2==3.5.7") |>
   libraries()
-
 db_libs_install(cluster_id, py_lib)
 
 wait_for_lib_installs(cluster_id)
 ```
 :::
-
-- Scripted with `brickster`, or done by hand in the cluster's Libraries tab
 
 # The payoff {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
 
@@ -266,7 +267,7 @@ wait_for_lib_installs(cluster_id)
 <div class="eyebrow">The payoff</div>
 ```
 
-- The same 100 combinations, run in five places
+The same 100 combinations, run in five places.
 
 ## Time to tune 100 combinations {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
@@ -304,7 +305,7 @@ wait_for_lib_installs(cluster_id)
 <div class="eyebrow">Limits</div>
 ```
 
-- What this is, and what it is not
+What this is, and what it is not.
 
 ## Limitations {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
@@ -320,13 +321,13 @@ wait_for_lib_installs(cluster_id)
 
 - If your data is larger than local memory, reach for Spark ML instead
 
-## Where to read more {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## Where to read more {.links background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Links</div>
 ```
 
-- Article - [spark.posit.co/deployment/databricks_tune_tidymodels.html](https://spark.posit.co/deployment/databricks_tune_tidymodels.html)
+- Article - [spark.posit.co/deployment](https://spark.posit.co/deployment/databricks_tune_tidymodels.html)
 
 - `sparklyr` - [spark.posit.co](https://spark.posit.co)
 
