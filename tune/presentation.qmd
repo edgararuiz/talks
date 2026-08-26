@@ -1,10 +1,11 @@
 ---
 format: 
   revealjs:
-    width: 1280
-    height: 720
-    max-scale: 1
-    min-scale: 1
+    width: 1255
+    height: 706
+    max-scale: 3
+    min-scale: 0.2
+    margin: 0
     center: false
     transition: fade
     background-transition: fade
@@ -23,7 +24,7 @@ execute:
 engine: knitr
 ---
 
-# {.title-block background-image="assets/title-slide-white.png" background-size="cover" background-color="white"}
+# {.title-block background-image="assets/title-slide-white.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="title-block-inner">
@@ -33,7 +34,7 @@ engine: knitr
 </div>
 ```
 
-# The problem {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
+# The problem {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
 <div class="eyebrow">Grid search</div>
@@ -43,7 +44,7 @@ engine: knitr
 
 - The hardware you tune on is rarely the hardware you have
 
-## A small grid is a lot of fitting {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## A small grid is a lot of fitting {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Grid search</div>
@@ -63,7 +64,7 @@ engine: knitr
 model fits for one call to `tune_grid()`
 :::
 
-## The usual answers fall short {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Grid search</div>
@@ -77,7 +78,7 @@ model fits for one call to `tune_grid()`
 
 - Meanwhile the Databricks cluster your data already lives in sits idle
 
-# The example {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
+# The example {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
 <div class="eyebrow">The example</div>
@@ -87,7 +88,7 @@ model fits for one call to `tune_grid()`
 
 - Nothing in it is written for Spark
 
-## Splits and recipe {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## Splits and recipe {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The example</div>
@@ -117,7 +118,7 @@ recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
 ```
 :::
 
-## Model and grid {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## Model and grid {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The example</div>
@@ -144,7 +145,7 @@ bt_grid <- grid_space_filling(
 ```
 :::
 
-## Tuning locally {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## Tuning locally {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The example</div>
@@ -169,7 +170,7 @@ local_results <- tune_grid(
 An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
 :::
 
-# tune_grid_spark() {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
+# tune_grid_spark() {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
 <div class="eyebrow">The feature</div>
@@ -179,7 +180,7 @@ An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
 
 - One extra argument, and nothing else changes
 
-## One new argument {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## One new argument {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The feature</div>
@@ -208,7 +209,7 @@ spark_results <- tune_grid_spark(
 ```
 :::
 
-## What happens under the hood {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## What happens under the hood {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The feature</div>
@@ -231,14 +232,14 @@ spark_results <- tune_grid_spark(
 </div>
 ```
 
-## Preparing the cluster, once {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## Preparing the cluster, once {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The feature</div>
 ```
 
 :::{.lead}
-Scripted with `brickster`, or done by hand in the cluster's Libraries tab.
+Scripted with `brickster`, or by hand in the Libraries tab.
 :::
 
 :::{.sample-small}
@@ -261,7 +262,7 @@ wait_for_lib_installs(cluster_id)
 ```
 :::
 
-# The payoff {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
+# The payoff {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
 <div class="eyebrow">The payoff</div>
@@ -269,7 +270,7 @@ wait_for_lib_installs(cluster_id)
 
 The same 100 combinations, run in five places.
 
-## Time to tune 100 combinations {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## Time to tune 100 combinations {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The payoff</div>
@@ -285,7 +286,7 @@ The same 100 combinations, run in five places.
 </div>
 ```
 
-## What the numbers say {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## What the numbers say {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The payoff</div>
@@ -299,7 +300,7 @@ The same 100 combinations, run in five places.
 
 - Faster tuning means larger grids, which means better models
 
-# Knowing the limits {.dark-slide background-image="assets/slide-frame-dark.png" background-size="cover" background-color="#031042"}
+# Knowing the limits {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
 <div class="eyebrow">Limits</div>
@@ -307,7 +308,7 @@ The same 100 combinations, run in five places.
 
 What this is, and what it is not.
 
-## Limitations {background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## Limitations {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Limits</div>
@@ -321,7 +322,7 @@ What this is, and what it is not.
 
 - If your data is larger than local memory, reach for Spark ML instead
 
-## Where to read more {.links background-image="assets/slide-frame.png" background-size="cover" background-color="white"}
+## Where to read more {.links background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Links</div>
@@ -337,4 +338,4 @@ What this is, and what it is not.
 
 - Talk repo - [github.com/edgararuiz/talks/tree/main/tune](https://github.com/edgararuiz/talks/tree/main/tune)
 
-## Thank you {.thanks background-image="assets/thank-you.png" background-size="cover" background-color="white"}
+## Thank you {.thanks background-image="assets/thank-you.png" background-size="contain" background-color="white"}
