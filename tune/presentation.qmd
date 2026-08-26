@@ -1,0 +1,278 @@
+---
+title: "Tune tidymodels in Databricks"
+format: 
+  revealjs:
+    width: 1255
+    height: 740
+    max-scale: 1
+    min-scale: 1
+    smaller: true
+    transition: fade
+    background-transition: fade
+    theme: [default, theme.scss]
+    code-line-numbers: false
+    menu: false
+execute: 
+  echo: false
+engine: knitr
+---
+
+# Tuning tidymodels in Databricks {background-image="assets/title-slide-white.png" background-size="1500px" background-color="white"}
+
+90 minutes to 3, with one new argument
+
+Edgar Ruiz \@ Posit
+
+[linkedin.com/in/edgararuiz](https://www.linkedin.com/in/edgararuiz/)
+
+# The problem {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+
+:::{.dark-slide}
+Grid search is slow, and it is slow on your laptop
+:::
+
+## Grid search does a lot of fitting {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+- Tuning a boosted tree with four parameters: `mtry`, `min_n`, `learn_rate`, `tree_depth`
+
+- A space filling grid of **100 combinations**
+
+- 10 fold cross validation
+
+:::{.big-number}
+1,000 model fits
+:::
+
+:::{.big-number-sub}
+for one call to `tune_grid()`
+:::
+
+## The usual answers are not enough {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+- Run it in parallel on your laptop, and you are still bound by the cores you own
+
+- Move it to a server, and the server is often *slower* than the laptop
+
+- Rewrite the model in Spark ML, and you leave tidymodels behind
+
+- Meanwhile, the Databricks cluster your data already lives in sits idle
+
+# The example {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+
+:::{.dark-slide}
+Hospital readmissions, a plain tidymodels workflow
+:::
+
+## The setup {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+:::{.sample-medium}
+```r
+library(tidymodels)
+library(readmission)
+
+set.seed(231)
+readmission_splits <- initial_split(readmission, strata = readmitted)
+
+readmission_folds <- vfold_cv(training(readmission_splits), strata = readmitted)
+
+recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
+  step_mutate(
+    race = factor(case_when(
+      !(race %in% c("Caucasian", "African American")) ~ "Other",
+      .default = race
+    ))
+  ) |>
+  step_unknown(all_nominal_predictors()) |>
+  step_YeoJohnson(all_numeric_predictors()) |>
+  step_normalize(all_numeric_predictors()) |>
+  step_dummy(all_nominal_predictors())
+```
+:::
+
+## The model and the grid {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+:::{.sample-medium}
+```r
+spec_bt <- boost_tree(
+  mode = "classification",
+  trees = 500,
+  mtry = tune(),
+  min_n = tune(),
+  learn_rate = tune(),
+  tree_depth = tune()
+)
+
+bt_grid <- grid_space_filling(
+  mtry(range = c(5, 20)),
+  min_n(),
+  learn_rate(),
+  tree_depth(),
+  size = 100
+)
+```
+:::
+
+## Tuning locally {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+:::{.sample-medium}
+```r
+library(future)
+plan(multisession)
+
+local_results <- tune_grid(
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid()
+)
+```
+:::
+
+:::{.fragment .fade-in}
+On an M3 laptop this takes **11 minutes**. On a Windows machine, **61 minutes**.
+:::
+
+# The feature {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+
+:::{.dark-slide}
+`tune_grid_spark()`
+:::
+
+## One new argument {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+:::{.sample-medium}
+```r
+library(sparklyr)
+
+sc <- spark_connect(
+  method = "databricks_connect",
+  cluster_id = cluster_id
+)
+
+spark_results <- tune_grid_spark(
+  sc = sc,                          # <- the only addition
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid(verbose = TRUE)
+)
+```
+:::
+
+- Same model spec, same recipe, same resamples, same grid
+
+- Returns a regular `tune_results` object, so `collect_metrics()` and `select_best()` work as usual
+
+## What happens under the hood {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+- **Upload** - the resamples, model specification and preprocessing steps are serialized and sent to Databricks
+
+- **Process** - each parameter combination is fitted on a worker, running real R through `reticulate` and `rpy2`
+
+- **Collect** - the metrics come back and are assembled into a `tune_results` object
+
+```{mermaid}
+flowchart LR
+  subgraph lp[Your machine]
+    tm[tidymodels]
+  end
+  subgraph db[Databricks cluster]
+    w1[R worker]
+    w2[R worker]
+    w3[R worker]
+  end
+  tm <-. objects / metrics .-> db
+
+  style lp  fill:#fff,stroke:#666
+  style db  fill:#f4c430,stroke:#666
+  style tm  fill:#eff,stroke:#666
+  style w1  fill:#fff,stroke:#666
+  style w2  fill:#fff,stroke:#666
+  style w3  fill:#fff,stroke:#666
+```
+
+## Preparing the cluster, once {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+:::{.sample-medium}
+```r
+repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
+
+r_libs <- libraries(
+  lib_cran("reticulate", repo = repo),
+  lib_cran("tidymodels", repo = repo),
+  lib_cran("xgboost", repo = repo),
+  lib_cran("readmission", repo = repo)
+)
+
+db_libs_install(cluster_id, r_libs)
+
+py_lib <- lib_pypi("rpy2==3.5.7") |>
+  libraries()
+
+db_libs_install(cluster_id, py_lib)
+
+wait_for_lib_installs(cluster_id)
+```
+:::
+
+- Scripted with `brickster`, or done by hand in the cluster's Libraries tab
+
+# The payoff {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+
+:::{.dark-slide}
+Same 100 combinations, five places to run them
+:::
+
+## Time to tune 100 combinations {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+```{=html}
+<div class="bench">
+  <div class="row"><div class="label">Spark, 32 concurrent</div><div class="bar fast" style="width:19px"></div><div class="time">2.8 min</div></div>
+  <div class="row"><div class="label">Spark, 10 concurrent</div><div class="bar fast" style="width:35px"></div><div class="time">5 min</div></div>
+  <div class="row"><div class="label">Laptop, M3</div><div class="bar" style="width:76px"></div><div class="time">11 min</div></div>
+  <div class="row"><div class="label">Windows machine</div><div class="bar" style="width:421px"></div><div class="time">61 min</div></div>
+  <div class="row"><div class="label">Posit Workbench, 8 cores</div><div class="bar" style="width:620px"></div><div class="time">90 min</div></div>
+</div>
+```
+
+## What the numbers say {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+- **32x faster** than the same job on Posit Workbench, **4x faster** than the best laptop
+
+- The cluster turns an overnight job, or a coffee break job, into a job you wait for
+
+- Concurrency is a dial: 10 workers gave 5 minutes, 32 gave 2.8
+
+- Faster tuning means larger grids, which means better models
+
+# Knowing the limits {background-image="assets/slide-frame-dark.png" background-size="1500px" background-color="#2a7070"}
+
+:::{.dark-slide}
+What this is, and what it is not
+:::
+
+## Limitations {background-image="assets/slide-frame.png" background-size="1500px" background-color="white"}
+
+- The goal is to **speed up the search**, not to process big data. The data still has to fit in memory
+
+- Results can differ slightly from local runs, because the OS, the R version and the package versions differ
+
+- Downloading predictions roughly doubles the data moved across the wire
+
+- If your data is larger than local memory, use Spark ML instead
+
+## Links {background-image="assets/slide-frame.png" background-size="1500px" background-color="#fff"}
+
+- Article - [https://spark.posit.co/deployment/databricks_tune_tidymodels.html](https://spark.posit.co/deployment/databricks_tune_tidymodels.html)
+
+- `sparklyr` - [https://spark.posit.co](https://spark.posit.co)
+
+- `brickster` - [https://posit-dev.github.io/brickster/](https://posit-dev.github.io/brickster/)
+
+- tidymodels - [https://www.tidymodels.org](https://www.tidymodels.org)
+
+- Talk repo - [https://github.com/edgararuiz/talks/tree/main/tune](https://github.com/edgararuiz/talks/tree/main/tune)
+
+## {background-image="assets/thank-you.png" background-size="1500px" background-color="black"}

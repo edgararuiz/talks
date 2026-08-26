@@ -131,31 +131,3 @@ Windows
 3710 sec / 61 minutes
 
 
-
-At 400 combinations:
-
-Timing: 1242.861 sec elapsed
-
-1242 - 20 mins (10 concurrent)
-622 - 10 (32 concurrent)
-
-Node specs:  32 GB Memory, 8 Cores
-
-In Workbench:
-
-22535.651 sec elapsed
-6hours 15 minutes
-
-8 cores
-x86_64
-AMD EPYC 7571
-2.1 GHz
-
-
-Timing: 2007.381 sec elapsed
-Apple M3, 8 cores (4 performance + 4 efficiency), 24 GB RAM. 
-
-2007.381  -- 33 mins
-
-
-
