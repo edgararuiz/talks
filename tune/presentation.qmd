@@ -28,8 +28,8 @@ engine: knitr
 
 ```{=html}
 <div class="title-block-inner">
-  <h1>Tuning<br>tidymodels in<br>Databricks</h1>
-  <p class="tagline">90 minutes of grid search, cut to three</p>
+  <h1>Prepare locally,<br>run remotely</h1>
+  <p class="tagline">Easily scale Tidymodels on Databricks<br>with sparklyr</p>
   <p class="byline">Edgar Ruiz / Posit</p>
 </div>
 ```
@@ -42,7 +42,7 @@ engine: knitr
 
 - Tuning is embarrassingly parallel, and embarrassingly slow
 
-- The hardware you tune on is rarely the hardware you have
+- Accelerating it has always cost money, effort, or both
 
 ## A small grid is a lot of fitting {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -70,13 +70,15 @@ model fits for one call to `tune_grid()`
 <div class="eyebrow">Grid search</div>
 ```
 
-- Run it in parallel on your laptop, and you are bound by the cores you own
+- On your laptop, you are bound by the cores you own
 
-- Move it to a server, and the server is often *slower* than the laptop
+- Grid computing is expensive to buy and to run
 
-- Rewrite the model in Spark ML, and you leave tidymodels behind
+- A do-it-yourself Spark cluster is complex to stand up and to maintain
 
-- Meanwhile the Databricks cluster your data already lives in sits idle
+- Either way, the R code needs significant changes to run there
+
+- Hard to justify, in money or in effort, for daily work
 
 # The example {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
@@ -176,9 +178,9 @@ An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
 <div class="eyebrow">The feature</div>
 ```
 
-- Same tidymodels objects, fitted on Databricks workers
+- Databricks has made high-performance Spark clusters easy to manage
 
-- One extra argument, and nothing else changes
+- `sparklyr` evaluates the *exact same* tidymodels objects, in parallel, across the cluster
 
 ## One new argument {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -298,7 +300,7 @@ The same 100 combinations, run in five places.
 
 - An overnight job becomes a job you wait for
 
-- Faster tuning means larger grids, which means better models
+- Large grid searches at scale, with no refactoring
 
 # Knowing the limits {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 

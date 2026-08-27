@@ -57,7 +57,7 @@ $presentation-h3-font-size: 1.3em;
 
 .reveal .slide h2 {
   margin-top: 44px;
-  margin-bottom: 26px;
+  margin-bottom: 12px;
 }
 
 // small all caps section label, sits above the slide title
@@ -79,7 +79,7 @@ $presentation-h3-font-size: 1.3em;
 }
 
 .reveal .slide ul {
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 .reveal .slide li {
@@ -132,13 +132,19 @@ $presentation-h3-font-size: 1.3em;
 }
 
 .reveal .dark-slide h1 {
-  margin-top: 150px;
+  margin-top: 110px;
   margin-bottom: 34px;
 }
 
 // title slide
+// the title slide is vertically centred by reveal, which pushed the
+// block down into the skyline art; pin it to the top instead
+.reveal .slides section.title-block {
+  top: 0 !important;
+}
+
 .reveal .title-block-inner {
-  padding-top: 60px;
+  padding-top: 74px;
 }
 
 .reveal .title-block-inner h1 {
