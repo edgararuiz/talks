@@ -92,6 +92,7 @@ $presentation-h3-font-size: 1.3em;
 
 .reveal .slide code {
   font-family: $font-family-monospace;
+  font-size: 1.07em;   // mono reads small next to the body face
   color: $navy-deep;
 }
 
