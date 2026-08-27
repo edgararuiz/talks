@@ -40,9 +40,7 @@ engine: knitr
 <div class="eyebrow">Grid search</div>
 ```
 
-- Tuning is embarrassingly parallel, and embarrassingly slow
-
-- Accelerating it has always cost money, effort, or both
+Embarrassingly parallel, and expensive to accelerate.
 
 ## A small grid is a lot of fitting {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -86,9 +84,7 @@ model fits for one call to `tune_grid()`
 <div class="eyebrow">The example</div>
 ```
 
-- Hospital readmissions, a plain tidymodels workflow
-
-- Nothing in it is written for Spark
+A plain tidymodels workflow, nothing written for Spark.
 
 ## Splits and recipe {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -178,9 +174,7 @@ An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
 <div class="eyebrow">The feature</div>
 ```
 
-- Databricks has made high-performance Spark clusters easy to manage
-
-- `sparklyr` evaluates the *exact same* tidymodels objects, in parallel, across the cluster
+The *exact same* tidymodels objects, run across a cluster.
 
 ## One new argument {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
