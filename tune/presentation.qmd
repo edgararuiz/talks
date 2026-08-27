@@ -92,6 +92,8 @@ A plain tidymodels workflow, nothing written for Spark.
 <div class="eyebrow">The example</div>
 ```
 
+![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+
 :::{.sample-small}
 ```r
 library(tidymodels)
@@ -122,6 +124,8 @@ recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
 <div class="eyebrow">The example</div>
 ```
 
+![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+
 :::{.sample-small}
 ```r
 spec_bt <- boost_tree(
@@ -148,6 +152,8 @@ bt_grid <- grid_space_filling(
 ```{=html}
 <div class="eyebrow">The example</div>
 ```
+
+![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
 
 :::{.sample-small}
 ```r
@@ -181,6 +187,8 @@ The *exact same* tidymodels objects, run across a cluster.
 ```{=html}
 <div class="eyebrow">The feature</div>
 ```
+
+![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
 
 :::{.lead}
 Adding `sc` is the only change, and the result is a regular `tune_results` object.
@@ -234,6 +242,8 @@ tune_grid_spark(
 <div class="eyebrow">The feature</div>
 ```
 
+![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
+
 ```{=html}
 <div class="cards">
   <div class="card">
@@ -256,6 +266,8 @@ tune_grid_spark(
 ```{=html}
 <div class="eyebrow">The feature</div>
 ```
+
+![](assets/brickster.png){.absolute top=0 left=1153 width=94}
 
 :::{.lead}
 Scripted with `brickster`, or by hand in the Libraries tab.
