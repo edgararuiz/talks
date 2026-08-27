@@ -86,13 +86,17 @@ model fits for one call to `tune_grid()`
 
 A plain tidymodels workflow, nothing written for Spark.
 
-## Splits and recipe {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## Splitting the data {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The example</div>
 ```
 
 ![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+
+:::{.lead}
+Hospital readmissions: one split for training and testing, then ten folds for cross validation.
+:::
 
 :::{.sample-small}
 ```r
@@ -103,7 +107,23 @@ set.seed(231)
 readmission_splits <- initial_split(readmission, strata = readmitted)
 
 readmission_folds <- vfold_cv(training(readmission_splits), strata = readmitted)
+```
+:::
 
+## The recipe {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The example</div>
+```
+
+![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+
+:::{.lead}
+Collapse the rare race categories, then the usual numeric and dummy steps.
+:::
+
+:::{.sample-small}
+```r
 recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
   step_mutate(
     race = factor(case_when(
@@ -125,6 +145,10 @@ recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
 ```
 
 ![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+
+:::{.lead}
+A boosted tree with four parameters to tune, and 100 combinations to try.
+:::
 
 :::{.sample-small}
 ```r
@@ -155,6 +179,10 @@ bt_grid <- grid_space_filling(
 
 ![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
 
+:::{.lead .fragment .fade-in}
+An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
+:::
+
 :::{.sample-small}
 ```r
 library(future)
@@ -168,10 +196,6 @@ local_results <- tune_grid(
   control = control_grid()
 )
 ```
-:::
-
-:::{.fragment .fade-in}
-An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
 :::
 
 # tune_grid_spark() {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
