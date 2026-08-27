@@ -186,24 +186,47 @@ The *exact same* tidymodels objects, run across a cluster.
 Adding `sc` is the only change, and the result is a regular `tune_results` object.
 :::
 
-:::{.sample-small}
-```r
-library(sparklyr)
+:::: {.columns}
 
-sc <- spark_connect(
-  method = "databricks_connect",
-  cluster_id = cluster_id
-)
-spark_results <- tune_grid_spark(
-  sc = sc,                          # the only addition
+::: {.column width="46%"}
+[Locally]{.col-label}
+
+:::{.sample-tiny}
+```r
+tune_grid(
   object = spec_bt,
   preprocessor = recipe_basic,
   resamples = readmission_folds,
   grid = bt_grid,
-  control = control_grid(verbose = TRUE)
+  control = control_grid()
 )
 ```
 :::
+:::
+
+::: {.column width="54%"}
+[On Databricks]{.col-label}
+
+:::{.sample-tiny}
+```{.r code-line-numbers="|7|"}
+sc <- spark_connect(
+  method = "databricks_connect",
+  cluster_id = cluster_id
+)
+
+tune_grid_spark(
+  sc = sc,
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid()
+)
+```
+:::
+:::
+
+::::
 
 ## What happens under the hood {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -310,6 +333,7 @@ What this is, and what it is not.
 <div class="eyebrow">Limits</div>
 ```
 
+:::{.incremental}
 - The goal is to speed up the **search**, not to process big data. The data still has to fit in memory
 
 - Results can differ slightly from local runs, because the OS, the R version and the package versions differ
@@ -317,6 +341,7 @@ What this is, and what it is not.
 - Downloading predictions roughly doubles the data moved across the wire
 
 - If your data is larger than local memory, reach for Spark ML instead
+:::
 
 ## Where to read more {.links background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -335,3 +360,6 @@ What this is, and what it is not.
 - Talk repo - [github.com/edgararuiz/talks/tree/main/tune](https://github.com/edgararuiz/talks/tree/main/tune)
 
 ## Thank you {.thanks background-image="assets/thank-you.png" background-size="contain" background-color="white"}
+
+![](assets/racoon.jpg){.absolute top=258 left=48 width=360}
+
