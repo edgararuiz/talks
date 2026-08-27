@@ -84,7 +84,7 @@ model fits for one call to `tune_grid()`
 <div class="eyebrow">The example</div>
 ```
 
-A plain tidymodels workflow, nothing written for Spark.
+A tidymodels workflow using hospital readmissions data.
 
 ## Splitting the data {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -95,7 +95,7 @@ A plain tidymodels workflow, nothing written for Spark.
 ![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
 
 :::{.lead}
-Hospital readmissions: one split for training and testing, then ten folds for cross validation.
+Split for training and testing, and ten folds for cross validation.
 :::
 
 :::{.sample-small}
@@ -119,7 +119,7 @@ readmission_folds <- vfold_cv(training(readmission_splits), strata = readmitted)
 ![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
 
 :::{.lead}
-Collapse the rare race categories, then the usual numeric and dummy steps.
+A recipe with 5 steps.
 :::
 
 :::{.sample-small}
@@ -138,7 +138,7 @@ recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
 ```
 :::
 
-## Model and grid {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## The model {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The example</div>
@@ -147,7 +147,7 @@ recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
 ![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
 
 :::{.lead}
-A boosted tree with four parameters to tune, and 100 combinations to try.
+A boosted tree with four parameters to tune.
 :::
 
 :::{.sample-small}
@@ -160,7 +160,23 @@ spec_bt <- boost_tree(
   learn_rate = tune(),
   tree_depth = tune()
 )
+```
+:::
 
+## The grid {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The example</div>
+```
+
+![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+
+:::{.lead}
+100 combinations, spread evenly across the parameter space.
+:::
+
+:::{.sample-small}
+```r
 bt_grid <- grid_space_filling(
   mtry(range = c(5, 20)),
   min_n(),
@@ -179,7 +195,7 @@ bt_grid <- grid_space_filling(
 
 ![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
 
-:::{.lead .fragment .fade-in}
+:::{.lead}
 An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
 :::
 
@@ -240,12 +256,7 @@ tune_grid(
 [On Databricks]{.col-label}
 
 :::{.sample-tiny}
-```{.r code-line-numbers="|7|"}
-sc <- spark_connect(
-  method = "databricks_connect",
-  cluster_id = cluster_id
-)
-
+```{.r code-line-numbers="|1|2|"}
 tune_grid_spark(
   sc = sc,
   object = spec_bt,
@@ -285,7 +296,7 @@ tune_grid_spark(
 </div>
 ```
 
-## Preparing the cluster, once {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The feature</div>
@@ -294,7 +305,7 @@ tune_grid_spark(
 ![](assets/brickster.png){.absolute top=0 left=1153 width=94}
 
 :::{.lead}
-Scripted with `brickster`, or by hand in the Libraries tab.
+Scripted with `brickster`, or by hand in the cluster's Libraries tab.
 :::
 
 :::{.sample-small}
@@ -308,9 +319,26 @@ r_libs <- libraries(
   lib_cran("readmission", repo = repo)
 )
 db_libs_install(cluster_id, r_libs)
+```
+:::
 
+## The Python package {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The feature</div>
+```
+
+![](assets/brickster.png){.absolute top=0 left=1153 width=94}
+
+:::{.lead}
+`rpy2` is what lets the workers run real R. Install it once, then wait.
+:::
+
+:::{.sample-small}
+```r
 py_lib <- lib_pypi("rpy2==3.5.7") |>
   libraries()
+
 db_libs_install(cluster_id, py_lib)
 
 wait_for_lib_installs(cluster_id)
