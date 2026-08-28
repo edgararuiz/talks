@@ -29,7 +29,7 @@ engine: knitr
 ```{=html}
 <div class="title-block-inner">
   <h1>Prepare locally,<br>run remotely</h1>
-  <p class="tagline">Easily scale Tidymodels on Databricks<br>with sparklyr</p>
+  <p class="tagline">Easily scale <b>Tidymodels</b><br> on <b>Databricks</b> with <b>sparklyr</b></p>
   <p class="byline">Edgar Ruiz / Posit</p>
 </div>
 ```

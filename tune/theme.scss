@@ -163,12 +163,20 @@ $presentation-h3-font-size: 1.3em;
   margin: 0 0 26px 0;
 }
 
+.reveal .title-block-inner p.tagline {
+  font-size: 45px;
+}
+
 .reveal .title-block-inner p.byline {
   font-family: $font-family-monospace;
   font-size: 22px;
   letter-spacing: 1px;
   color: $magenta;
   margin: 0;
+}
+
+.reveal .title-block-inner p.byline {
+  font-size: 30px;
 }
 
 // closing slide
