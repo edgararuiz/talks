@@ -34,49 +34,58 @@ engine: knitr
 </div>
 ```
 
-# The problem {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
+# The problem: "big processing" {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
-<div class="eyebrow">Grid search</div>
+<div class="eyebrow">The problem</div>
 ```
 
-Embarrassingly parallel, and expensive to accelerate.
+A small job for the data, a long job for the machine.
 
-## A small grid is a lot of fitting {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## Small data, long job {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
-<div class="eyebrow">Grid search</div>
+<div class="eyebrow">The problem</div>
 ```
 
-- A boosted tree with four tuning parameters: `mtry`, `min_n`, `learn_rate`, `tree_depth`
+- A grid search fits **one model for every combination, on every resample**
 
-- A space filling grid of **100 combinations**
+- The dataset can sit comfortably in memory and the job can still run for hours
 
-- 10 fold cross validation
+- Nothing here is a big data problem. It is the same small data, over and over
 
-:::{.stat}
-1,000
-:::
-
-:::{.stat-sub}
-model fits for one call to `tune_grid()`
-:::
 
 ## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
-<div class="eyebrow">Grid search</div>
+<div class="eyebrow">The problem</div>
 ```
 
-- On your laptop, you are bound by the cores you own
+- Parallelize, but are bound by the number of cores in laptop
 
-- Grid computing is expensive to buy and to run
+- Grid computing is expensive, and you have to probably re-write the R code
 
-- A do-it-yourself Spark cluster is complex to stand up and to maintain
+- A do-it-yourself Spark cluster is complex to stand up and to maintain, and you will have to re-write the R code
 
-- Either way, the R code needs significant changes to run there
+- A Databricks cluster, you will still have to re-write the R code
 
-- Hard to justify, in money or in effort, for daily work
+- Run in Databricks Notebook, the entire job runs on one node only, bound by the number of cores of that node
+
+## Why Spark? {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The problem</div>
+```
+
+![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
+
+- We reach for Spark when we have **large amounts of data**
+
+- The part we actually need here is the **parallel processing**
+
+- A cluster can fit many models at once, while the data stays small
+
+- The work splits perfectly: every combination is independent of the others
 
 # The example {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
