@@ -505,6 +505,76 @@ $presentation-h3-font-size: 1.3em;
 .reveal .slide .mark.no::before { transform: rotate(45deg); }
 .reveal .slide .mark.no::after  { transform: rotate(-45deg); }
 
+// summary table: answer, verdict, drawback icons only
+.reveal .slide .summary {
+  display: grid;
+  grid-template-columns: 1fr 110px auto;
+  align-items: center;
+  row-gap: 16px;
+  margin-top: 30px;
+}
+
+.reveal .slide .summary .name {
+  font-size: 38px;
+  color: $ink;
+}
+
+.reveal .slide .summary .verdict {
+  text-align: center;
+}
+
+.reveal .slide .mini {
+  display: flex;
+  gap: 14px;
+}
+
+.reveal .slide .mini .card {
+  flex: none;
+  box-sizing: border-box;
+  width: 82px;
+  height: 82px;
+  padding: 16px;
+  border-radius: 10px;
+  background: $navy-deep;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reveal .slide .mini .icon {
+  height: auto;
+  margin: 0;
+}
+
+.reveal .slide .mini .glyph { font-size: 28px; letter-spacing: 0; }
+.reveal .slide .mini .glyph.money { font-size: 30px; }
+
+.reveal .slide .mini .pix { grid-template-columns: repeat(2, 16px); grid-gap: 5px; }
+.reveal .slide .mini .pix i { width: 16px; height: 16px; }
+
+.reveal .slide .mini .stack { width: 44px; height: 44px; }
+.reveal .slide .mini .stack i { width: 22px; height: 22px; border-width: 3px; }
+.reveal .slide .mini .stack i:nth-child(1) { top: 0;    left: 0; }
+.reveal .slide .mini .stack i:nth-child(2) { top: 10px; left: 10px; }
+.reveal .slide .mini .stack i:nth-child(3) { top: 20px; left: 20px; }
+
+// same table, with the barrier we can actually remove pulled forward
+.reveal .slide .summary.focus-mode .name,
+.reveal .slide .summary.focus-mode .verdict,
+.reveal .slide .summary.focus-mode .mini .card {
+  opacity: 0.22;
+}
+
+.reveal .slide .summary.focus-mode .name.lit,
+.reveal .slide .summary.focus-mode .verdict.lit {
+  opacity: 1;
+}
+
+.reveal .slide .summary.focus-mode .mini .card.focus {
+  opacity: 1;
+  box-shadow: 0 0 0 6px $magenta-ink;
+}
+
 // ------------------------------------------------- approach list + stack
 .reveal .slide .approaches {
   padding-top: 26px;

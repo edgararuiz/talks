@@ -198,21 +198,81 @@ Usual solutions have one or more of these.
 
 ::::::
 
-## Why Spark? {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The problem</div>
 ```
 
-![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
+```{=html}
+<div class="summary">
+  <div class="name">Local machine</div>
+  <div class="verdict"><span class="mark no"></span></div>
+  <div class="mini">
+      <div class="card c-green"><div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div></div>
+  </div>
+  <div class="name">Grid computing</div>
+  <div class="verdict"><span class="mark ok"></span></div>
+  <div class="mini">
+      <div class="card c-magenta"><div class="icon"><span class="glyph money">$$$</span></div></div>
+      <div class="card c-blue"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
+  </div>
+  <div class="name">Spark cluster</div>
+  <div class="verdict"><span class="mark ok"></span></div>
+  <div class="mini">
+      <div class="card c-yellow"><div class="icon"><span class="stack"><i></i><i></i><i></i></span></div></div>
+      <div class="card c-blue"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
+  </div>
+  <div class="name">Databricks Notebooks</div>
+  <div class="verdict"><span class="mark no"></span></div>
+  <div class="mini">
+      <div class="card c-green"><div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div></div>
+  </div>
+  <div class="name">Databricks cluster</div>
+  <div class="verdict"><span class="mark ok"></span></div>
+  <div class="mini">
+      <div class="card c-blue"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
+  </div>
+</div>
+```
 
-- We reach for Spark when we have **large amounts of data**
+## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
-- The part we actually need here is the **parallel processing**
+```{=html}
+<div class="eyebrow">The problem</div>
+```
 
-- A cluster can fit many models at once, while the data stays small
-
-- The work splits perfectly: every combination is independent of the others
+```{=html}
+<div class="summary focus-mode">
+  <div class="name">Local machine</div>
+  <div class="verdict"><span class="mark no"></span></div>
+  <div class="mini">
+      <div class="card c-green"><div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div></div>
+  </div>
+  <div class="name">Grid computing</div>
+  <div class="verdict"><span class="mark ok"></span></div>
+  <div class="mini">
+      <div class="card c-magenta"><div class="icon"><span class="glyph money">$$$</span></div></div>
+      <div class="card c-blue"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
+  </div>
+  <div class="name lit">Spark cluster</div>
+  <div class="verdict lit"><span class="mark ok"></span></div>
+  <div class="mini">
+      <div class="card c-yellow"><div class="icon"><span class="stack"><i></i><i></i><i></i></span></div></div>
+      <div class="card c-blue focus"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
+  </div>
+  <div class="name">Databricks Notebooks</div>
+  <div class="verdict"><span class="mark no"></span></div>
+  <div class="mini">
+      <div class="card c-green"><div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div></div>
+  </div>
+  <div class="name lit">Databricks cluster</div>
+  <div class="verdict lit"><span class="mark ok"></span></div>
+  <div class="mini">
+      <div class="card c-blue focus"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
+  </div>
+</div>
+```
 
 # Hospital readmissions {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
