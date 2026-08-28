@@ -291,18 +291,21 @@ The new `tune_grid_spark()` function does the following:
 ![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
 
 ```{=html}
-<div class="cards">
-  <div class="card">
-    <h3>Upload</h3>
-    <p>The resamples, the model specification and the preprocessing steps are serialized and sent to Databricks.</p>
+<div class="flow">
+  <div class="step s-blue fragment">
+    <div class="chev"><span class="num">01</span></div>
+    <h3>Uploads</h3>
+    <p><b>Re-samples</b>, <b>model</b> and <b>recipe</b> objects are transmitted to Spark</p>
   </div>
-  <div class="card">
-    <h3>Process</h3>
-    <p>Each parameter combination is fitted on a worker, running real R through <code>reticulate</code> and <code>rpy2</code>.</p>
+  <div class="step s-magenta fragment">
+    <div class="chev"><span class="num">02</span></div>
+    <h3>Tunes in Spark</h3>
+    <p>Every combination is fitted on a Spark task, and in real R</p>
   </div>
-  <div class="card">
-    <h3>Collect</h3>
-    <p>The metrics come back and are assembled into a <code>tune_results</code> object.</p>
+  <div class="step s-green fragment">
+    <div class="chev"><span class="num">03</span></div>
+    <h3>Collects</h3>
+    <p>Results from Spark are compiled into a <code>tune_results</code> object</p>
   </div>
 </div>
 ```
@@ -311,7 +314,7 @@ The new `tune_grid_spark()` function does the following:
 ## One new argument {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
-<div class="eyebrow">The feature</div>
+<div class="eyebrow">Removing the barrier</div>
 ```
 
 ![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
@@ -361,7 +364,7 @@ tune_grid_spark(
 ## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
-<div class="eyebrow">The feature</div>
+<div class="eyebrow">Removing the barrier</div>
 ```
 
 ![](assets/brickster.png){.absolute top=0 left=1153 width=94}
@@ -387,7 +390,7 @@ db_libs_install(cluster_id, r_libs)
 ## The Python package {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
-<div class="eyebrow">The feature</div>
+<div class="eyebrow">Removing the barrier</div>
 ```
 
 ![](assets/brickster.png){.absolute top=0 left=1153 width=94}

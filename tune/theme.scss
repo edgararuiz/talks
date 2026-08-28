@@ -395,6 +395,55 @@ $presentation-h3-font-size: 1.3em;
   text-align: center;
 }
 
+// three step process graphic, in the template's chevron idiom
+.reveal .slide .flow {
+  display: flex;
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.reveal .slide .flow .step {
+  flex: 1;
+}
+
+.reveal .slide .flow .chev {
+  height: 118px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(0 0, calc(100% - 34px) 0, 100% 50%, calc(100% - 34px) 100%, 0 100%);
+}
+
+// every chevron after the first is notched on the left as well
+.reveal .slide .flow .step + .step .chev {
+  clip-path: polygon(0 0, calc(100% - 34px) 0, 100% 50%, calc(100% - 34px) 100%, 0 100%, 34px 50%);
+}
+
+.reveal .slide .flow .chev .num {
+  font-family: $font-family-monospace;
+  font-size: 62px;
+  font-weight: 600;
+  color: $navy-deep;
+  letter-spacing: 2px;
+}
+
+.reveal .slide .flow h3 {
+  font-size: 40px;
+  font-weight: 700;
+  color: $navy-deep;
+  margin: 22px 0 10px 0;
+}
+
+.reveal .slide .flow p {
+  font-size: 28px;
+  color: $ink;
+  margin: 0;
+}
+
+.reveal .slide .flow .s-blue    .chev { background: $blue; }
+.reveal .slide .flow .s-magenta .chev { background: $magenta; }
+.reveal .slide .flow .s-green   .chev { background: $green; }
+
 // ---------------------------------------------------------------- icons
 .reveal .slide .icon {
   height: 120px;
