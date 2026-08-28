@@ -6,6 +6,7 @@ $navy-deep: #0b0c52;
 $blue:      #4191ee;
 $magenta:   #e544e5;
 $magenta-ink: #c41fc4;   // AA-compliant magenta for text on white
+$yellow:      #ffd63d;
 $green:     #b4f740;
 $ink:       #333333;
 
@@ -266,6 +267,149 @@ $presentation-h3-font-size: 1.3em;
   color: $ink;
   text-align: center;
   margin-top: 4px;
+}
+
+// four card row of drawbacks, icon over label
+.reveal .slide .cards-4 {
+  margin-top: 60px;
+  gap: 20px;
+}
+
+.reveal .slide .cards-4 .card {
+  padding: 34px 18px 30px 18px;
+  text-align: center;
+}
+
+.reveal .slide .cards-4 .card p {
+  font-size: 30px;
+  text-align: center;
+}
+
+.reveal .slide .icon {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.reveal .slide .icon .glyph {
+  font-family: $font-family-monospace;
+  font-size: 68px;
+  font-weight: 600;
+  color: $green;
+  letter-spacing: 2px;
+}
+
+.reveal .slide .icon .glyph.money {
+  font-size: 82px;
+}
+
+// two by two block of pixels, the template's own motif
+.reveal .slide .icon .pix {
+  display: grid;
+  grid-template-columns: repeat(2, 36px);
+  grid-gap: 10px;
+}
+
+.reveal .slide .icon .pix i {
+  width: 36px;
+  height: 36px;
+  background: $green;
+}
+
+// offset squares, for tangle
+.reveal .slide .icon .stack {
+  position: relative;
+  display: block;
+  width: 96px;
+  height: 96px;
+}
+
+.reveal .slide .icon .stack i {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border: 4px solid $green;
+}
+
+.reveal .slide .icon .stack i:nth-child(1) { top: 0;    left: 0; }
+.reveal .slide .icon .stack i:nth-child(2) { top: 22px; left: 22px; }
+.reveal .slide .icon .stack i:nth-child(3) { top: 44px; left: 44px; }
+
+// one colour per drawback: navy card, white label, the icon carries the identity
+.reveal .slide .cards .card.c-green   .glyph { color: $green; }
+.reveal .slide .cards .card.c-green   .pix i { background: $green; }
+.reveal .slide .cards .card.c-green   .stack i { border-color: $green; }
+
+.reveal .slide .cards .card.c-magenta .glyph { color: $magenta; }
+.reveal .slide .cards .card.c-magenta .pix i { background: $magenta; }
+.reveal .slide .cards .card.c-magenta .stack i { border-color: $magenta; }
+
+.reveal .slide .cards .card.c-blue    .glyph { color: $blue; }
+.reveal .slide .cards .card.c-blue    .pix i { background: $blue; }
+.reveal .slide .cards .card.c-blue    .stack i { border-color: $blue; }
+
+.reveal .slide .cards .card.c-white   .glyph { color: #fff; }
+.reveal .slide .cards .card.c-white   .pix i { background: #fff; }
+.reveal .slide .cards .card.c-white   .stack i { border-color: #fff; }
+
+.reveal .slide .cards .card.c-yellow  .glyph { color: $yellow; }
+.reveal .slide .cards .card.c-yellow  .pix i { background: $yellow; }
+.reveal .slide .cards .card.c-yellow  .stack i { border-color: $yellow; }
+
+// approach list, revealed one at a time, with its drawback alongside
+.reveal .slide .approaches {
+  padding-top: 26px;
+}
+
+.reveal .slide .approaches > .fragment {
+  position: relative;
+  font-size: 36px;
+  color: $ink;
+  margin-bottom: 22px;
+  padding-left: 34px;
+}
+
+.reveal .slide .approaches > .fragment::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: $ink;
+}
+
+// the drawback groups sit on top of each other so the row does not walk
+// down the slide as each one appears
+.reveal .slide .stack-area {
+  position: relative;
+  min-height: 300px;
+}
+
+.reveal .slide .stack-area > .fragment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.reveal .slide .cards-2 {
+  margin-top: 26px;
+  gap: 20px;
+}
+
+.reveal .slide .cards-2 .card {
+  flex: 0 0 262px;
+  padding: 30px 16px 26px 16px;
+  text-align: center;
+}
+
+.reveal .slide .cards-2 .card p {
+  font-size: 28px;
+  text-align: center;
 }
 
 // card row

@@ -54,6 +54,7 @@ A small job for the data, a long job for the machine.
 
 - Nothing here is a big data problem. It is the same small data, over and over
 
+- Parallelization is possible, but you are bound by the number of cores in your laptop
 
 ## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -61,15 +62,137 @@ A small job for the data, a long job for the machine.
 <div class="eyebrow">The problem</div>
 ```
 
-- Parallelize, but are bound by the number of cores in laptop
 
-- Grid computing is expensive, and you have to probably re-write the R code
 
-- A do-it-yourself Spark cluster is complex to stand up and to maintain, and you will have to re-write the R code
+:::{.lead}
+Usual solutions have one or more of these.
+:::
 
-- A Databricks cluster, you will still have to re-write the R code
+```{=html}
+<div class="cards cards-4">
+  <div class="card c-green">
+    <div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div>
+    <p>Bound by cores</p>
+  </div>
+  <div class="card c-magenta">
+    <div class="icon"><span class="glyph money">$$$</span></div>
+    <p>Expensive</p>
+  </div>
+  <div class="card c-blue">
+    <div class="icon"><span class="glyph">R|&gt;</span></div>
+    <p>Code re-write</p>
+  </div>
+  <div class="card c-yellow">
+    <div class="icon"><span class="stack"><i></i><i></i><i></i></span></div>
+    <p>Complex</p>
+  </div>
+</div>
+```
 
-- Run in Databricks Notebook, the entire job runs on one node only, bound by the number of cores of that node
+## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The problem</div>
+```
+
+:::::: {.columns}
+
+::::: {.column .approaches width="38%"}
+
+:::{.fragment fragment-index=1}
+Local machine
+:::
+
+:::{.fragment fragment-index=2}
+Grid computing
+:::
+
+:::{.fragment fragment-index=3}
+Spark cluster
+:::
+
+:::{.fragment fragment-index=4}
+Databricks Notebooks
+:::
+
+:::{.fragment fragment-index=5}
+Databricks cluster
+:::
+
+:::::
+
+::::: {.column width="62%"}
+
+:::: {.stack-area}
+
+:::{.fragment .fade-in-then-out fragment-index=1}
+```{=html}
+<div class="cards cards-2">
+  <div class="card c-green">
+    <div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div>
+    <p>Bound by cores</p>
+  </div>
+</div>
+```
+:::
+
+:::{.fragment .fade-in-then-out fragment-index=2}
+```{=html}
+<div class="cards cards-2">
+  <div class="card c-magenta">
+    <div class="icon"><span class="glyph money">$$$</span></div>
+    <p>Expensive</p>
+  </div>
+  <div class="card c-blue">
+    <div class="icon"><span class="glyph">R|&gt;</span></div>
+    <p>Code re-write</p>
+  </div>
+</div>
+```
+:::
+
+:::{.fragment .fade-in-then-out fragment-index=3}
+```{=html}
+<div class="cards cards-2">
+  <div class="card c-yellow">
+    <div class="icon"><span class="stack"><i></i><i></i><i></i></span></div>
+    <p>Complex</p>
+  </div>
+  <div class="card c-blue">
+    <div class="icon"><span class="glyph">R|&gt;</span></div>
+    <p>Code re-write</p>
+  </div>
+</div>
+```
+:::
+
+:::{.fragment .fade-in-then-out fragment-index=4}
+```{=html}
+<div class="cards cards-2">
+  <div class="card c-green">
+    <div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div>
+    <p>Bound by cores</p>
+  </div>
+</div>
+```
+:::
+
+:::{.fragment .fade-in-then-out fragment-index=5}
+```{=html}
+<div class="cards cards-2">
+  <div class="card c-blue">
+    <div class="icon"><span class="glyph">R|&gt;</span></div>
+    <p>Code re-write</p>
+  </div>
+</div>
+```
+:::
+
+::::
+
+:::::
+
+::::::
 
 ## Why Spark? {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -113,9 +236,11 @@ library(tidymodels)
 library(readmission)
 
 set.seed(231)
+
 readmission_splits <- initial_split(readmission, strata = readmitted)
 
-readmission_folds <- vfold_cv(training(readmission_splits), strata = readmitted)
+readmission_folds <- vfold_cv(data   = training(readmission_splits), 
+                              strata = readmitted)
 ```
 :::
 
