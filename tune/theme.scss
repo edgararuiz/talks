@@ -339,8 +339,33 @@ $presentation-h3-font-size: 1.3em;
 
 // four across, the drawback overview
 .reveal .slide .cards-4 {
-  margin-top: 60px;
+  margin-top: 34px;
   gap: 20px;
+}
+
+// a card plus the consequence icons that sit under it
+.reveal .slide .cards-4 .card-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.reveal .slide .cards-4 .card-col .card {
+  flex: 1;
+}
+
+.reveal .slide .subicons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  height: 76px;
+  margin-top: 16px;
+}
+
+.reveal .slide .subicons .emoji {
+  font-size: 50px;
+  line-height: 1;
 }
 
 .reveal .slide .cards-4 .card {
