@@ -34,13 +34,11 @@ engine: knitr
 </div>
 ```
 
-# The problem: "big processing" {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
+# Long running Grid Search {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
 <div class="eyebrow">The problem</div>
 ```
-
-A small job for the data, a long job for the machine.
 
 ## Small data, long job {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -186,13 +184,11 @@ Usual solutions have one or more of these.
 
 - The work splits perfectly: every combination is independent of the others
 
-# The example {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
+# Hospital readmissions {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
 <div class="eyebrow">The example</div>
 ```
-
-A tidymodels workflow using hospital readmissions data.
 
 ## Splitting the data {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -455,13 +451,11 @@ wait_for_lib_installs(cluster_id)
 ```
 :::
 
-# The payoff {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
+# The same 100 combinations, run in five places. {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
 <div class="eyebrow">The payoff</div>
 ```
-
-The same 100 combinations, run in five places.
 
 ## Time to tune 100 combinations {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -493,13 +487,11 @@ The same 100 combinations, run in five places.
 
 - Large grid searches at scale, with no refactoring
 
-# Knowing the limits {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
+# What this is, and what it is not. {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
-<div class="eyebrow">Limits</div>
+<div class="eyebrow">Knowing the limits</div>
 ```
-
-What this is, and what it is not.
 
 ## Limitations {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 

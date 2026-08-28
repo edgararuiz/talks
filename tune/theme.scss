@@ -117,6 +117,20 @@ $presentation-h3-font-size: 1.3em;
   line-height: 1.3;
 }
 
+// section slides: the eyebrow is the section marker, so it carries the weight
+.reveal .dark-slide .eyebrow {
+  top: 34px;
+  font-size: 54px;
+  letter-spacing: 3px;
+}
+
+.reveal .dark-slide h1 {
+  font-size: 44px;
+  font-weight: 600;
+  margin-top: 150px;
+  margin-bottom: 0;
+}
+
 // dark divider slides
 .reveal .dark-slide h1,
 .reveal .dark-slide h2 {
@@ -134,11 +148,6 @@ $presentation-h3-font-size: 1.3em;
 
 .reveal .dark-slide code {
   color: $green;
-}
-
-.reveal .dark-slide h1 {
-  margin-top: 110px;
-  margin-bottom: 34px;
 }
 
 // title slide
