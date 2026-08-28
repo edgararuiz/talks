@@ -46,13 +46,22 @@ engine: knitr
 <div class="eyebrow">The problem</div>
 ```
 
-- A grid search fits **one model for every combination, on every resample**
+Nothing here is a big data problem. It is the same small data, over and over
 
-- The dataset can sit comfortably in memory and the job can still run for hours
+```{=html}
+<div class="equation">
+  <p>
+    <span class="fragment"><span class="num">10</span> re-samples</span>
+    <span class="fragment"> <span class="times">x</span> <span class="num">100</span> combinations</span>
+    <span class="fragment"> = <span class="num">1,000</span> model fits and evaluations</span>
+  </p>
+</div>
+```
 
-- Nothing here is a big data problem. It is the same small data, over and over
+:::{.fragment .centered}
+It's a "big processing" problem
+:::
 
-- Parallelization is possible, but you are bound by the number of cores in your laptop
 
 ## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 

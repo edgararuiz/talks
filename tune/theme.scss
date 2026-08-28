@@ -263,6 +263,29 @@ $presentation-h3-font-size: 1.3em;
   white-space: nowrap;
 }
 
+// the headline arithmetic
+.reveal .slide .equation p {
+  font-size: 54px;
+  font-weight: 600;
+  color: $magenta-ink;
+  text-align: center;
+  margin: 34px 0;
+}
+
+.reveal .slide .equation .num {
+  color: $navy-deep;
+}
+
+.reveal .slide .equation .times {
+  color: #000;
+  font-size: 1.12em;
+}
+
+.reveal .slide .centered p {
+  font-size: 54px;
+  text-align: center;
+}
+
 // stat callout
 .reveal .slide .stat p {
   font-size: 92px;
