@@ -269,7 +269,41 @@ $presentation-h3-font-size: 1.3em;
   margin-top: 4px;
 }
 
-// four card row of drawbacks, icon over label
+// ---------------------------------------------------------------- cards
+// base first, then the variants, so the variants win on source order
+.reveal .slide .cards {
+  display: flex;
+  gap: 24px;
+  margin-top: 26px;
+}
+
+.reveal .slide .cards .card {
+  flex: 1;
+  background: $navy-deep;
+  border-radius: 14px;
+  padding: 24px 22px;
+}
+
+.reveal .slide .cards .card h3 {
+  color: $green;
+  font-family: $font-family-monospace;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 0 12px 0;
+}
+
+.reveal .slide .cards .card p {
+  color: #fff;
+  font-size: 27px;
+  margin: 0;
+}
+
+.reveal .slide .cards .card code {
+  color: $green;
+}
+
+// four across, the drawback overview
 .reveal .slide .cards-4 {
   margin-top: 60px;
   gap: 20px;
@@ -285,6 +319,24 @@ $presentation-h3-font-size: 1.3em;
   text-align: center;
 }
 
+// two across, alongside the approach list
+.reveal .slide .cards-2 {
+  margin-top: 26px;
+  gap: 20px;
+}
+
+.reveal .slide .cards-2 .card {
+  flex: 0 0 262px;
+  padding: 30px 16px 26px 16px;
+  text-align: center;
+}
+
+.reveal .slide .cards-2 .card p {
+  font-size: 28px;
+  text-align: center;
+}
+
+// ---------------------------------------------------------------- icons
 .reveal .slide .icon {
   height: 120px;
   display: flex;
@@ -338,46 +390,46 @@ $presentation-h3-font-size: 1.3em;
 .reveal .slide .icon .stack i:nth-child(3) { top: 44px; left: 44px; }
 
 // one colour per drawback: navy card, white label, the icon carries the identity
-.reveal .slide .cards .card.c-green   .glyph { color: $green; }
-.reveal .slide .cards .card.c-green   .pix i { background: $green; }
-.reveal .slide .cards .card.c-green   .stack i { border-color: $green; }
+.reveal .slide .card.c-green   .glyph { color: $green; }
+.reveal .slide .card.c-green   .pix i { background: $green; }
+.reveal .slide .card.c-green   .stack i { border-color: $green; }
 
-.reveal .slide .cards .card.c-magenta .glyph { color: $magenta; }
-.reveal .slide .cards .card.c-magenta .pix i { background: $magenta; }
-.reveal .slide .cards .card.c-magenta .stack i { border-color: $magenta; }
+.reveal .slide .card.c-magenta .glyph { color: $magenta; }
+.reveal .slide .card.c-magenta .pix i { background: $magenta; }
+.reveal .slide .card.c-magenta .stack i { border-color: $magenta; }
 
-.reveal .slide .cards .card.c-blue    .glyph { color: $blue; }
-.reveal .slide .cards .card.c-blue    .pix i { background: $blue; }
-.reveal .slide .cards .card.c-blue    .stack i { border-color: $blue; }
+.reveal .slide .card.c-blue    .glyph { color: $blue; }
+.reveal .slide .card.c-blue    .pix i { background: $blue; }
+.reveal .slide .card.c-blue    .stack i { border-color: $blue; }
 
-.reveal .slide .cards .card.c-white   .glyph { color: #fff; }
-.reveal .slide .cards .card.c-white   .pix i { background: #fff; }
-.reveal .slide .cards .card.c-white   .stack i { border-color: #fff; }
+.reveal .slide .card.c-white   .glyph { color: #fff; }
+.reveal .slide .card.c-white   .pix i { background: #fff; }
+.reveal .slide .card.c-white   .stack i { border-color: #fff; }
 
-.reveal .slide .cards .card.c-yellow  .glyph { color: $yellow; }
-.reveal .slide .cards .card.c-yellow  .pix i { background: $yellow; }
-.reveal .slide .cards .card.c-yellow  .stack i { border-color: $yellow; }
+.reveal .slide .card.c-yellow  .glyph { color: $yellow; }
+.reveal .slide .card.c-yellow  .pix i { background: $yellow; }
+.reveal .slide .card.c-yellow  .stack i { border-color: $yellow; }
 
-// approach list, revealed one at a time, with its drawback alongside
+// ------------------------------------------------- approach list + stack
 .reveal .slide .approaches {
   padding-top: 26px;
 }
 
 .reveal .slide .approaches > .fragment {
   position: relative;
-  font-size: 36px;
+  font-size: 42px;
   color: $ink;
-  margin-bottom: 22px;
-  padding-left: 34px;
+  margin-bottom: 26px;
+  padding-left: 38px;
 }
 
 .reveal .slide .approaches > .fragment::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 18px;
-  width: 12px;
-  height: 12px;
+  top: 21px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background: $ink;
 }
@@ -396,51 +448,3 @@ $presentation-h3-font-size: 1.3em;
   right: 0;
 }
 
-.reveal .slide .cards-2 {
-  margin-top: 26px;
-  gap: 20px;
-}
-
-.reveal .slide .cards-2 .card {
-  flex: 0 0 262px;
-  padding: 30px 16px 26px 16px;
-  text-align: center;
-}
-
-.reveal .slide .cards-2 .card p {
-  font-size: 28px;
-  text-align: center;
-}
-
-// card row
-.reveal .slide .cards {
-  display: flex;
-  gap: 24px;
-  margin-top: 26px;
-}
-
-.reveal .slide .cards .card {
-  flex: 1;
-  background: $navy-deep;
-  border-radius: 14px;
-  padding: 24px 22px;
-}
-
-.reveal .slide .cards .card h3 {
-  color: $green;
-  font-family: $font-family-monospace;
-  font-size: 20px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin: 0 0 12px 0;
-}
-
-.reveal .slide .cards .card p {
-  color: #fff;
-  font-size: 27px;
-  margin: 0;
-}
-
-.reveal .slide .cards .card code {
-  color: $green;
-}
