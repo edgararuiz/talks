@@ -311,6 +311,87 @@ The new `tune_grid_spark()` function does the following:
 ```
 
 
+## What actually changes {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+```{=html}
+<div class="flow-cols">
+  <div class="fl-col">
+    <div class="fl-head">Before</div>
+    <div class="fl-row">
+      <img src="assets/rsample.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Split data</li>
+        <li>Create folds</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/recipes.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Pre-process</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/parsnip.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Define model</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/tune.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Create grid</li>
+        <li>Tune model</li>
+        <li>Select model</li>
+      </ul>
+    </div>
+  </div>
+  <div class="fl-col">
+    <div class="fl-head">After</div>
+    <div class="fl-row">
+      <img src="assets/rsample.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Split data</li>
+        <li>Create folds</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/recipes.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Pre-process</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/parsnip.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Define model</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/tune.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Create grid</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/sparklyr.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Tune model</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/tune.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Select model</li>
+      </ul>
+    </div>
+  </div>
+</div>
+```
+
 ## One new argument {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}

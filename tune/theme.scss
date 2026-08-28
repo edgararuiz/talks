@@ -444,6 +444,60 @@ $presentation-h3-font-size: 1.3em;
 .reveal .slide .flow .s-magenta .chev { background: $magenta; }
 .reveal .slide .flow .s-green   .chev { background: $green; }
 
+// where does the code go: the same package flow, twice
+.reveal .slide .flow-cols {
+  display: flex;
+  gap: 60px;
+  margin-top: 24px;
+}
+
+.reveal .slide .flow-cols .fl-col {
+  flex: 1;
+  counter-reset: step;
+}
+
+.reveal .slide .flow-cols .fl-head {
+  font-family: $font-family-monospace;
+  font-size: 24px;
+  letter-spacing: 1px;
+  color: $magenta-ink;
+  margin-bottom: 10px;
+}
+
+.reveal .slide .flow-cols .fl-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: -18px;
+}
+
+.reveal .slide .flow-cols .fl-cap {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reveal .slide .flow-cols .fl-cap li {
+  font-size: 23px;
+  line-height: 1.25;
+  color: $ink;
+  margin: 0;
+}
+
+.reveal .slide .flow-cols .fl-cap li::before {
+  counter-increment: step;
+  content: counter(step) ".";
+  font-family: $font-family-monospace;
+  color: $navy-deep;
+  margin-right: 8px;
+}
+
+.reveal .slide .flow-cols .fl-hex {
+  width: 54px;
+  flex: none;
+  display: block;
+}
+
 // ---------------------------------------------------------------- icons
 .reveal .slide .icon {
   height: 120px;
