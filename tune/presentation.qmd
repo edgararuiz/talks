@@ -72,7 +72,7 @@ It's a "big processing" problem
 
 
 :::{.lead}
-Usual solutions have one or more of these.
+Usual solutions have one or more of these **barriers**.
 :::
 
 ```{=html}
@@ -274,6 +274,139 @@ Usual solutions have one or more of these.
 </div>
 ```
 
+# Run the same code in Spark {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+## One function does everything{background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+The new `tune_grid_spark()` function does the following:
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
+
+```{=html}
+<div class="cards">
+  <div class="card">
+    <h3>Upload</h3>
+    <p>The resamples, the model specification and the preprocessing steps are serialized and sent to Databricks.</p>
+  </div>
+  <div class="card">
+    <h3>Process</h3>
+    <p>Each parameter combination is fitted on a worker, running real R through <code>reticulate</code> and <code>rpy2</code>.</p>
+  </div>
+  <div class="card">
+    <h3>Collect</h3>
+    <p>The metrics come back and are assembled into a <code>tune_results</code> object.</p>
+  </div>
+</div>
+```
+
+
+## One new argument {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The feature</div>
+```
+
+![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
+
+:::{.lead}
+Adding `sc` is the only change, and the result is a regular `tune_results` object.
+:::
+
+:::: {.columns}
+
+::: {.column width="46%"}
+[Locally]{.col-label}
+
+:::{.sample-tiny}
+```r
+tune_grid(
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid()
+)
+```
+:::
+:::
+
+::: {.column width="54%"}
+[On Databricks]{.col-label}
+
+:::{.sample-tiny}
+```{.r code-line-numbers="|1|2|"}
+tune_grid_spark(
+  sc = sc,
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid()
+)
+```
+:::
+:::
+
+::::
+
+
+## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The feature</div>
+```
+
+![](assets/brickster.png){.absolute top=0 left=1153 width=94}
+
+:::{.lead}
+Scripted with `brickster`, or by hand in the cluster's Libraries tab.
+:::
+
+:::{.sample-small}
+```r
+repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
+
+r_libs <- libraries(
+  lib_cran("reticulate", repo = repo),
+  lib_cran("tidymodels", repo = repo),
+  lib_cran("xgboost", repo = repo),
+  lib_cran("readmission", repo = repo)
+)
+db_libs_install(cluster_id, r_libs)
+```
+:::
+
+## The Python package {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">The feature</div>
+```
+
+![](assets/brickster.png){.absolute top=0 left=1153 width=94}
+
+:::{.lead}
+`rpy2` is what lets the workers run real R. Install it once, then wait.
+:::
+
+:::{.sample-small}
+```r
+py_lib <- lib_pypi("rpy2==3.5.7") |>
+  libraries()
+
+db_libs_install(cluster_id, py_lib)
+
+wait_for_lib_installs(cluster_id)
+```
+:::
+
 # Hospital readmissions {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
@@ -407,137 +540,6 @@ local_results <- tune_grid(
   grid = bt_grid,
   control = control_grid()
 )
-```
-:::
-
-# tune_grid_spark() {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
-
-```{=html}
-<div class="eyebrow">The feature</div>
-```
-
-The *exact same* tidymodels objects, run across a cluster.
-
-## One new argument {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The feature</div>
-```
-
-![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
-
-:::{.lead}
-Adding `sc` is the only change, and the result is a regular `tune_results` object.
-:::
-
-:::: {.columns}
-
-::: {.column width="46%"}
-[Locally]{.col-label}
-
-:::{.sample-tiny}
-```r
-tune_grid(
-  object = spec_bt,
-  preprocessor = recipe_basic,
-  resamples = readmission_folds,
-  grid = bt_grid,
-  control = control_grid()
-)
-```
-:::
-:::
-
-::: {.column width="54%"}
-[On Databricks]{.col-label}
-
-:::{.sample-tiny}
-```{.r code-line-numbers="|1|2|"}
-tune_grid_spark(
-  sc = sc,
-  object = spec_bt,
-  preprocessor = recipe_basic,
-  resamples = readmission_folds,
-  grid = bt_grid,
-  control = control_grid()
-)
-```
-:::
-:::
-
-::::
-
-## What happens under the hood {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The feature</div>
-```
-
-![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
-
-```{=html}
-<div class="cards">
-  <div class="card">
-    <h3>Upload</h3>
-    <p>The resamples, the model specification and the preprocessing steps are serialized and sent to Databricks.</p>
-  </div>
-  <div class="card">
-    <h3>Process</h3>
-    <p>Each parameter combination is fitted on a worker, running real R through <code>reticulate</code> and <code>rpy2</code>.</p>
-  </div>
-  <div class="card">
-    <h3>Collect</h3>
-    <p>The metrics come back and are assembled into a <code>tune_results</code> object.</p>
-  </div>
-</div>
-```
-
-## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The feature</div>
-```
-
-![](assets/brickster.png){.absolute top=0 left=1153 width=94}
-
-:::{.lead}
-Scripted with `brickster`, or by hand in the cluster's Libraries tab.
-:::
-
-:::{.sample-small}
-```r
-repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
-
-r_libs <- libraries(
-  lib_cran("reticulate", repo = repo),
-  lib_cran("tidymodels", repo = repo),
-  lib_cran("xgboost", repo = repo),
-  lib_cran("readmission", repo = repo)
-)
-db_libs_install(cluster_id, r_libs)
-```
-:::
-
-## The Python package {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The feature</div>
-```
-
-![](assets/brickster.png){.absolute top=0 left=1153 width=94}
-
-:::{.lead}
-`rpy2` is what lets the workers run real R. Install it once, then wait.
-:::
-
-:::{.sample-small}
-```r
-py_lib <- lib_pypi("rpy2==3.5.7") |>
-  libraries()
-
-db_libs_install(cluster_id, py_lib)
-
-wait_for_lib_installs(cluster_id)
 ```
 :::
 
