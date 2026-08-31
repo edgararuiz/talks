@@ -439,7 +439,7 @@ The ideal solution should fit right into your regular code workflow
 <div class="eyebrow">Removing the barrier</div>
 ```
 
-![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
+![](assets/sparklyr.png){.absolute top=0 left=1116 width=105}
 
 :::{.lead}
 A new function that supports the same tidymodels objects.
@@ -474,7 +474,7 @@ tune_grid_spark(
   resamples = my_resamples,
   grid = my_grid,
   control = control_grid(),
-  sc = sc
+  sc = spark_connection
 )
 ```
 :::
@@ -491,7 +491,7 @@ The new function takes care of everything
 <div class="eyebrow">Removing the barrier</div>
 ```
 
-![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
+![](assets/sparklyr.png){.absolute top=0 left=1116 width=105}
 
 ```{=html}
 <div class="flow">
@@ -514,55 +514,6 @@ The new function takes care of everything
 ```
 
 
-## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">Removing the barrier</div>
-```
-
-![](assets/brickster.png){.absolute top=0 left=1153 width=94}
-
-:::{.lead}
-Scripted with `brickster`, or by hand in the cluster's Libraries tab.
-:::
-
-:::{.sample-small}
-```r
-repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
-
-r_libs <- libraries(
-  lib_cran("reticulate", repo = repo),
-  lib_cran("tidymodels", repo = repo),
-  lib_cran("xgboost", repo = repo),
-  lib_cran("readmission", repo = repo)
-)
-db_libs_install(cluster_id, r_libs)
-```
-:::
-
-## The Python package {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">Removing the barrier</div>
-```
-
-![](assets/brickster.png){.absolute top=0 left=1153 width=94}
-
-:::{.lead}
-`rpy2` is what lets the workers run real R. Install it once, then wait.
-:::
-
-:::{.sample-small}
-```r
-py_lib <- lib_pypi("rpy2==3.5.7") |>
-  libraries()
-
-db_libs_install(cluster_id, py_lib)
-
-wait_for_lib_installs(cluster_id)
-```
-:::
-
 # Hospital readmissions {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
@@ -575,7 +526,7 @@ wait_for_lib_installs(cluster_id)
 <div class="eyebrow">The example</div>
 ```
 
-![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
 
 :::{.lead}
 Split for training and testing, and ten folds for cross validation.
@@ -601,7 +552,7 @@ readmission_folds <- vfold_cv(data   = training(readmission_splits),
 <div class="eyebrow">The example</div>
 ```
 
-![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
 
 :::{.lead}
 A recipe with 5 steps.
@@ -629,7 +580,7 @@ recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
 <div class="eyebrow">The example</div>
 ```
 
-![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
 
 :::{.lead}
 A boosted tree with four parameters to tune.
@@ -654,7 +605,7 @@ spec_bt <- boost_tree(
 <div class="eyebrow">The example</div>
 ```
 
-![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
 
 :::{.lead}
 100 combinations, spread evenly across the parameter space.
@@ -678,7 +629,7 @@ bt_grid <- grid_space_filling(
 <div class="eyebrow">The example</div>
 ```
 
-![](assets/tidymodels.png){.absolute top=0 left=1153 width=94}
+![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
 
 :::{.lead}
 An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
@@ -734,6 +685,56 @@ local_results <- tune_grid(
 - An overnight job becomes a job you wait for
 
 - Large grid searches at scale, with no refactoring
+
+
+## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+![](assets/brickster.png){.absolute top=0 left=1116 width=105}
+
+:::{.lead}
+Scripted with `brickster`, or by hand in the cluster's Libraries tab.
+:::
+
+:::{.sample-small}
+```r
+repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
+
+r_libs <- libraries(
+  lib_cran("reticulate", repo = repo),
+  lib_cran("tidymodels", repo = repo),
+  lib_cran("xgboost", repo = repo),
+  lib_cran("readmission", repo = repo)
+)
+db_libs_install(cluster_id, r_libs)
+```
+:::
+
+## The Python package {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+![](assets/brickster.png){.absolute top=0 left=1116 width=105}
+
+:::{.lead}
+`rpy2` is what lets the workers run real R. Install it once, then wait.
+:::
+
+:::{.sample-small}
+```r
+py_lib <- lib_pypi("rpy2==3.5.7") |>
+  libraries()
+
+db_libs_install(cluster_id, py_lib)
+
+wait_for_lib_installs(cluster_id)
+```
+:::
 
 # What this is, and what it is not. {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
