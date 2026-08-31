@@ -66,6 +66,7 @@ recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
   step_YeoJohnson(all_numeric_predictors()) |>
   step_normalize(all_numeric_predictors()) |>
   step_dummy(all_nominal_predictors())
+  
 spec_bt <- boost_tree(
   mode = "classification",
   trees = 500,
@@ -74,6 +75,7 @@ spec_bt <- boost_tree(
   learn_rate = tune(),
   tree_depth = tune()
 )
+
 bt_grid <- grid_space_filling(
   mtry(range = c(5, 20)),
   min_n(),
@@ -81,6 +83,7 @@ bt_grid <- grid_space_filling(
   tree_depth(),
   size = 100
 )
+
 local_results <- tune_grid(
   object = spec_bt,
   preprocessor = recipe_basic,
@@ -115,15 +118,21 @@ local_results <- tune_grid(
 <div class="eyebrow">The problem</div>
 ```
 
-Nothing here is a big data problem. It is the same small data, over and over
+Not a big data problem. It is the same small data, over and over
 
 ```{=html}
-<div class="equation">
-  <p>
-    <span class="fragment"><span class="num">10</span> re-samples</span>
-    <span class="fragment"> <span class="times">x</span> <span class="num">100</span> combinations</span>
-    <span class="fragment"> = <span class="num">1,000</span> model fits and evaluations</span>
-  </p>
+<div class="eq-wrap">
+<div class="equation eq-stack">
+  <div class="eq-row fragment">
+    <span class="op"></span><span class="num">10</span><span class="lab">re-samples</span>
+  </div>
+  <div class="eq-row fragment">
+    <span class="op">x</span><span class="num">100</span><span class="lab">hyperparameter combinations</span>
+  </div>
+  <div class="eq-row total fragment">
+    <span class="op">=</span><span class="num">1,000</span><span class="lab">model fits and evaluations</span>
+  </div>
+</div>
 </div>
 ```
 
