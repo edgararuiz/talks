@@ -12,7 +12,7 @@ format:
     theme: [default, theme.scss]
     code-line-numbers: false
     menu: false
-    slide-number: false
+    slide-number: c/t
     progress: false
     include-in-header:
       text: |

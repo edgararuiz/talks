@@ -29,6 +29,15 @@ $presentation-h3-font-size: 1.3em;
 
 /*-- scss:rules --*/
 
+.reveal .slide-number {
+  background: none;
+  right: 34px;
+  bottom: 24px;
+  font-family: $font-family-monospace;
+  font-size: 18px;
+  color: $ink;
+}
+
 .reveal .slides section {
   text-align: left;
   box-sizing: border-box;
