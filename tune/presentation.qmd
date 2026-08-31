@@ -59,7 +59,7 @@ Nothing here is a big data problem. It is the same small data, over and over
 ```
 
 :::{.fragment .centered}
-It's a "big processing" problem
+It's a **"big processing"** problem
 :::
 
 
@@ -280,9 +280,7 @@ Usual solutions have one or more of these **barriers**.
 <div class="eyebrow">Removing the barrier</div>
 ```
 
-## One function does everything{background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-The new `tune_grid_spark()` function does the following:
+## Introducing `tune_grid_spark()` {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Removing the barrier</div>
@@ -290,25 +288,46 @@ The new `tune_grid_spark()` function does the following:
 
 ![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
 
-```{=html}
-<div class="flow">
-  <div class="step s-blue fragment">
-    <div class="chev"><span class="num">01</span></div>
-    <h3>Uploads</h3>
-    <p><b>Re-samples</b>, <b>model</b> and <b>recipe</b> objects are transmitted to Spark</p>
-  </div>
-  <div class="step s-magenta fragment">
-    <div class="chev"><span class="num">02</span></div>
-    <h3>Tunes in Spark</h3>
-    <p>Every combination is fitted on a Spark task, and in real R</p>
-  </div>
-  <div class="step s-green fragment">
-    <div class="chev"><span class="num">03</span></div>
-    <h3>Collects</h3>
-    <p>Results from Spark are compiled into a <code>tune_results</code> object</p>
-  </div>
-</div>
+:::{.lead}
+It takes the same arguments as `tune_grid()`, plus your Spark connection.
+:::
+
+:::: {.columns}
+
+::: {.column width="46%"}
+[Locally]{.col-label}
+
+:::{.sample-tiny}
+```r
+tune_grid(
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid()
+)
 ```
+:::
+:::
+
+::: {.column width="54%"}
+[On Databricks]{.col-label}
+
+:::{.sample-tiny}
+```{.r code-line-numbers="|1|2|"}
+tune_grid_spark(
+  sc = sc,
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid()
+)
+```
+:::
+:::
+
+::::
 
 
 ## Only 1 step changes in your code {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
@@ -392,7 +411,9 @@ The new `tune_grid_spark()` function does the following:
 </div>
 ```
 
-## One new argument {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## One function does everything{background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+The new `tune_grid_spark()` function does the following:
 
 ```{=html}
 <div class="eyebrow">Removing the barrier</div>
@@ -400,46 +421,25 @@ The new `tune_grid_spark()` function does the following:
 
 ![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
 
-:::{.lead}
-Adding `sc` is the only change, and the result is a regular `tune_results` object.
-:::
-
-:::: {.columns}
-
-::: {.column width="46%"}
-[Locally]{.col-label}
-
-:::{.sample-tiny}
-```r
-tune_grid(
-  object = spec_bt,
-  preprocessor = recipe_basic,
-  resamples = readmission_folds,
-  grid = bt_grid,
-  control = control_grid()
-)
+```{=html}
+<div class="flow">
+  <div class="step s-blue fragment">
+    <div class="chev"><span class="num">01</span></div>
+    <h3>Uploads</h3>
+    <p><b>Re-samples</b>, <b>model</b> and <b>recipe</b> objects are transmitted to Spark</p>
+  </div>
+  <div class="step s-magenta fragment">
+    <div class="chev"><span class="num">02</span></div>
+    <h3>Tunes in Spark</h3>
+    <p>Every combination is fitted on a Spark task, and in real R</p>
+  </div>
+  <div class="step s-green fragment">
+    <div class="chev"><span class="num">03</span></div>
+    <h3>Collects</h3>
+    <p>Results from Spark are compiled into a <code>tune_results</code> object</p>
+  </div>
+</div>
 ```
-:::
-:::
-
-::: {.column width="54%"}
-[On Databricks]{.col-label}
-
-:::{.sample-tiny}
-```{.r code-line-numbers="|1|2|"}
-tune_grid_spark(
-  sc = sc,
-  object = spec_bt,
-  preprocessor = recipe_basic,
-  resamples = readmission_folds,
-  grid = bt_grid,
-  control = control_grid()
-)
-```
-:::
-:::
-
-::::
 
 
 ## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
