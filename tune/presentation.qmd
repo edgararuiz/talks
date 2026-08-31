@@ -280,7 +280,90 @@ Usual solutions have one or more of these **barriers**.
 <div class="eyebrow">Removing the barrier</div>
 ```
 
-## Introducing `tune_grid_spark()` {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## How should it work? {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+The ideal solution should fit right into your regular code workflow
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+```{=html}
+<div class="flow-cols">
+  <div class="fl-col fragment" data-fragment-index="1">
+    <div class="fl-head">Regular workflow</div>
+    <div class="fl-row">
+      <img src="assets/rsample.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Split data</li>
+        <li>Create folds</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/recipes.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Pre-process</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/parsnip.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Define model</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/tune.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Create grid</li>
+        <li>Tune model</li>
+        <li>Select model</li>
+      </ul>
+    </div>
+  </div>
+  <div class="fl-col fragment" data-fragment-index="2">
+    <div class="fl-head">Using Spark</div>
+    <div class="fl-row">
+      <img src="assets/rsample.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Split data</li>
+        <li>Create folds</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/recipes.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Pre-process</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/parsnip.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Define model</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/tune.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Create grid</li>
+      </ul>
+    </div>
+    <div class="fl-row hl-row">
+      <img src="assets/sparklyr.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li class="hl">Tune model</li>
+      </ul>
+    </div>
+    <div class="fl-row">
+      <img src="assets/tune.png" class="fl-hex">
+      <ul class="fl-cap">
+        <li>Select model</li>
+      </ul>
+    </div>
+  </div>
+</div>
+```
+
+## How does it work?{background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Removing the barrier</div>
@@ -289,7 +372,7 @@ Usual solutions have one or more of these **barriers**.
 ![](assets/sparklyr.png){.absolute top=0 left=1153 width=94}
 
 :::{.lead}
-It takes the same arguments as `tune_grid()`, plus your Spark connection.
+The solution is a new function. 
 :::
 
 :::: {.columns}
@@ -329,87 +412,6 @@ tune_grid_spark(
 
 ::::
 
-
-## Only 1 step changes in your code {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">Removing the barrier</div>
-```
-
-```{=html}
-<div class="flow-cols">
-  <div class="fl-col">
-    <div class="fl-head">Before</div>
-    <div class="fl-row">
-      <img src="assets/rsample.png" class="fl-hex fragment" data-fragment-index="1">
-      <ul class="fl-cap">
-        <li class="fragment" data-fragment-index="1">Split data</li>
-        <li class="fragment" data-fragment-index="2">Create folds</li>
-      </ul>
-    </div>
-    <div class="fl-row">
-      <img src="assets/recipes.png" class="fl-hex fragment" data-fragment-index="3">
-      <ul class="fl-cap">
-        <li class="fragment" data-fragment-index="3">Pre-process</li>
-      </ul>
-    </div>
-    <div class="fl-row">
-      <img src="assets/parsnip.png" class="fl-hex fragment" data-fragment-index="4">
-      <ul class="fl-cap">
-        <li class="fragment" data-fragment-index="4">Define model</li>
-      </ul>
-    </div>
-    <div class="fl-row">
-      <img src="assets/tune.png" class="fl-hex fragment" data-fragment-index="5">
-      <ul class="fl-cap">
-        <li class="fragment" data-fragment-index="5">Create grid</li>
-        <li class="fragment" data-fragment-index="6">Tune model</li>
-        <li class="fragment" data-fragment-index="7">Select model</li>
-      </ul>
-    </div>
-  </div>
-  <div class="fl-col">
-    <div class="fl-head">After</div>
-    <div class="fl-row">
-      <img src="assets/rsample.png" class="fl-hex fragment" data-fragment-index="8">
-      <ul class="fl-cap">
-        <li class="fragment" data-fragment-index="8">Split data</li>
-        <li class="fragment" data-fragment-index="9">Create folds</li>
-      </ul>
-    </div>
-    <div class="fl-row">
-      <img src="assets/recipes.png" class="fl-hex fragment" data-fragment-index="10">
-      <ul class="fl-cap">
-        <li class="fragment" data-fragment-index="10">Pre-process</li>
-      </ul>
-    </div>
-    <div class="fl-row">
-      <img src="assets/parsnip.png" class="fl-hex fragment" data-fragment-index="11">
-      <ul class="fl-cap">
-        <li class="fragment" data-fragment-index="11">Define model</li>
-      </ul>
-    </div>
-    <div class="fl-row">
-      <img src="assets/tune.png" class="fl-hex fragment" data-fragment-index="12">
-      <ul class="fl-cap">
-        <li class="fragment" data-fragment-index="12">Create grid</li>
-      </ul>
-    </div>
-    <div class="fl-row hl-row fragment" data-fragment-index="13">
-      <img src="assets/sparklyr.png" class="fl-hex fragment" data-fragment-index="13">
-      <ul class="fl-cap">
-        <li class="fragment hl" data-fragment-index="13">Tune model</li>
-      </ul>
-    </div>
-    <div class="fl-row">
-      <img src="assets/tune.png" class="fl-hex fragment" data-fragment-index="14">
-      <ul class="fl-cap">
-        <li class="fragment" data-fragment-index="14">Select model</li>
-      </ul>
-    </div>
-  </div>
-</div>
-```
 
 ## One function does everything{background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
