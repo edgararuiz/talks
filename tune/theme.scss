@@ -492,6 +492,20 @@ $presentation-h3-font-size: 1.3em;
   margin-right: 8px;
 }
 
+.reveal .slide .flow-cols .fl-row.hl-row {
+  background: rgba($magenta, 0.13);
+  border-radius: 14px;
+  padding: 6px 18px;
+  margin-left: -18px;
+  margin-right: -18px;
+}
+
+.reveal .slide .flow-cols .fl-cap li.hl,
+.reveal .slide .flow-cols .fl-cap li.hl::before {
+  color: $magenta-ink;
+  font-weight: 700;
+}
+
 .reveal .slide .flow-cols .fl-hex {
   width: 54px;
   flex: none;
