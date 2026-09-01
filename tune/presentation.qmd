@@ -602,6 +602,82 @@ Databricks is ideal to offload long-running grid searches:
 </div>
 ```
 
+## Back to the example {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Databricks</div>
+```
+
+![](assets/databricks.png){.absolute top=12 left=1126 width=95}
+
+::::::::: {.columns}
+
+:::::::: {.column width="58%"}
+
+::::::: {.code-stack}
+
+:::::: {.fragment .fade-out .sample-mini fragment-index=1}
+```r
+tune_grid(
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid()
+)
+```
+::::::
+
+:::::: {.fragment .fade-out fragment-index=2}
+::::: {.fragment .sample-mini fragment-index=1}
+```r
+tune_grid_spark(
+  sc = sc,
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid()
+)
+```
+:::::
+::::::
+
+:::::: {.fragment .sample-mini fragment-index=2}
+```r
+tune_grid_spark(
+  sc = sc,
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid(
+    parallel_over = "everything"
+    )
+)
+```
+::::::
+
+:::::::
+
+::::::::
+
+:::::::: {.column width="42%"}
+
+```{=html}
+<div class="bench bench-sm">
+  <div class="row"><div class="label plat"><i class="fa-brands fa-apple"></i></div><div class="bar" style="width:35px"></div><div class="time">11 min</div></div>
+  <div class="row"><div class="label plat"><i class="fa-brands fa-windows"></i></div><div class="bar" style="width:197px"></div><div class="time">61 min</div></div>
+  <div class="row"><div class="label plat"><i class="fa-brands fa-linux"></i></div><div class="bar" style="width:290px"></div><div class="time">90 min</div></div>
+  <div class="row fragment" data-fragment-index="1"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:16px"></div><div class="time">5 min</div></div>
+  <div class="row fragment" data-fragment-index="2"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:9px"></div><div class="time">2.8 min</div></div>
+</div>
+```
+
+::::::::
+
+:::::::::
+
 ## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}

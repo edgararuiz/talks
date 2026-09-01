@@ -241,6 +241,32 @@ $presentation-h3-font-size: 1.3em;
   padding: 14px 16px;
 }
 
+// three code states stacked in place
+.reveal .slide .code-stack {
+  position: relative;
+  min-height: 300px;
+}
+
+.reveal .slide .code-stack > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.reveal .slide .sample-mini pre code {
+  font-size: 30px;
+  line-height: 1.35;
+  padding: 14px 16px;
+}
+
+// the spark wordmark used as a bar label
+.reveal .slide .bench .label.plat .sparkmark {
+  width: 78px;
+  display: block;
+  margin: 0 auto;
+}
+
 // benchmark bars
 .reveal .slide .bench {
   margin-top: 26px;
