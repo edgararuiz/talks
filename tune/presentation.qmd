@@ -515,6 +515,30 @@ The new function takes care of everything
 ```
 
 
+# The rest of the puzzle {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
+
+```{=html}
+<div class="eyebrow">Databricks</div>
+```
+
+
+## Ideal to run remotely {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Databricks</div>
+```
+
+Databricks Compute services are ideal to offload long running grid searches:
+
+- Very easy to spin up and tear down Spark clusters
+
+- Thanks to Databricks Connect (DBR), you can perform all operations fully remotely, from your favorite IDE
+
+- Supports R run-time
+
+- Comes with a fully managed R package installation system
+
+
 # Hospital readmissions {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
 ```{=html}
