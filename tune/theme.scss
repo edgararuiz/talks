@@ -280,6 +280,33 @@ $presentation-h3-font-size: 1.3em;
   white-space: nowrap;
 }
 
+
+// compact sum, for when it shares a slide with the code
+.reveal .slide .eq-stack.eq-sm .eq-row { font-size: 46px; gap: 16px; padding: 12px 0; }
+.reveal .slide .eq-stack.eq-sm .op  { width: 58px; }
+.reveal .slide .eq-stack.eq-sm .num { width: 160px; }
+.reveal .slide .eq-stack.eq-sm .lab { width: 330px; }
+.reveal .slide .eq-stack.eq-sm .eq-row.total { margin-top: 16px; padding-top: 20px; }
+.reveal .slide .eq-stack.eq-sm .eq-row.total::before { width: 234px; }
+.reveal .slide .eq-stack.eq-sm { margin: 10px 0; }
+
+// the right hand column swaps the sum out for the chart
+.reveal .slide .stack-area.stack-right {
+  min-height: 430px;
+}
+
+.reveal .slide .bigproc .hl {
+  color: $magenta-ink;
+  font-weight: 700;
+}
+
+.reveal .slide .bigproc {
+  font-size: 44px;
+  color: $ink;
+  margin-top: 34px;
+  text-align: center;
+}
+
 // the headline arithmetic, stacked like a sum
 .reveal .slide .eq-wrap {
   text-align: center;
@@ -361,11 +388,20 @@ $presentation-h3-font-size: 1.3em;
   text-align: center;
 }
 
+// platform glyph in place of a written label
+.reveal .slide .bench .label.plat {
+  font-size: 105px;
+  line-height: 1;
+  text-align: center;
+  color: $navy-deep;
+}
+
 // compact benchmark bars, for the teaser slide
 .reveal .slide .bench.bench-sm .label { width: 210px; font-size: 24px; padding-right: 16px; }
-.reveal .slide .bench.bench-sm .bar { height: 36px; }
+.reveal .slide .bench.bench-sm .label.plat { width: 84px; padding-right: 12px; font-size: 62px; line-height: 1; }
+.reveal .slide .bench.bench-sm .bar { height: 52px; }
 .reveal .slide .bench.bench-sm .time { font-size: 24px; padding-left: 14px; }
-.reveal .slide .bench.bench-sm .row { margin-bottom: 16px; }
+.reveal .slide .bench.bench-sm .row { margin-bottom: 22px; }
 
 // stat callout
 .reveal .slide .stat p {

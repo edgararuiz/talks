@@ -1,0 +1,24 @@
+/* Font Awesome 6.5.2 brands, trimmed to the webfont this deck needs */
+@font-face {
+  font-family: "Font Awesome 6 Brands";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("../webfonts/fa-brands-400.woff2") format("woff2");
+}
+
+.fa-brands {
+  font-family: "Font Awesome 6 Brands";
+  font-weight: 400;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-rendering: auto;
+}
+
+.fa-apple::before   { content: "\f179"; }
+.fa-windows::before { content: "\f17a"; }
+.fa-linux::before   { content: "\f17c"; }
