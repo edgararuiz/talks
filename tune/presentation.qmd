@@ -162,37 +162,28 @@ Usual solutions have one or more of these **barriers**.
       <div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div>
       <p>Bound by cores</p>
     </div>
-    <div class="subicons">
-      <span class="fragment"><span class="mark no"></span></span>
-    </div>
+    <div class="subnote">Does not solve the problem</div>
   </div>
   <div class="card-col">
     <div class="card c-magenta">
       <div class="icon"><span class="glyph money">$$$</span></div>
       <p>Expensive</p>
     </div>
-    <div class="subicons">
-      <span class="fragment"><span class="emoji">&#127808;</span></span>
-    </div>
+    <div class="subnote">Hard to get</div>
   </div>
   <div class="card-col">
     <div class="card c-blue">
       <div class="icon"><span class="glyph">R|&gt;</span></div>
       <p>Code re-write</p>
     </div>
-    <div class="subicons">
-      <span class="fragment"><span class="emoji">&#128336;</span></span>
-    </div>
+    <div class="subnote">Time consuming</div>
   </div>
   <div class="card-col">
     <div class="card c-yellow">
       <div class="icon"><span class="stack"><i></i><i></i><i></i></span></div>
       <p>Complex</p>
     </div>
-    <div class="subicons">
-      <span class="fragment"><span class="emoji">&#128336;</span></span>
-      <span class="fragment"><span class="emoji">&#127891;</span></span>
-    </div>
+    <div class="subnote">Time consuming &amp; may need help</div>
   </div>
 </div>
 ```

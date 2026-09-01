@@ -471,18 +471,14 @@ $presentation-h3-font-size: 1.3em;
   flex: 1;
 }
 
-.reveal .slide .subicons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  height: 76px;
-  margin-top: 16px;
-}
-
-.reveal .slide .subicons .emoji {
-  font-size: 50px;
-  line-height: 1;
+.reveal .slide .subnote {
+  font-size: 26px;
+  line-height: 1.25;
+  color: $ink;
+  text-align: center;
+  margin-top: 18px;
+  min-height: 66px;   // two lines, so a wrapping label cannot shrink its card
+  flex: none;
 }
 
 .reveal .slide .cards-4 .card {
