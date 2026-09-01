@@ -22,3 +22,4 @@
 .fa-apple::before   { content: "\f179"; }
 .fa-windows::before { content: "\f17a"; }
 .fa-linux::before   { content: "\f17c"; }
+.fa-r-project::before { content: "\f4f7"; }

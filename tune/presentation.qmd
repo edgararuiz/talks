@@ -522,22 +522,134 @@ The new function takes care of everything
 ```
 
 
-## Ideal to run remotely {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## Ideal for running remotely {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Databricks</div>
 ```
 
-Databricks Compute services are ideal to offload long running grid searches:
+![](assets/databricks.png){.absolute top=12 left=1126 width=95}
 
-- Very easy to spin up and tear down Spark clusters
+Databricks is ideal to offload long-running grid searches:
 
-- Thanks to Databricks Connect (DBR), you can perform all operations fully remotely, from your favorite IDE
+- **Cluster management** - Very easy to spin up and tear down Spark clusters
 
-- Supports R run-time
+- **Remote execution** - Databricks Connect lets you execute jobs remotely from your favorite IDE
 
-- Comes with a fully managed R package installation system
+- **R Support** - Native support for the R runtime and managed package installation
 
+
+## Working with Databricks {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Databricks</div>
+```
+
+![](assets/databricks.png){.absolute top=12 left=1126 width=95}
+
+```{=html}
+<div class="dbdiag">
+
+  <div class="rcard rcard-lg fragment" data-fragment-index="1">
+    <i class="fa-brands fa-r-project"></i>
+    <img src="assets/tidymodels.png">
+  </div>
+
+  <div class="wires">
+    <div class="wirehex fragment" data-fragment-index="2">
+      <img src="assets/rsample.png"><img src="assets/parsnip.png"><img src="assets/recipes.png">
+    </div>
+    <div class="wlabel fragment" data-fragment-index="2">
+      Uploads <b>re-samples</b>, <b>model</b> and <b>recipe</b>
+    </div>
+    <div class="wire fragment" data-fragment-index="2">
+      <span class="line"></span><span class="head right"></span>
+    </div>
+    <div class="net fragment" data-fragment-index="2">Internet</div>
+    <div class="wire fragment" data-fragment-index="4">
+      <span class="head left"></span><span class="line"></span>
+    </div>
+    <div class="wlabel fragment" data-fragment-index="4">
+      Downloads <b>results</b>
+    </div>
+    <div class="wirehex fragment" data-fragment-index="4">
+      <img src="assets/tune.png">
+    </div>
+  </div>
+
+  <div class="node cluster fragment" data-fragment-index="3">
+    <div class="dbhead"><img class="db" src="assets/databricks.png"><span>Databricks</span></div>
+    <div class="inner">
+      <img class="spark" src="assets/spark-logo.png">
+      <div class="workers">
+        <div class="rcard rcard-sm">
+          <i class="fa-brands fa-r-project"></i>
+          <img src="assets/tidymodels.png">
+        </div>
+        <div class="rcard rcard-sm">
+          <i class="fa-brands fa-r-project"></i>
+          <img src="assets/tidymodels.png">
+        </div>
+        <div class="rcard rcard-sm">
+          <i class="fa-brands fa-r-project"></i>
+          <img src="assets/tidymodels.png">
+        </div>
+      </div>
+      <div class="pp">Parallel processing</div>
+    </div>
+  </div>
+
+</div>
+```
+
+## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+![](assets/brickster.png){.absolute top=0 left=1116 width=105}
+
+:::{.lead}
+Scripted with `brickster`, or by hand in the cluster's Libraries tab.
+:::
+
+:::{.sample-small}
+```r
+repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
+
+r_libs <- libraries(
+  lib_cran("reticulate", repo = repo),
+  lib_cran("tidymodels", repo = repo),
+  lib_cran("xgboost", repo = repo),
+  lib_cran("readmission", repo = repo)
+)
+db_libs_install(cluster_id, r_libs)
+```
+:::
+
+## The Python package {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+![](assets/brickster.png){.absolute top=0 left=1116 width=105}
+
+:::{.lead}
+`rpy2` is what lets the workers run real R. Install it once, then wait.
+:::
+
+:::{.sample-small}
+```r
+py_lib <- lib_pypi("rpy2==3.5.7") |>
+  libraries()
+
+db_libs_install(cluster_id, py_lib)
+
+wait_for_lib_installs(cluster_id)
+```
+:::
 
 # Hospital readmissions {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
@@ -711,55 +823,6 @@ local_results <- tune_grid(
 
 - Large grid searches at scale, with no refactoring
 
-
-## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">Removing the barrier</div>
-```
-
-![](assets/brickster.png){.absolute top=0 left=1116 width=105}
-
-:::{.lead}
-Scripted with `brickster`, or by hand in the cluster's Libraries tab.
-:::
-
-:::{.sample-small}
-```r
-repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
-
-r_libs <- libraries(
-  lib_cran("reticulate", repo = repo),
-  lib_cran("tidymodels", repo = repo),
-  lib_cran("xgboost", repo = repo),
-  lib_cran("readmission", repo = repo)
-)
-db_libs_install(cluster_id, r_libs)
-```
-:::
-
-## The Python package {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">Removing the barrier</div>
-```
-
-![](assets/brickster.png){.absolute top=0 left=1116 width=105}
-
-:::{.lead}
-`rpy2` is what lets the workers run real R. Install it once, then wait.
-:::
-
-:::{.sample-small}
-```r
-py_lib <- lib_pypi("rpy2==3.5.7") |>
-  libraries()
-
-db_libs_install(cluster_id, py_lib)
-
-wait_for_lib_installs(cluster_id)
-```
-:::
 
 # What this is, and what it is not. {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 

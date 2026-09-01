@@ -625,6 +625,179 @@ $presentation-h3-font-size: 1.3em;
   display: block;
 }
 
+// ------------------------------------------------ databricks round trip
+.reveal .slide .dbdiag {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 18px;
+}
+
+// one card style for R + tidymodels, wherever it appears; only size varies
+.reveal .slide .dbdiag .rcard {
+  flex: none;
+  background: #e9ebf2;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.reveal .slide .dbdiag .rcard .fa-r-project {
+  display: block;
+  color: $navy-deep;
+}
+
+.reveal .slide .dbdiag .rcard img {
+  display: block;
+  margin: 0 auto;
+}
+
+.reveal .slide .dbdiag .rcard-lg {
+  width: 150px;
+  padding: 20px 12px 22px 12px;
+}
+
+.reveal .slide .dbdiag .rcard-lg .fa-r-project {
+  font-size: 58px;
+  margin-bottom: 12px;
+}
+
+.reveal .slide .dbdiag .rcard-lg img { width: 86px; }
+
+.reveal .slide .dbdiag .rcard-sm {
+  width: 100px;
+  padding: 8px 6px 10px 6px;
+}
+
+.reveal .slide .dbdiag .rcard-sm .fa-r-project {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.reveal .slide .dbdiag .rcard-sm img { width: 42px; }
+
+// the wires between
+.reveal .slide .dbdiag .wires {
+  flex: 1;
+  text-align: center;
+}
+
+.reveal .slide .dbdiag .wirehex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0;
+}
+
+.reveal .slide .dbdiag .wirehex img {
+  width: 50px;
+  display: block;
+}
+
+.reveal .slide .dbdiag .wlabel {
+  font-size: 22px;
+  color: $ink;
+  line-height: 1.3;
+  margin: 6px 0;
+}
+
+.reveal .slide .dbdiag .wlabel b {
+  color: $magenta-ink;
+}
+
+.reveal .slide .dbdiag .wire {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.reveal .slide .dbdiag .wire .line {
+  flex: 1;
+  border-top: 3px dashed $navy-deep;
+}
+
+.reveal .slide .dbdiag .wire .head {
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+}
+
+.reveal .slide .dbdiag .wire .head.right { border-left: 15px solid $navy-deep; }
+.reveal .slide .dbdiag .wire .head.left  { border-right: 15px solid $navy-deep; }
+
+.reveal .slide .dbdiag .net {
+  display: inline-block;
+  font-family: $font-family-monospace;
+  font-size: 19px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $navy-deep;
+  border: 2px solid $navy-deep;
+  border-radius: 999px;
+  padding: 5px 20px;
+}
+
+// the cluster: white, outlined
+.reveal .slide .dbdiag .cluster {
+  flex: none;
+  width: 560px;
+  background: #fff;
+  border: 2px solid $navy-deep;
+  border-radius: 20px;
+  padding: 26px 14px 30px 14px;
+  text-align: center;
+}
+
+.reveal .slide .dbdiag .cluster .dbhead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.reveal .slide .dbdiag .cluster .db { width: 58px; }
+
+.reveal .slide .dbdiag .cluster .dbhead span {
+  font-size: 34px;
+  font-weight: 700;
+  color: $navy-deep;
+}
+
+.reveal .slide .dbdiag .inner {
+  background: #fff;
+  border: 2px solid $navy-deep;
+  border-radius: 16px;
+  padding: 22px 12px 18px 12px;
+}
+
+.reveal .slide .dbdiag .inner .spark {
+  width: 108px;
+  display: block;
+  margin: 0 auto 16px auto;
+}
+
+.reveal .slide .dbdiag .workers {
+  position: relative;
+  height: 202px;
+}
+
+.reveal .slide .dbdiag .workers .rcard { position: absolute; }
+.reveal .slide .dbdiag .workers .rcard:nth-child(1) { top: 0;    left: 30px; }
+.reveal .slide .dbdiag .workers .rcard:nth-child(2) { top: 0;    right: 30px; }
+.reveal .slide .dbdiag .workers .rcard:nth-child(3) { top: 94px; left: 50%; margin-left: -50px; }
+
+.reveal .slide .dbdiag .pp {
+  font-family: $font-family-monospace;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $navy-deep;
+  text-align: center;
+  margin-top: 14px;
+}
+
 // ---------------------------------------------------------------- icons
 .reveal .slide .icon {
   height: 120px;
