@@ -660,6 +660,7 @@ $presentation-h3-font-size: 1.3em;
 // ----------------------------------------- illustrated bullet list
 .reveal .slide .iconlist {
   margin-top: 30px;
+  padding-left: 30px;
 }
 
 .reveal .slide .iconlist .il-row {
@@ -674,13 +675,23 @@ $presentation-h3-font-size: 1.3em;
   flex: 0 0 auto;
   width: 96px;
   height: 96px;
+  margin-right: 60px;
 }
 
 .reveal .slide .iconlist .il-row p {
   flex: 1;
   margin: 0;
+  padding-left: 34px;
   font-size: 34px;
   line-height: 1.3;
+  text-indent: -34px;
+}
+
+// each row reads as a bullet, drawn rather than inherited from the list
+.reveal .slide .iconlist .il-row p::before {
+  content: "\2022";
+  color: $magenta-ink;
+  margin-right: 18px;
 }
 
 .reveal .slide .iconlist .il-row b {

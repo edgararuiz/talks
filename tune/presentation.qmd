@@ -797,7 +797,7 @@ tune_grid_spark(
 ## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
-<div class="eyebrow">Removing the barrier</div>
+<div class="eyebrow">Databricks</div>
 ```
 
 ![](assets/brickster.png){.absolute top=0 left=1116 width=105}
@@ -843,202 +843,19 @@ wait_for_lib_installs(cluster_id)
 ```
 :::
 
-# Hospital readmissions {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
-
-```{=html}
-<div class="eyebrow">The example</div>
-```
-
-## Splitting the data {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The example</div>
-```
-
-![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
-
-:::{.lead}
-Split for training and testing, and ten folds for cross validation.
-:::
-
-:::{.sample-small}
-```r
-library(tidymodels)
-library(readmission)
-
-set.seed(231)
-
-readmission_splits <- initial_split(readmission, strata = readmitted)
-
-readmission_folds <- vfold_cv(data   = training(readmission_splits), 
-                              strata = readmitted)
-```
-:::
-
-## The recipe {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The example</div>
-```
-
-![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
-
-:::{.lead}
-A recipe with 5 steps.
-:::
-
-:::{.sample-small}
-```r
-recipe_basic <- recipe(readmitted ~ ., data = training(readmission_splits)) |>
-  step_mutate(
-    race = factor(case_when(
-      !(race %in% c("Caucasian", "African American")) ~ "Other",
-      .default = race
-    ))
-  ) |>
-  step_unknown(all_nominal_predictors()) |>
-  step_YeoJohnson(all_numeric_predictors()) |>
-  step_normalize(all_numeric_predictors()) |>
-  step_dummy(all_nominal_predictors())
-```
-:::
-
-## The model {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The example</div>
-```
-
-![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
-
-:::{.lead}
-A boosted tree with four parameters to tune.
-:::
-
-:::{.sample-small}
-```r
-spec_bt <- boost_tree(
-  mode = "classification",
-  trees = 500,
-  mtry = tune(),
-  min_n = tune(),
-  learn_rate = tune(),
-  tree_depth = tune()
-)
-```
-:::
-
-## The grid {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The example</div>
-```
-
-![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
-
-:::{.lead}
-100 combinations, spread evenly across the parameter space.
-:::
-
-:::{.sample-small}
-```r
-bt_grid <- grid_space_filling(
-  mtry(range = c(5, 20)),
-  min_n(),
-  learn_rate(),
-  tree_depth(),
-  size = 100
-)
-```
-:::
-
-## Tuning locally {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The example</div>
-```
-
-![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
-
-:::{.lead}
-An M3 laptop takes **11 minutes**. A Windows machine takes **61**.
-:::
-
-:::{.sample-small}
-```r
-library(future)
-plan(multisession)
-
-local_results <- tune_grid(
-  object = spec_bt,
-  preprocessor = recipe_basic,
-  resamples = readmission_folds,
-  grid = bt_grid,
-  control = control_grid()
-)
-```
-:::
-
-# The same 100 combinations, run in five places. {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
-
-```{=html}
-<div class="eyebrow">The payoff</div>
-```
-
-## Time to tune 100 combinations {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The payoff</div>
-```
-
-```{=html}
-<div class="bench">
-  <div class="row"><div class="label">Spark, 32 concurrent</div><div class="bar fast" style="width:19px"></div><div class="time">2.8 min</div></div>
-  <div class="row"><div class="label">Spark, 10 concurrent</div><div class="bar fast" style="width:35px"></div><div class="time">5 min</div></div>
-  <div class="row"><div class="label">Laptop, M3</div><div class="bar" style="width:76px"></div><div class="time">11 min</div></div>
-  <div class="row"><div class="label">Windows machine</div><div class="bar" style="width:421px"></div><div class="time">61 min</div></div>
-  <div class="row"><div class="label">Posit Workbench, 8 cores</div><div class="bar" style="width:620px"></div><div class="time">90 min</div></div>
-</div>
-```
-
-## What the numbers say {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The payoff</div>
-```
-
-- **32x faster** than the same job on Posit Workbench, **4x faster** than the best laptop
-
-- Concurrency is a dial: 10 workers gave 5 minutes, 32 gave 2.8
-
-- An overnight job becomes a job you wait for
-
-- Large grid searches at scale, with no refactoring
-
-
-# What this is, and what it is not. {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
-
-```{=html}
-<div class="eyebrow">Knowing the limits</div>
-```
-
-
-
-## Where to read more {.links background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## Where to read more {.links background-image="assets/slide-frame.png" background-size="contain" background-color="white" .roomy-list}
 
 ```{=html}
 <div class="eyebrow">Links</div>
+<br/>
 ```
 
-- Article - [spark.posit.co/deployment](https://spark.posit.co/deployment/databricks_tune_tidymodels.html)
+- tidymodels - [tidymodels.org](https://www.tidymodels.org)
 
 - `sparklyr` - [spark.posit.co](https://spark.posit.co)
 
 - `brickster` - [posit-dev.github.io/brickster](https://posit-dev.github.io/brickster/)
 
-- tidymodels - [tidymodels.org](https://www.tidymodels.org)
-
-- Talk repo - [github.com/edgararuiz/talks/tree/main/tune](https://github.com/edgararuiz/talks/tree/main/tune)
 
 ## Thank you {.thanks background-image="assets/thank-you.png" background-size="contain" background-color="white"}
 
