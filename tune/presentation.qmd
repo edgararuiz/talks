@@ -194,114 +194,36 @@ Usual solutions have one or more of these **barriers**.
 <div class="eyebrow">The problem</div>
 ```
 
-:::::: {.columns}
-
-::::: {.column width="48%"}
-
-```{=html}
-<div class="approaches">
-  <div class="fragment" data-fragment-index="1">Local machine <span class="mark no fragment" data-fragment-index="2"></span></div>
-  <div class="fragment" data-fragment-index="4">Grid computing <span class="mark ok fragment" data-fragment-index="5"></span></div>
-  <div class="fragment" data-fragment-index="8">Spark cluster <span class="mark ok fragment" data-fragment-index="9"></span></div>
-  <div class="fragment" data-fragment-index="12">Databricks Notebooks <span class="mark no fragment" data-fragment-index="13"></span></div>
-  <div class="fragment" data-fragment-index="15">Databricks cluster <span class="mark ok fragment" data-fragment-index="16"></span></div>
-</div>
-```
-
-:::::
-
-::::: {.column width="52%"}
-
-```{=html}
-<div class="stack-area">
-  <div class="fragment fade-out" data-fragment-index="4">
-  <div class="cards cards-2">
-    <div class="card c-green fragment" data-fragment-index="3">
-      <div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div>
-      <p>Bound by cores</p>
-    </div>
-  </div>
-  </div>
-  <div class="fragment fade-out" data-fragment-index="8">
-  <div class="cards cards-2">
-    <div class="card c-magenta fragment" data-fragment-index="6">
-      <div class="icon"><span class="glyph money">$$$</span></div>
-      <p>Expensive</p>
-    </div>
-    <div class="card c-blue fragment" data-fragment-index="7">
-      <div class="icon"><span class="glyph">R|&gt;</span></div>
-      <p>Code re-write</p>
-    </div>
-  </div>
-  </div>
-  <div class="fragment fade-out" data-fragment-index="12">
-  <div class="cards cards-2">
-    <div class="card c-yellow fragment" data-fragment-index="10">
-      <div class="icon"><span class="stack"><i></i><i></i><i></i></span></div>
-      <p>Complex</p>
-    </div>
-    <div class="card c-blue fragment" data-fragment-index="11">
-      <div class="icon"><span class="glyph">R|&gt;</span></div>
-      <p>Code re-write</p>
-    </div>
-  </div>
-  </div>
-  <div class="fragment fade-out" data-fragment-index="15">
-  <div class="cards cards-2">
-    <div class="card c-green fragment" data-fragment-index="14">
-      <div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div>
-      <p>Bound by cores</p>
-    </div>
-  </div>
-  </div>
-  <div>
-  <div class="cards cards-2">
-    <div class="card c-blue fragment" data-fragment-index="17">
-      <div class="icon"><span class="glyph">R|&gt;</span></div>
-      <p>Code re-write</p>
-    </div>
-  </div>
-  </div>
-</div>
-```
-
-:::::
-
-::::::
-
-## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">The problem</div>
-```
-
 ```{=html}
 <div class="summary">
-  <div class="name">Local machine</div>
-  <div class="verdict"><span class="mark no"></span></div>
-  <div class="mini">
+  <div class="hdr">Solution</div>
+  <div class="hdr">Solves?</div>
+  <div class="hdr">Barrier</div>
+  <div class="name fragment" data-fragment-index="1">Local machine</div>
+  <div class="verdict fragment" data-fragment-index="1"><span class="mark no"></span></div>
+  <div class="mini fragment" data-fragment-index="1">
       <div class="card c-green"><div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div></div>
   </div>
-  <div class="name">Grid computing</div>
-  <div class="verdict"><span class="mark ok"></span></div>
-  <div class="mini">
+  <div class="name fragment" data-fragment-index="2">Grid computing</div>
+  <div class="verdict fragment" data-fragment-index="2"><span class="mark ok"></span></div>
+  <div class="mini fragment" data-fragment-index="2">
       <div class="card c-magenta"><div class="icon"><span class="glyph money">$$$</span></div></div>
       <div class="card c-blue"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
   </div>
-  <div class="name">Spark cluster</div>
-  <div class="verdict"><span class="mark ok"></span></div>
-  <div class="mini">
+  <div class="name fragment" data-fragment-index="3">Spark cluster</div>
+  <div class="verdict fragment" data-fragment-index="3"><span class="mark ok"></span></div>
+  <div class="mini fragment" data-fragment-index="3">
       <div class="card c-yellow"><div class="icon"><span class="stack"><i></i><i></i><i></i></span></div></div>
       <div class="card c-blue"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
   </div>
-  <div class="name">Databricks Notebooks</div>
-  <div class="verdict"><span class="mark no"></span></div>
-  <div class="mini">
+  <div class="name fragment" data-fragment-index="4">Databricks Notebooks</div>
+  <div class="verdict fragment" data-fragment-index="4"><span class="mark no"></span></div>
+  <div class="mini fragment" data-fragment-index="4">
       <div class="card c-green"><div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div></div>
   </div>
-  <div class="name">Databricks cluster</div>
-  <div class="verdict"><span class="mark ok"></span></div>
-  <div class="mini">
+  <div class="name fragment" data-fragment-index="5">Databricks cluster</div>
+  <div class="verdict fragment" data-fragment-index="5"><span class="mark ok"></span></div>
+  <div class="mini fragment" data-fragment-index="5">
       <div class="card c-blue"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
   </div>
 </div>
@@ -315,6 +237,9 @@ Usual solutions have one or more of these **barriers**.
 
 ```{=html}
 <div class="summary focus-mode">
+  <div class="hdr">Solution</div>
+  <div class="hdr">Solves?</div>
+  <div class="hdr">Barrier</div>
   <div class="name">Local machine</div>
   <div class="verdict"><span class="mark no"></span></div>
   <div class="mini">
@@ -615,7 +540,7 @@ This method is sensitive parallel settings in `parallel_over`
 ```{=html}
 <div class="iconlist">
 
-  <div class="il-row">
+  <div class="il-row fragment" data-fragment-index="1">
     <svg class="il-art" viewBox="0 0 120 120" aria-hidden="true">
       <rect x="10" y="16" width="46" height="26" rx="5" class="fill-navy"/>
       <rect x="10" y="50" width="46" height="26" rx="5" class="fill-navy"/>
@@ -629,7 +554,7 @@ This method is sensitive parallel settings in `parallel_over`
     <p><b>Cluster management</b> - Very easy to spin up and tear down Spark clusters</p>
   </div>
 
-  <div class="il-row">
+  <div class="il-row fragment" data-fragment-index="2">
     <svg class="il-art" viewBox="0 0 120 120" aria-hidden="true">
       <rect x="6" y="26" width="48" height="36" rx="5" class="fill-navy"/>
       <rect x="20" y="66" width="20" height="8" class="fill-navy"/>
@@ -641,7 +566,7 @@ This method is sensitive parallel settings in `parallel_over`
     <p><b>Remote execution</b> - Databricks Connect lets you execute jobs remotely from your favorite IDE</p>
   </div>
 
-  <div class="il-row">
+  <div class="il-row fragment" data-fragment-index="3">
     <svg class="il-art" viewBox="0 0 120 120" aria-hidden="true">
       <circle cx="60" cy="60" r="42" class="fill-navy"/>
       <text x="60" y="78" class="il-glyph">R</text>
@@ -809,7 +734,7 @@ Scripted with `brickster`, or by hand in the cluster's Libraries tab.
 
 :::{.sample-small}
 ```r
-repo <- "https://databricks.packagemanager.posit.co/cran/__linux__/noble/latest"
+library(brickster)
 
 r_libs <- libraries(
   lib_cran("reticulate", repo = repo),

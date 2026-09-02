@@ -592,12 +592,13 @@ $presentation-h3-font-size: 1.3em;
 // where does the code go: the same package flow, twice
 .reveal .slide .flow-cols {
   display: flex;
-  gap: 60px;
+  justify-content: center;
+  gap: 150px;
   margin-top: 24px;
 }
 
 .reveal .slide .flow-cols .fl-col {
-  flex: 1;
+  flex: 0 1 auto;
   counter-reset: step;
 }
 
@@ -606,6 +607,7 @@ $presentation-h3-font-size: 1.3em;
   font-size: 24px;
   letter-spacing: 1px;
   color: $magenta-ink;
+  text-align: center;
   margin-bottom: 10px;
 }
 
@@ -1020,10 +1022,21 @@ $presentation-h3-font-size: 1.3em;
 // summary table: answer, verdict, drawback icons only
 .reveal .slide .summary {
   display: grid;
-  grid-template-columns: 1fr 110px auto;
+  grid-template-columns: auto 110px auto;
+  justify-content: center;
   align-items: center;
+  column-gap: 60px;
   row-gap: 16px;
   margin-top: 30px;
+}
+
+.reveal .slide .summary .hdr {
+  font-family: $font-family-monospace;
+  font-size: 22px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $navy-deep;
+  text-align: center;
 }
 
 .reveal .slide .summary .name {
