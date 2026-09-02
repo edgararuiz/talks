@@ -218,6 +218,12 @@ $presentation-h3-font-size: 1.3em;
   font-size: 31px;
 }
 
+// considerations slide, fewer bullets so they can breathe
+.reveal .slide.roomy-list li {
+  font-size: 46px;
+  margin-bottom: 34px;
+}
+
 // two column before / after
 .reveal .slide .col-label {
   display: block;

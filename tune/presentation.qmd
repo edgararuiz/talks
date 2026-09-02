@@ -516,7 +516,7 @@ The new function takes care of everything
 
 ## A quick tip{background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
-This method is sensitive parallel settings in `parallel_over()`
+This method is sensitive parallel settings in `parallel_over`
 
 ```{=html}
 <div class="eyebrow">Removing the barrier</div>
@@ -582,6 +582,20 @@ This method is sensitive parallel settings in `parallel_over()`
 
 ::::
 
+## Considerations {.roomy-list background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+
+- Use SparkML if data exceeds local memory
+
+- R and necessary packages must be installed on the cluster
+
+- OS, R, and package versions may cause slight variations from local runs
+
+- Pulling predictions roughly doubles total data transfer
 
 # The rest of the puzzle {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
@@ -974,21 +988,7 @@ local_results <- tune_grid(
 <div class="eyebrow">Knowing the limits</div>
 ```
 
-## Limitations {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
-```{=html}
-<div class="eyebrow">Limits</div>
-```
-
-:::{.incremental}
-- The goal is to speed up the **search**, not to process big data. The data still has to fit in memory
-
-- Results can differ slightly from local runs, because the OS, the R version and the package versions differ
-
-- Downloading predictions roughly doubles the data moved across the wire
-
-- If your data is larger than local memory, reach for Spark ML instead
-:::
 
 ## Where to read more {.links background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
