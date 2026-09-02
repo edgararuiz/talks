@@ -720,6 +720,19 @@ tune_grid_spark(
 
 :::::::::
 
+## Install R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Databricks</div>
+```
+
+:::{.lead}
+Use the web UI to manually add the needed packages
+:::
+
+![](assets/add-packages.png){.absolute top=200 left=250 width=800}
+
+
 ## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
@@ -742,7 +755,7 @@ r_libs <- libraries(
   lib_cran("xgboost", repo = repo),
   lib_cran("readmission", repo = repo)
 )
-db_libs_install(cluster_id, r_libs)
+db_libs_install("[MY CLUSTER'S ID]", r_libs)
 ```
 :::
 
