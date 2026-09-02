@@ -761,6 +761,17 @@ $presentation-h3-font-size: 1.3em;
 
 .reveal .slide .dbdiag .rcard-lg img { width: 86px; }
 
+// which machine the card stands for
+.reveal .slide .dbdiag .rcard .cardlabel {
+  font-family: $font-family-monospace;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $navy-deep;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
 .reveal .slide .dbdiag .rcard-sm {
   width: 100px;
   padding: 8px 6px 10px 6px;

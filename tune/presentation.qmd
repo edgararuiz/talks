@@ -57,17 +57,17 @@ engine: knitr
 ```{=html}
 <div class="stack-area stack-right">
 
-  <div class="fragment fade-out" data-fragment-index="4">
+  <div class="fragment fade-in-then-out" data-fragment-index="1">
     <div class="col-label">Hospital Readmissions</div>
     <div class="eq-wrap">
       <div class="equation eq-stack eq-sm">
-        <div class="eq-row fragment" data-fragment-index="1">
+        <div class="eq-row">
           <span class="op"></span><span class="num">10</span><span class="lab">re-samples</span>
         </div>
-        <div class="eq-row fragment" data-fragment-index="2">
+        <div class="eq-row">
           <span class="op">x</span><span class="num">100</span><span class="lab">combinations</span>
         </div>
-        <div class="eq-row total fragment" data-fragment-index="3">
+        <div class="eq-row total">
           <span class="op">=</span><span class="num">1,000</span><span class="lab">model fits</span>
         </div>
       </div>
@@ -75,15 +75,15 @@ engine: knitr
   </div>
 
   <div>
-    <div class="fragment" data-fragment-index="4">
+    <div class="fragment" data-fragment-index="2">
       <div class="col-label">1K model fits</div>
       <div class="bench bench-sm">
-        <div class="row fragment" data-fragment-index="4"><div class="label plat"><i class="fa-brands fa-apple"></i></div><div class="bar" style="width:61px"></div><div class="time">11 min</div></div>
-        <div class="row fragment" data-fragment-index="5"><div class="label plat"><i class="fa-brands fa-windows"></i></div><div class="bar" style="width:339px"></div><div class="time">61 min</div></div>
-        <div class="row fragment" data-fragment-index="6"><div class="label plat"><i class="fa-brands fa-linux"></i></div><div class="bar" style="width:500px"></div><div class="time">90 min</div></div>
+        <div class="row"><div class="label plat"><i class="fa-brands fa-apple"></i></div><div class="bar" style="width:61px"></div><div class="time">11 min</div></div>
+        <div class="row"><div class="label plat"><i class="fa-brands fa-windows"></i></div><div class="bar" style="width:339px"></div><div class="time">61 min</div></div>
+        <div class="row"><div class="label plat"><i class="fa-brands fa-linux"></i></div><div class="bar" style="width:500px"></div><div class="time">90 min</div></div>
       </div>
     </div>
-    <div class="fragment bigproc" data-fragment-index="7">
+    <div class="fragment bigproc" data-fragment-index="3">
       It&rsquo;s a <span class="hl">&ldquo;big processing&rdquo;</span> problem
     </div>
   </div>
@@ -648,7 +648,7 @@ This method is sensitive parallel settings in `parallel_over`
       <circle cx="99" cy="24" r="13" class="fill-green"/>
       <path d="M93 24 h12 M99 18 v12" class="stroke-navy"/>
     </svg>
-    <p><b>R Support</b> - Native support for the R runtime and managed package installation</p>
+    <p><b>R Support</b> - Native support for the R runtime and managed package installation (<b>Dedicated</b> mode only)</p>
   </div>
 
 </div>
@@ -666,34 +666,35 @@ This method is sensitive parallel settings in `parallel_over`
 ```{=html}
 <div class="dbdiag">
 
-  <div class="rcard rcard-lg fragment" data-fragment-index="1">
+  <div class="rcard rcard-lg">
+    <div class="cardlabel">My laptop</div>
     <i class="fa-brands fa-r-project"></i>
     <img src="assets/tidymodels.png">
   </div>
 
   <div class="wires">
-    <div class="wirehex fragment" data-fragment-index="2">
+    <div class="wirehex fragment" data-fragment-index="1">
       <img src="assets/rsample.png"><img src="assets/parsnip.png"><img src="assets/recipes.png">
     </div>
-    <div class="wlabel fragment" data-fragment-index="2">
+    <div class="wlabel fragment" data-fragment-index="1">
       Uploads <b>re-samples</b>, <b>model</b> and <b>recipe</b>
     </div>
-    <div class="wire fragment" data-fragment-index="2">
+    <div class="wire fragment" data-fragment-index="1">
       <span class="line"></span><span class="head right"></span>
     </div>
-    <div class="net fragment" data-fragment-index="2">Internet</div>
-    <div class="wire fragment" data-fragment-index="4">
+    <div class="net">Internet</div>
+    <div class="wire fragment" data-fragment-index="2">
       <span class="head left"></span><span class="line"></span>
     </div>
-    <div class="wlabel fragment" data-fragment-index="4">
+    <div class="wlabel fragment" data-fragment-index="2">
       Downloads <b>results</b>
     </div>
-    <div class="wirehex fragment" data-fragment-index="4">
+    <div class="wirehex fragment" data-fragment-index="2">
       <img src="assets/tune.png">
     </div>
   </div>
 
-  <div class="node cluster fragment" data-fragment-index="3">
+  <div class="node cluster">
     <div class="dbhead"><img class="db" src="assets/databricks.png"><span>Databricks</span></div>
     <div class="inner">
       <img class="spark" src="assets/spark-logo.png">
