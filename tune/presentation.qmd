@@ -588,14 +588,14 @@ This method is sensitive parallel settings in `parallel_over`
 <div class="eyebrow">Removing the barrier</div>
 ```
 
-
-- Use SparkML if data exceeds local memory
-
-- R and necessary packages must be installed on the cluster
+- **R and necessary packages must be installed on the cluster**
 
 - OS, R, and package versions may cause slight variations from local runs
 
 - Pulling predictions roughly doubles total data transfer
+
+- Use SparkML if data exceeds local memory
+
 
 # The rest of the puzzle {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
@@ -612,13 +612,47 @@ This method is sensitive parallel settings in `parallel_over`
 
 ![](assets/databricks.png){.absolute top=12 left=1126 width=95}
 
-Databricks is ideal to offload long-running grid searches:
+```{=html}
+<div class="iconlist">
 
-- **Cluster management** - Very easy to spin up and tear down Spark clusters
+  <div class="il-row">
+    <svg class="il-art" viewBox="0 0 120 120" aria-hidden="true">
+      <rect x="10" y="16" width="46" height="26" rx="5" class="fill-navy"/>
+      <rect x="10" y="50" width="46" height="26" rx="5" class="fill-navy"/>
+      <rect x="10" y="84" width="46" height="26" rx="5" class="fill-navy"/>
+      <circle cx="20" cy="29" r="4" class="fill-green"/>
+      <circle cx="20" cy="63" r="4" class="fill-green"/>
+      <circle cx="20" cy="97" r="4" class="fill-green"/>
+      <path d="M74 40 a24 24 0 1 1 -8 18" class="stroke-blue"/>
+      <path d="M62 40 h14 v-14" class="stroke-blue"/>
+    </svg>
+    <p><b>Cluster management</b> - Very easy to spin up and tear down Spark clusters</p>
+  </div>
 
-- **Remote execution** - Databricks Connect lets you execute jobs remotely from your favorite IDE
+  <div class="il-row">
+    <svg class="il-art" viewBox="0 0 120 120" aria-hidden="true">
+      <rect x="6" y="26" width="48" height="36" rx="5" class="fill-navy"/>
+      <rect x="20" y="66" width="20" height="8" class="fill-navy"/>
+      <rect x="66" y="26" width="48" height="36" rx="5" class="stroke-navy"/>
+      <path d="M14 86 h92" class="stroke-blue dash"/>
+      <circle cx="30" cy="86" r="6" class="fill-magenta"/>
+      <circle cx="90" cy="86" r="6" class="fill-magenta"/>
+    </svg>
+    <p><b>Remote execution</b> - Databricks Connect lets you execute jobs remotely from your favorite IDE</p>
+  </div>
 
-- **R Support** - Native support for the R runtime and managed package installation
+  <div class="il-row">
+    <svg class="il-art" viewBox="0 0 120 120" aria-hidden="true">
+      <circle cx="60" cy="60" r="42" class="fill-navy"/>
+      <text x="60" y="78" class="il-glyph">R</text>
+      <circle cx="99" cy="24" r="13" class="fill-green"/>
+      <path d="M93 24 h12 M99 18 v12" class="stroke-navy"/>
+    </svg>
+    <p><b>R Support</b> - Native support for the R runtime and managed package installation</p>
+  </div>
+
+</div>
+```
 
 
 ## Working with Databricks {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}

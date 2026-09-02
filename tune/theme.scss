@@ -657,6 +657,61 @@ $presentation-h3-font-size: 1.3em;
   display: block;
 }
 
+// ----------------------------------------- illustrated bullet list
+.reveal .slide .iconlist {
+  margin-top: 30px;
+}
+
+.reveal .slide .iconlist .il-row {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 34px;
+  margin-bottom: 30px;
+}
+
+.reveal .slide .iconlist .il-art {
+  flex: 0 0 auto;
+  width: 96px;
+  height: 96px;
+}
+
+.reveal .slide .iconlist .il-row p {
+  flex: 1;
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.3;
+}
+
+.reveal .slide .iconlist .il-row b {
+  color: $navy-deep;
+}
+
+// the illustrations share one small vocabulary of fills and strokes
+.reveal .slide .iconlist .fill-navy    { fill: $navy-deep; }
+.reveal .slide .iconlist .fill-blue    { fill: $blue; }
+.reveal .slide .iconlist .fill-green   { fill: $green; }
+.reveal .slide .iconlist .fill-magenta { fill: $magenta; }
+
+.reveal .slide .iconlist [class^="stroke-"] {
+  fill: none;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.reveal .slide .iconlist .stroke-navy { stroke: $navy-deep; }
+.reveal .slide .iconlist .stroke-blue { stroke: $blue; }
+.reveal .slide .iconlist .dash        { stroke-dasharray: 2 14; }
+
+.reveal .slide .iconlist .il-glyph {
+  fill: $green;
+  font-family: $font-family-monospace;
+  font-weight: 600;
+  font-size: 52px;
+  text-anchor: middle;
+}
+
 // ------------------------------------------------ databricks round trip
 .reveal .slide .dbdiag {
   display: flex;
