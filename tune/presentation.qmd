@@ -726,6 +726,8 @@ tune_grid_spark(
 <div class="eyebrow">Databricks</div>
 ```
 
+![](assets/databricks.png){.absolute top=12 left=1126 width=95}
+
 :::{.lead}
 Use the web UI to manually add the needed packages
 :::
@@ -733,7 +735,7 @@ Use the web UI to manually add the needed packages
 ![](assets/add-packages.png){.absolute top=200 left=250 width=800}
 
 
-## The R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## Script the installation {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Databricks</div>
@@ -742,7 +744,7 @@ Use the web UI to manually add the needed packages
 ![](assets/brickster.png){.absolute top=0 left=1116 width=105}
 
 :::{.lead}
-Scripted with `brickster`, or by hand in the cluster's Libraries tab.
+`brickster` enables installing the packages using code
 :::
 
 :::{.sample-small}
@@ -759,7 +761,7 @@ db_libs_install("[MY CLUSTER'S ID]", r_libs)
 ```
 :::
 
-## The Python package {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## Script the installation {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Removing the barrier</div>
@@ -768,7 +770,7 @@ db_libs_install("[MY CLUSTER'S ID]", r_libs)
 ![](assets/brickster.png){.absolute top=0 left=1116 width=105}
 
 :::{.lead}
-`rpy2` is what lets the workers run real R. Install it once, then wait.
+Python's `rpy2` package is also needed, but `brickster` can also take care of that
 :::
 
 :::{.sample-small}
@@ -776,9 +778,8 @@ db_libs_install("[MY CLUSTER'S ID]", r_libs)
 py_lib <- lib_pypi("rpy2==3.5.7") |>
   libraries()
 
-db_libs_install(cluster_id, py_lib)
+db_libs_install("[MY CLUSTER'S ID]", py_lib)
 
-wait_for_lib_installs(cluster_id)
 ```
 :::
 
