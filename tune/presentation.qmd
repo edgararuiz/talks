@@ -514,6 +514,74 @@ The new function takes care of everything
 </div>
 ```
 
+## A quick tip{background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+This method is sensitive parallel settings in `parallel_over()`
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+
+![](assets/tidymodels.png){.absolute top=0 left=1116 width=105}
+
+:::: {.columns}
+
+::: {.column width="3%"}
+:::
+
+::: {.column width="40%"}
+::: {.fragment data-fragment-index="2" style="text-align: center;"}
+<br/>
+**Spark Cluster**
+<p> **32** cores available </p>
+:::
+
+::: {.fragment data-fragment-index="3"}
+| Set to          | Tasks |
+|:----------------|---------------:|
+| `"resamples"`   | **10**         |
+| `"everything"`  | **32**         |
+:::
+
+
+:::
+
+::: {.column width="8%"}
+:::
+
+::: {.column width="40%"}
+
+```{=html}
+<br/><br/>
+<div class="stack-area stack-right fragment" data-fragment-index="1">
+
+  <div>
+    <div class="eq-wrap">
+      <div class="equation eq-stack eq-sm">
+        <div class="eq-row">
+          <span class="op"></span><span class="num">10</span><span class="lab">re-samples</span>
+        </div>
+        <div class="eq-row">
+          <span class="op">x</span><span class="num">100</span><span class="lab">combinations</span>
+        </div>
+        <div class="eq-row total">
+          <span class="op">=</span><span class="num">1,000</span><span class="lab">model fits</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+```
+
+
+:::
+
+
+::::
+
 
 # The rest of the puzzle {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 
