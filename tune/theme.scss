@@ -134,7 +134,7 @@ $presentation-h3-font-size: 1.3em;
 }
 
 .reveal .dark-slide h1 {
-  font-size: 44px;
+  font-size: 70px;
   font-weight: 600;
   margin-top: 150px;
   margin-bottom: 0;
@@ -666,7 +666,8 @@ $presentation-h3-font-size: 1.3em;
   text-align: center;
 }
 
-.reveal .slide.tip-table table {
+.reveal .slide.tip-table table,
+.reveal .slide .darkcard table {
   display: inline-table;
   width: auto;
   background: $navy-deep;
@@ -677,16 +678,47 @@ $presentation-h3-font-size: 1.3em;
 }
 
 .reveal .slide.tip-table table th,
-.reveal .slide.tip-table table td {
+.reveal .slide.tip-table table td,
+.reveal .slide .darkcard table th,
+.reveal .slide .darkcard table td {
   background: transparent;
   border: none;
   color: #fff;
   padding: 12px 26px;
 }
 
-.reveal .slide.tip-table table code {
+.reveal .slide.tip-table table code,
+.reveal .slide .darkcard table code {
   color: $green;
   background: transparent;
+}
+
+// the cluster card sits beside the benchmark bars, aligned to the spark rows
+.reveal .slide .benchside {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 16px;
+  max-width: 100%;
+}
+
+// the bars only take the room they need, so the card sits right next to them
+.reveal .slide .benchside .bench {
+  flex: 0 1 auto;
+}
+
+.reveal .slide .benchside .darkcard {
+  flex: none;
+  // the spark rows are short, so the card can tuck back over that space
+  margin-left: -40px;
+  margin-bottom: 42px;
+}
+
+.reveal .slide .benchside .darkcard table th,
+.reveal .slide .benchside .darkcard table td {
+  font-size: 21px;
+  padding: 8px 14px;
+  white-space: nowrap;
 }
 
 // ----------------------------------------- illustrated bullet list
@@ -867,6 +899,24 @@ $presentation-h3-font-size: 1.3em;
 .reveal .slide .dbdiag .wire .head.right { border-left: 15px solid $navy-deep; }
 .reveal .slide .dbdiag .wire .head.left  { border-right: 15px solid $navy-deep; }
 
+// the wire that runs behind the internet pill, card to card
+.reveal .slide .dbdiag .netrow {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.reveal .slide .dbdiag .netrow::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  right: -22px;
+  top: 50%;
+  border-top: 3px dashed rgba($navy-deep, 0.4);
+}
+
 .reveal .slide .dbdiag .net {
   display: inline-block;
   font-family: $font-family-monospace;
@@ -877,6 +927,8 @@ $presentation-h3-font-size: 1.3em;
   border: 2px solid $navy-deep;
   border-radius: 999px;
   padding: 5px 20px;
+  position: relative;
+  background: #fff;
 }
 
 // the cluster: white, outlined

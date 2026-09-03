@@ -591,69 +591,6 @@ This method is sensitive to parallel settings in `parallel_over`
 ```
 
 
-## Working with Databricks {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">Databricks</div>
-```
-
-![](assets/databricks.png){.absolute top=12 left=1126 width=95}
-
-```{=html}
-<div class="dbdiag">
-
-  <div class="rcard rcard-lg">
-    <div class="cardlabel">My laptop</div>
-    <i class="fa-brands fa-r-project"></i>
-    <img src="assets/tidymodels.png">
-  </div>
-
-  <div class="wires">
-    <div class="wirehex fragment" data-fragment-index="1">
-      <img src="assets/rsample.png"><img src="assets/parsnip.png"><img src="assets/recipes.png">
-    </div>
-    <div class="wlabel fragment" data-fragment-index="1">
-      Uploads <b>re-samples</b>, <b>model</b> and <b>recipe</b>
-    </div>
-    <div class="wire fragment" data-fragment-index="1">
-      <span class="line"></span><span class="head right"></span>
-    </div>
-    <div class="net">Internet</div>
-    <div class="wire fragment" data-fragment-index="2">
-      <span class="head left"></span><span class="line"></span>
-    </div>
-    <div class="wlabel fragment" data-fragment-index="2">
-      Downloads <b>results</b>
-    </div>
-    <div class="wirehex fragment" data-fragment-index="2">
-      <img src="assets/tune.png">
-    </div>
-  </div>
-
-  <div class="node cluster">
-    <div class="dbhead"><img class="db" src="assets/databricks.png"><span>Databricks</span></div>
-    <div class="inner">
-      <img class="spark" src="assets/spark-logo.png">
-      <div class="workers">
-        <div class="rcard rcard-sm">
-          <i class="fa-brands fa-r-project"></i>
-          <img src="assets/tidymodels.png">
-        </div>
-        <div class="rcard rcard-sm">
-          <i class="fa-brands fa-r-project"></i>
-          <img src="assets/tidymodels.png">
-        </div>
-        <div class="rcard rcard-sm">
-          <i class="fa-brands fa-r-project"></i>
-          <img src="assets/tidymodels.png">
-        </div>
-      </div>
-      <div class="pp">Parallel processing</div>
-    </div>
-  </div>
-
-</div>
-```
 
 ## Installing packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
@@ -718,6 +655,73 @@ db_libs_install("[MY CLUSTER'S ID]", py_lib)
 ```
 :::
 
+
+## Working with Databricks {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Databricks</div>
+```
+
+![](assets/databricks.png){.absolute top=12 left=1126 width=95}
+
+```{=html}
+<div class="dbdiag">
+
+  <div class="rcard rcard-lg">
+    <div class="cardlabel">My laptop</div>
+    <i class="fa-brands fa-r-project"></i>
+    <img src="assets/tidymodels.png">
+  </div>
+
+  <div class="wires">
+    <div class="wirehex fragment" data-fragment-index="1">
+      <img src="assets/rsample.png"><img src="assets/parsnip.png"><img src="assets/recipes.png">
+    </div>
+    <div class="wlabel fragment" data-fragment-index="1">
+      Uploads <b>re-samples</b>, <b>model</b> and <b>recipe</b>
+    </div>
+    <div class="wire fragment" data-fragment-index="1">
+      <span class="line"></span><span class="head right"></span>
+    </div>
+    <div class="netrow">
+      <div class="net">Internet</div>
+    </div>
+    <div class="wire fragment" data-fragment-index="2">
+      <span class="head left"></span><span class="line"></span>
+    </div>
+    <div class="wlabel fragment" data-fragment-index="2">
+      Downloads <b>results</b>
+    </div>
+    <div class="wirehex fragment" data-fragment-index="2">
+      <img src="assets/tune.png">
+    </div>
+  </div>
+
+  <div class="node cluster">
+    <div class="dbhead"><img class="db" src="assets/databricks.png"><span>Databricks</span></div>
+    <div class="inner">
+      <img class="spark" src="assets/spark-logo.png">
+      <div class="workers">
+        <div class="rcard rcard-sm">
+          <i class="fa-brands fa-r-project"></i>
+          <img src="assets/tidymodels.png">
+        </div>
+        <div class="rcard rcard-sm">
+          <i class="fa-brands fa-r-project"></i>
+          <img src="assets/tidymodels.png">
+        </div>
+        <div class="rcard rcard-sm">
+          <i class="fa-brands fa-r-project"></i>
+          <img src="assets/tidymodels.png">
+        </div>
+      </div>
+      <div class="pp">Parallel processing</div>
+    </div>
+  </div>
+
+</div>
+```
+
 ## Back to the example {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
@@ -728,48 +732,61 @@ db_libs_install("[MY CLUSTER'S ID]", py_lib)
 
 ::::::::: {.columns}
 
-:::::::: {.column width="58%"}
+:::::::: {.column width="52%"}
 
 ::::::: {.code-stack}
 
-:::::: {.fragment .fade-out .sample-mini fragment-index=1}
+:::::: {.fragment .fade-out .sample-mini fragment-index=2}
 ```r
 tune_grid(
   object = spec_bt,
   preprocessor = recipe_basic,
   resamples = readmission_folds,
-  grid = bt_grid,
-  control = control_grid()
+  grid = bt_grid
 )
 ```
 ::::::
 
-:::::: {.fragment .fade-out fragment-index=2}
-::::: {.fragment .sample-mini fragment-index=1}
+:::::: {.fragment .sample-mini fragment-index=1}
 ```r
 tune_grid_spark(
-  sc = sc,
   object = spec_bt,
   preprocessor = recipe_basic,
   resamples = readmission_folds,
   grid = bt_grid,
-  control = control_grid()
+  sc = sc
+)
+```
+::::::
+
+:::::: {.fragment .fade-out fragment-index=3}
+::::: {.fragment .sample-mini fragment-index=2}
+```r
+tune_grid_spark(
+  object = spec_bt,
+  preprocessor = recipe_basic,
+  resamples = readmission_folds,
+  grid = bt_grid,
+  control = control_grid(
+    parallel_over = "resamples"
+    ),
+  sc = sc
 )
 ```
 :::::
 ::::::
 
-:::::: {.fragment .sample-mini fragment-index=2}
+:::::: {.fragment .sample-mini fragment-index=3}
 ```r
 tune_grid_spark(
-  sc = sc,
   object = spec_bt,
   preprocessor = recipe_basic,
   resamples = readmission_folds,
   grid = bt_grid,
   control = control_grid(
     parallel_over = "everything"
-    )
+    ),
+  sc = sc
 )
 ```
 ::::::
@@ -778,15 +795,23 @@ tune_grid_spark(
 
 ::::::::
 
-:::::::: {.column width="42%"}
+:::::::: {.column width="48%"}
 
 ```{=html}
-<div class="bench bench-sm">
-  <div class="row"><div class="label plat"><i class="fa-brands fa-apple"></i></div><div class="bar" style="width:35px"></div><div class="time">11 min</div></div>
-  <div class="row"><div class="label plat"><i class="fa-brands fa-windows"></i></div><div class="bar" style="width:197px"></div><div class="time">61 min</div></div>
-  <div class="row"><div class="label plat"><i class="fa-brands fa-linux"></i></div><div class="bar" style="width:290px"></div><div class="time">90 min</div></div>
-  <div class="row fragment" data-fragment-index="1"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:16px"></div><div class="time">5 min</div></div>
-  <div class="row fragment" data-fragment-index="2"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:9px"></div><div class="time">2.8 min</div></div>
+<div class="benchside">
+  <div class="bench bench-sm">
+    <div class="row"><div class="label plat"><i class="fa-brands fa-apple"></i></div><div class="bar" style="width:16px"></div><div class="time">11 min</div></div>
+    <div class="row"><div class="label plat"><i class="fa-brands fa-windows"></i></div><div class="bar" style="width:88px"></div><div class="time">61 min</div></div>
+    <div class="row"><div class="label plat"><i class="fa-brands fa-linux"></i></div><div class="bar" style="width:130px"></div><div class="time">90 min</div></div>
+    <div class="row fragment" data-fragment-index="2"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:8px"></div><div class="time">5 min</div></div>
+    <div class="row fragment" data-fragment-index="3"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:4px"></div><div class="time">2.8 min</div></div>
+  </div>
+  <div class="darkcard fragment" data-fragment-index="1">
+    <table>
+      <thead><tr><th style="text-align: center;">Spark Cluster</th></tr></thead>
+      <tbody><tr><td style="text-align: center;"><strong>32</strong> cores available</td></tr></tbody>
+    </table>
+  </div>
 </div>
 ```
 
