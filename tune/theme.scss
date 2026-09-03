@@ -202,8 +202,9 @@ $presentation-h3-font-size: 1.3em;
 
 // closing slide
 .reveal .thanks h2 {
-  font-size: 62px;
-  margin-top: 150px;
+  color: $navy-deep;
+  font-size: 100px;
+  margin-top: 120px;
 }
 
 // lead-in sentence above a code block or graphic
@@ -657,6 +658,35 @@ $presentation-h3-font-size: 1.3em;
   width: 54px;
   flex: none;
   display: block;
+}
+
+// the parallel_over table sits on a dark card, like the deck's cards
+// the fragment wrapper does the centring, the table shrinks to its content
+.reveal .slide.tip-table .column > div {
+  text-align: center;
+}
+
+.reveal .slide.tip-table table {
+  display: inline-table;
+  width: auto;
+  background: $navy-deep;
+  border-radius: 14px;
+  border-collapse: collapse;
+  overflow: hidden;
+  margin: 6px 0 0 0;
+}
+
+.reveal .slide.tip-table table th,
+.reveal .slide.tip-table table td {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 12px 26px;
+}
+
+.reveal .slide.tip-table table code {
+  color: $green;
+  background: transparent;
 }
 
 // ----------------------------------------- illustrated bullet list

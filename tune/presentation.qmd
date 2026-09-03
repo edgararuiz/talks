@@ -439,9 +439,9 @@ The new function takes care of everything
 </div>
 ```
 
-## A quick tip{background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## A quick tip{.tip-table background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
-This method is sensitive parallel settings in `parallel_over`
+This method is sensitive to parallel settings in `parallel_over`
 
 ```{=html}
 <div class="eyebrow">Removing the barrier</div>
@@ -456,29 +456,9 @@ This method is sensitive parallel settings in `parallel_over`
 :::
 
 ::: {.column width="40%"}
-::: {.fragment data-fragment-index="2" style="text-align: center;"}
-<br/>
-**Spark Cluster**
-<p> **32** cores available </p>
-:::
-
-::: {.fragment data-fragment-index="3"}
-| Set to          | Tasks |
-|:----------------|---------------:|
-| `"resamples"`   | **10**         |
-| `"everything"`  | **32**         |
-:::
-
-
-:::
-
-::: {.column width="8%"}
-:::
-
-::: {.column width="40%"}
 
 ```{=html}
-<br/><br/>
+<br/>
 <div class="stack-area stack-right fragment" data-fragment-index="1">
 
   <div>
@@ -498,6 +478,37 @@ This method is sensitive parallel settings in `parallel_over`
   </div>
 
 
+</div>
+```
+
+
+:::
+
+::: {.column width="8%"}
+:::
+
+::: {.column width="40%"}
+::: {.fragment data-fragment-index="2"}
+| Spark Cluster          |
+|:----------------------:|
+| **32** cores available |
+:::
+
+```{=html}
+<div class="fragment" data-fragment-index="3">
+<table>
+  <thead>
+    <tr><th style="text-align: left;">Set to</th><th style="text-align: right;">Tasks</th></tr>
+  </thead>
+  <tbody>
+    <tr class="fragment" data-fragment-index="4">
+      <td style="text-align: left;"><code>"resamples"</code></td><td style="text-align: right;"><strong>10</strong></td>
+    </tr>
+    <tr class="fragment" data-fragment-index="5">
+      <td style="text-align: left;"><code>"everything"</code></td><td style="text-align: right;"><strong>32</strong></td>
+    </tr>
+  </tbody>
+</table>
 </div>
 ```
 
@@ -783,7 +794,7 @@ db_libs_install("[MY CLUSTER'S ID]", py_lib)
 ```
 :::
 
-## Where to read more {.links background-image="assets/slide-frame.png" background-size="contain" background-color="white" .roomy-list}
+## Where to read more {.links .roomy-list background-image="assets/slide-frame.png" background-size="contain" background-color="white" .roomy-list}
 
 ```{=html}
 <div class="eyebrow">Links</div>
