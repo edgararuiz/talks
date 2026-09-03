@@ -655,6 +655,69 @@ This method is sensitive to parallel settings in `parallel_over`
 </div>
 ```
 
+## Installing packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Databricks</div>
+```
+
+![](assets/databricks.png){.absolute top=12 left=1126 width=95}
+
+:::{.lead}
+Use the web UI to manually add the needed packages
+:::
+
+![](assets/add-packages.png){.absolute top=200 left=250 width=800}
+
+
+## Script the installation {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Databricks</div>
+```
+
+![](assets/brickster.png){.absolute top=0 left=1116 width=105}
+
+:::{.lead}
+`brickster` enables installing the packages using code
+:::
+
+:::{.sample-small}
+```r
+library(brickster)
+
+r_libs <- libraries(
+  lib_cran("reticulate", repo = repo),
+  lib_cran("tidymodels", repo = repo),
+  lib_cran("xgboost", repo = repo)
+)
+
+db_libs_install("[MY CLUSTER'S ID]", r_libs)
+```
+:::
+
+## Script the installation {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+```{=html}
+<div class="eyebrow">Removing the barrier</div>
+```
+
+![](assets/brickster.png){.absolute top=0 left=1116 width=105}
+
+:::{.lead}
+Python's `rpy2` package is also needed, but `brickster` can also take care of that
+:::
+
+:::{.sample-small}
+```r
+py_lib <- lib_pypi("rpy2") |>
+  libraries()
+
+db_libs_install("[MY CLUSTER'S ID]", py_lib)
+
+```
+:::
+
 ## Back to the example {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
@@ -731,68 +794,7 @@ tune_grid_spark(
 
 :::::::::
 
-## Install R packages {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
-```{=html}
-<div class="eyebrow">Databricks</div>
-```
-
-![](assets/databricks.png){.absolute top=12 left=1126 width=95}
-
-:::{.lead}
-Use the web UI to manually add the needed packages
-:::
-
-![](assets/add-packages.png){.absolute top=200 left=250 width=800}
-
-
-## Script the installation {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">Databricks</div>
-```
-
-![](assets/brickster.png){.absolute top=0 left=1116 width=105}
-
-:::{.lead}
-`brickster` enables installing the packages using code
-:::
-
-:::{.sample-small}
-```r
-library(brickster)
-
-r_libs <- libraries(
-  lib_cran("reticulate", repo = repo),
-  lib_cran("tidymodels", repo = repo),
-  lib_cran("xgboost", repo = repo),
-  lib_cran("readmission", repo = repo)
-)
-db_libs_install("[MY CLUSTER'S ID]", r_libs)
-```
-:::
-
-## Script the installation {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
-
-```{=html}
-<div class="eyebrow">Removing the barrier</div>
-```
-
-![](assets/brickster.png){.absolute top=0 left=1116 width=105}
-
-:::{.lead}
-Python's `rpy2` package is also needed, but `brickster` can also take care of that
-:::
-
-:::{.sample-small}
-```r
-py_lib <- lib_pypi("rpy2==3.5.7") |>
-  libraries()
-
-db_libs_install("[MY CLUSTER'S ID]", py_lib)
-
-```
-:::
 
 ## Where to read more {.links .roomy-list background-image="assets/slide-frame.png" background-size="contain" background-color="white" .roomy-list}
 
