@@ -798,14 +798,11 @@ db_libs_install("[MY CLUSTER'S ID]", py_lib)
 
 ```{=html}
 <div class="eyebrow">Links</div>
-<br/>
 ```
 
-- tidymodels - [tidymodels.org](https://www.tidymodels.org)
+[spark.posit.co/deployment/databricks_tune_tidymodels](https://spark.posit.co/deployment/databricks_tune_tidymodels)
 
-- `sparklyr` - [spark.posit.co](https://spark.posit.co)
-
-- `brickster` - [posit-dev.github.io/brickster](https://posit-dev.github.io/brickster/)
+![](assets/article.png){.absolute top=200 left=200 width=850}
 
 
 ## Thank you {.thanks background-image="assets/thank-you.png" background-size="contain" background-color="white"}
