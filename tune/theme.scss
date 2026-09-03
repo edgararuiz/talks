@@ -693,6 +693,11 @@ $presentation-h3-font-size: 1.3em;
   background: transparent;
 }
 
+// the cluster cards use the lighter blue, to set them apart from the settings table
+.reveal .slide .bluecard table {
+  background: $blue;
+}
+
 // the cluster card sits beside the benchmark bars, aligned to the spark rows
 .reveal .slide .benchside {
   display: flex;
