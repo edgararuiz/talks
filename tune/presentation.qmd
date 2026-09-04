@@ -143,52 +143,25 @@ local_results <- tune_grid(
 
 ::::
 
-## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+
+
+## {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The problem</div>
 ```
 
-
-
-:::{.lead}
-Usual solutions have one or more of these **barriers**.
+::: {.goal-line .absolute top=270 left=40 width=560}
+We need more speed!
 :::
 
-```{=html}
-<div class="cards cards-4">
-  <div class="card-col">
-    <div class="card c-green">
-      <div class="icon"><span class="pix"><i></i><i></i><i></i><i></i></span></div>
-      <p>Bound by cores</p>
-    </div>
-    <div class="subnote">Does not solve the problem</div>
-  </div>
-  <div class="card-col">
-    <div class="card c-magenta">
-      <div class="icon"><span class="glyph money">$$$</span></div>
-      <p>Expensive</p>
-    </div>
-    <div class="subnote">Hard to get</div>
-  </div>
-  <div class="card-col">
-    <div class="card c-blue">
-      <div class="icon"><span class="glyph">R|&gt;</span></div>
-      <p>Code re-write</p>
-    </div>
-    <div class="subnote">Time consuming</div>
-  </div>
-  <div class="card-col">
-    <div class="card c-yellow">
-      <div class="icon"><span class="stack"><i></i><i></i><i></i></span></div>
-      <p>Complex</p>
-    </div>
-    <div class="subnote">Time consuming &amp; may need help</div>
-  </div>
-</div>
-```
+![](assets/battle-speed.jpg){.absolute top=100 left=670 width=550}
 
-## The usual answers fall short {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+::: {.figref .absolute top=632 left=670 width=550}
+Ben Hur, 1959
+:::
+
+## Usual solutions have barriers {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The problem</div>
@@ -226,6 +199,13 @@ Usual solutions have one or more of these **barriers**.
   <div class="mini fragment" data-fragment-index="5">
       <div class="card c-blue"><div class="icon"><span class="glyph">R|&gt;</span></div></div>
   </div>
+</div>
+
+<div class="barcap">
+  <div class="fragment fade-in-then-out" data-fragment-index="1">Bound by cores</div>
+  <div class="fragment fade-in-then-out" data-fragment-index="2">Expensive &amp; needs a code re-write</div>
+  <div class="fragment fade-in-then-out" data-fragment-index="3">Complex &amp; needs a code re-write</div>
+  <div class="fragment fade-in-then-out" data-fragment-index="4">Bound by cores</div>
 </div>
 ```
 
@@ -656,7 +636,7 @@ db_libs_install("[MY CLUSTER'S ID]", py_lib)
 :::
 
 
-## Working with Databricks {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## Prepare locally, run remotely {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">Databricks</div>
