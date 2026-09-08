@@ -30,10 +30,15 @@ engine: knitr
 ```{=html}
 <div class="title-block-inner">
   <h1>Prepare locally,<br>run remotely</h1>
-  <p class="tagline">Easily scale <b>Tidymodels</b><br> on <b>Databricks</b> with <b>sparklyr</b></p>
   <p class="byline">Edgar Ruiz / Posit</p>
 </div>
 ```
+
+![](assets/qr-talk.svg){.absolute top=390 left=25 width=210}
+
+::: {.qrcap .absolute top=610 left=1020 width=170}
+Slides & code
+:::
 
 # Long running Grid Search {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
 

@@ -200,6 +200,17 @@ $presentation-h3-font-size: 1.3em;
   font-size: 30px;
 }
 
+// the qr code caption on the title slide
+.reveal .slide .qrcap p {
+  font-family: $font-family-monospace;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $navy-deep;
+  text-align: center;
+  margin: 0;
+}
+
 // closing slide
 .reveal .thanks h2 {
   color: $navy-deep;
