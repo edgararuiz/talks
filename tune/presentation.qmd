@@ -30,11 +30,11 @@ engine: knitr
 ```{=html}
 <div class="title-block-inner">
   <h1>Prepare locally,<br>run remotely</h1>
-  <p class="byline">Edgar Ruiz / Posit</p>
+  <p class="byline">Edgar Ruiz | Posit</p>
 </div>
 ```
 
-![](assets/qr-talk.svg){.absolute top=390 left=25 width=210}
+![](assets/qr-talk.svg){.absolute top=370 left=25 width=210}
 
 ::: {.squig-arrow .absolute top=440 left=250 width=88}
 ```{=html}
