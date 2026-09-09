@@ -197,18 +197,35 @@ $presentation-h3-font-size: 1.3em;
 }
 
 .reveal .title-block-inner p.byline {
-  font-size: 30px;
+  font-size: 38px;
 }
 
-// the qr code caption on the title slide
-.reveal .slide .qrcap p {
-  font-family: $font-family-monospace;
-  font-size: 18px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+// the note pointing at the qr code on the title slide
+.reveal .slide .qrnote p {
+  font-family: $font-family-sans-serif;
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
   color: $navy-deep;
-  text-align: center;
   margin: 0;
+}
+
+.reveal .slide .squig-arrow svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.reveal .slide .squig-arrow path {
+  fill: none;
+  stroke: $navy-deep;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.reveal .slide .squig-arrow polygon {
+  fill: $navy-deep;
 }
 
 // closing slide

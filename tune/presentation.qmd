@@ -36,8 +36,18 @@ engine: knitr
 
 ![](assets/qr-talk.svg){.absolute top=390 left=25 width=210}
 
-::: {.qrcap .absolute top=610 left=1020 width=170}
-Slides & code
+::: {.squig-arrow .absolute top=440 left=250 width=88}
+```{=html}
+<svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+  <path d="M100,85 C103,56 96,31 60,25 C42,22 26,24 16,25"/>
+  <polygon points="2,25 22,14 22,36"/>
+</svg>
+```
+:::
+
+::: {.qrnote .absolute top=518 left=278 width=220}
+Link to  
+the repo
 :::
 
 # Long running Grid Search {.dark-slide background-image="assets/slide-frame-dark.png" background-size="contain" background-color="#031042"}
