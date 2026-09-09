@@ -167,7 +167,7 @@ $presentation-h3-font-size: 1.3em;
 }
 
 .reveal .title-block-inner {
-  padding-top: 74px;
+  padding-top: 20px;
 }
 
 .reveal .title-block-inner h1 {
@@ -176,16 +176,6 @@ $presentation-h3-font-size: 1.3em;
   font-weight: 700;
   line-height: 1.12;
   margin: 0 0 28px 0;
-}
-
-.reveal .title-block-inner p.tagline {
-  font-size: 30px;
-  color: $ink;
-  margin: 0 0 26px 0;
-}
-
-.reveal .title-block-inner p.tagline {
-  font-size: 45px;
 }
 
 .reveal .title-block-inner p.byline {
