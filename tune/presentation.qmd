@@ -556,7 +556,7 @@ This method is sensitive to parallel settings in `parallel_over`
       <path d="M74 40 a24 24 0 1 1 -8 18" class="stroke-blue"/>
       <path d="M62 40 h14 v-14" class="stroke-blue"/>
     </svg>
-    <p><b>Cluster management</b> - Very easy to spin up and tear down Spark clusters</p>
+    <p>Spin up and tear down Spark clusters easily</p>
   </div>
 
   <div class="il-row fragment" data-fragment-index="2">
@@ -568,7 +568,7 @@ This method is sensitive to parallel settings in `parallel_over`
       <circle cx="30" cy="86" r="6" class="fill-magenta"/>
       <circle cx="90" cy="86" r="6" class="fill-magenta"/>
     </svg>
-    <p><b>Remote execution</b> - Databricks Connect lets you execute jobs remotely from your favorite IDE</p>
+    <p>Run jobs from your own IDE, no notebooks</p>
   </div>
 
   <div class="il-row fragment" data-fragment-index="3">
@@ -578,7 +578,7 @@ This method is sensitive to parallel settings in `parallel_over`
       <circle cx="99" cy="24" r="13" class="fill-green"/>
       <path d="M93 24 h12 M99 18 v12" class="stroke-navy"/>
     </svg>
-    <p><b>R Support</b> - Native support for the R runtime and managed package installation (<b>Dedicated</b> mode only)</p>
+    <p>Native R runtime and packages, in <b>Dedicated</b> mode</p>
   </div>
 
 </div>

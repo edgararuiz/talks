@@ -698,6 +698,15 @@ $presentation-h3-font-size: 1.3em;
   text-align: center;
 }
 
+// both cards share the wider table's width, so their edges line up
+.reveal .slide.tip-table table {
+  min-width: 530px;
+}
+
+.reveal .slide.tip-table .column:last-child {
+  padding-top: 40px;
+}
+
 .reveal .slide.tip-table table,
 .reveal .slide .darkcard table {
   display: inline-table;
@@ -792,8 +801,8 @@ $presentation-h3-font-size: 1.3em;
 
 .reveal .slide .iconlist .il-art {
   flex: 0 0 auto;
-  width: 96px;
-  height: 96px;
+  width: 130px;
+  height: 130px;
   margin-right: 60px;
 }
 
@@ -801,7 +810,7 @@ $presentation-h3-font-size: 1.3em;
   flex: 1;
   margin: 0;
   padding-left: 34px;
-  font-size: 34px;
+  font-size: 50px;
   line-height: 1.3;
   text-indent: -34px;
 }
