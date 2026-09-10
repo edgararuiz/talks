@@ -57,7 +57,7 @@ the repo
 ```
 
 
-## For example {background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
+## For example {.lower-stack background-image="assets/slide-frame.png" background-size="contain" background-color="white"}
 
 ```{=html}
 <div class="eyebrow">The problem</div>
@@ -93,9 +93,8 @@ the repo
     <div class="fragment" data-fragment-index="2">
       <div class="col-label">1K model fits</div>
       <div class="bench bench-sm">
-        <div class="row"><div class="label plat"><i class="fa-brands fa-apple"></i></div><div class="bar" style="width:61px"></div><div class="time">11 min</div></div>
-        <div class="row"><div class="label plat"><i class="fa-brands fa-windows"></i></div><div class="bar" style="width:339px"></div><div class="time">61 min</div></div>
-        <div class="row"><div class="label plat"><i class="fa-brands fa-linux"></i></div><div class="bar" style="width:500px"></div><div class="time">90 min</div></div>
+        <div class="row"><div class="label plat"><i class="fa-brands fa-windows"></i></div><div class="cores">4 cores<br>4 threads</div><div class="bar" style="width:360px"></div><div class="time">61 min</div></div>
+        <div class="row"><div class="label plat"><i class="fa-brands fa-linux"></i></div><div class="cores">8 cores</div><div class="bar" style="width:171px"></div><div class="time">29 min</div></div>
       </div>
     </div>
     <div class="fragment bigproc" data-fragment-index="3">
@@ -795,11 +794,10 @@ tune_grid_spark(
 ```{=html}
 <div class="benchside">
   <div class="bench bench-sm">
-    <div class="row"><div class="label plat"><i class="fa-brands fa-apple"></i></div><div class="bar" style="width:16px"></div><div class="time">11 min</div></div>
-    <div class="row"><div class="label plat"><i class="fa-brands fa-windows"></i></div><div class="bar" style="width:88px"></div><div class="time">61 min</div></div>
-    <div class="row"><div class="label plat"><i class="fa-brands fa-linux"></i></div><div class="bar" style="width:130px"></div><div class="time">90 min</div></div>
-    <div class="row fragment" data-fragment-index="2"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:8px"></div><div class="time">5 min</div></div>
-    <div class="row fragment" data-fragment-index="3"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:4px"></div><div class="time">2.8 min</div></div>
+    <div class="row"><div class="label plat"><i class="fa-brands fa-windows"></i></div><div class="bar" style="width:130px"></div><div class="time">61 min</div></div>
+    <div class="row"><div class="label plat"><i class="fa-brands fa-linux"></i></div><div class="bar" style="width:62px"></div><div class="time">29 min</div></div>
+    <div class="row fragment" data-fragment-index="2"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:11px"></div><div class="time">5 min</div></div>
+    <div class="row fragment" data-fragment-index="3"><div class="label plat"><img class="sparkmark" src="assets/spark-logo.png"></div><div class="bar fast" style="width:6px"></div><div class="time">2.8 min</div></div>
   </div>
   <div class="darkcard bluecard fragment" data-fragment-index="1">
     <table>

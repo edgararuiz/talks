@@ -337,6 +337,13 @@ $presentation-h3-font-size: 1.3em;
 .reveal .slide .eq-stack.eq-sm .eq-row.total::before { width: 234px; }
 .reveal .slide .eq-stack.eq-sm { margin: 10px 0; }
 
+// the example slide: drop the sum and the bars clear of the title
+// margin, not padding: the sum is an absolutely placed child, so padding
+// would leave it pinned at the top
+.reveal .slide.lower-stack .stack-area {
+  margin-top: 60px;
+}
+
 // the right hand column swaps the sum out for the chart
 .reveal .slide .stack-area.stack-right {
   min-height: 430px;
@@ -441,6 +448,17 @@ $presentation-h3-font-size: 1.3em;
   line-height: 1;
   text-align: center;
   color: $navy-deep;
+}
+
+// the machine's cores, sat next to the platform glyph
+.reveal .slide .bench .cores {
+  flex: none;
+  width: 130px;
+  padding-right: 16px;
+  font-family: $font-family-monospace;
+  font-size: 20px;
+  line-height: 1.15;
+  color: $ink;
 }
 
 // compact benchmark bars, for the teaser slide
